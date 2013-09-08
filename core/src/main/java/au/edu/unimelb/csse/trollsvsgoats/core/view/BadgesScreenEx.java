@@ -75,8 +75,12 @@ public class BadgesScreenEx extends View {
 
 	@Override
 	protected Group createIface() {
-		root.addStyles(Style.BACKGROUND.is(Background
-				.image(getImage("backgrounds/1024_720/badges_back_1024_720"))));
+		Image bg;
+		if (this.width() == 800)
+			bg = getImage("backgrounds/800_600/badges_back_800_600");
+		else
+			bg = getImage("backgrounds/1024_720/badges_back_1024_720");
+		root.addStyles(Style.BACKGROUND.is(Background.image(bg)));
 
 		Group tiles = new Group(new AbsoluteLayout());
 		Group myroot = new Group(new AbsoluteLayout());
@@ -269,6 +273,7 @@ public class BadgesScreenEx extends View {
 
 		names.add("badge_lock");
 		
+		names.add("backgrounds/800_600/badges_back_800_600");
 		names.add("backgrounds/1024_720/badges_back_1024_720");
 
 		return names.toArray(new String[names.size()]);
