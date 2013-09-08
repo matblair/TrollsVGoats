@@ -60,6 +60,8 @@ public abstract class View extends UIAnimScreen {
 
     @Override
     public void wasAdded() {
+    	if (root != null)
+        	root.destroy();
         super.wasAdded();
         root = iface.createRoot(AxisLayout.vertical().offStretch(),
                 stylesheet(), layer);

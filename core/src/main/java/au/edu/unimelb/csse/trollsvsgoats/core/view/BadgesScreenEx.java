@@ -57,9 +57,8 @@ public class BadgesScreenEx extends View {
 			@Override
 			public void onKeyUp(Event event) {
 				if (event.key().equals(Key.ENTER)) {
-//					for (Badge badge : model.badges())
-//						badge.setAchieved();
-					model.badges()[0].setAchieved();
+					for (Badge badge : model.badges())
+						badge.setAchieved();
 					wasAdded();
 				}
 			}
@@ -85,11 +84,11 @@ public class BadgesScreenEx extends View {
 
 		iconChildBoard = getIcon("cut_screens/badges/board");
 		Icon rope_l = getIcon("cut_screens/badges/rope");
-		int y_pos = Y_START_POS ;
+		int y_pos = Y_START_POS + 30;
 
 		// Add top panel stuff
-		float title_board_x = 565;
-		float title_board_y = -102;
+		float title_board_x = this.width() - 480;
+		float title_board_y = y_pos - 102;
 		//Board
 		Icon titleBoard = getIcon ("cut_screens/badges/title_board");
 		Icon title = getIcon ("cut_screens/badges/badges_title");
@@ -148,7 +147,7 @@ public class BadgesScreenEx extends View {
 			y_pos += iconChildBoard.height() + (rope_l.height()-55 );
 		}
 
-		myroot.add(AbsoluteLayout.at(tiles, 575, 10, iconChildBoard.width(), iconChildBoard.height() * badges.length));
+		myroot.add(AbsoluteLayout.at(tiles, title_board_x+10, 10, iconChildBoard.width(), iconChildBoard.height() * badges.length));
 
 		int pageHeight = (int)(iconChildBoard.height() + (rope_l.height()-55 ));
 		int scrollRange = badges.length * pageHeight;
@@ -171,7 +170,7 @@ public class BadgesScreenEx extends View {
 		if (scrollRange > PAGE_RANGE)
 		{
 			top.add(AbsoluteLayout.at (new Label (rope_l), title_board_x+319, bottomRopeY, rope_l.width(), rope_l.height()));
-			myroot.add(AbsoluteLayout.at(scroll, 869, Y_START_POS + 9, scrollBG.width(), scrollBG.height()));
+			myroot.add(AbsoluteLayout.at(scroll, title_board_x+304, 38, scrollBG.width(), scrollBG.height()));
 		}
 		
 		myroot.add(AbsoluteLayout.at(top, 0, 0));
@@ -277,7 +276,7 @@ public class BadgesScreenEx extends View {
 
 	@Override
 	protected String title() {
-		return " ";
+		return "";
 	}
 
 	@Override

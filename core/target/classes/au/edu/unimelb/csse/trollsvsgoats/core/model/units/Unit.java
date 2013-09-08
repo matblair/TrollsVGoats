@@ -145,18 +145,9 @@ public abstract class Unit {
   //-->           moved = false;
     
     public boolean updatePosition(float timeDelta) { 
-    	
-    
-    	this.moveDelta = LevelScreenEx.SQUARE_WIDTH / (this.moveDelay / timeDelta); 
-    	
-    	float oldTempX = tempNewX;
-    	
+       	this.moveDelta = LevelScreenEx.SQUARE_WIDTH / (this.moveDelay / timeDelta); 
+       	
     	tempNewX = tempNewX + (this instanceof Troll ? this.moveDelta : - this.moveDelta);
-    	if(this instanceof Troll){
-        	System.out.println(timeDelta);
-    		System.out.println("Temp new x " + tempNewX + " and old temp is " + oldTempX + "with move delta " + this.moveDelta);
-    	}
-
 
        	float previousX = square.getX();
 

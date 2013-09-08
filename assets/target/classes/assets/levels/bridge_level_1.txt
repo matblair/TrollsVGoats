@@ -13,11 +13,9 @@
   {
     "normal":6,
     "fast":6,
-    "digging":1,
     "hungry":1,
     "little":2,
-    "spitting":3,
-    "cheerleader":3
+    "spitting":3
     
   },
   

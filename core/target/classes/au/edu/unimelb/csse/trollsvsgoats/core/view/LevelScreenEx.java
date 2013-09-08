@@ -4,7 +4,6 @@ import static playn.core.PlayN.graphics;
 import static playn.core.PlayN.json;
 import static playn.core.PlayN.log;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -23,11 +22,9 @@ import playn.core.Mouse;
 import playn.core.PlayN;
 import playn.core.Mouse.ButtonEvent;
 import playn.core.Mouse.MotionEvent;
-import pythagoras.f.IPoint;
 import react.UnitSlot;
 import au.edu.unimelb.csse.trollsvsgoats.core.TrollsVsGoatsGame;
 import au.edu.unimelb.csse.trollsvsgoats.core.model.Animation;
-import au.edu.unimelb.csse.trollsvsgoats.core.model.Badge;
 import au.edu.unimelb.csse.trollsvsgoats.core.model.Square;
 import au.edu.unimelb.csse.trollsvsgoats.core.model.units.BarrowTroll;
 import au.edu.unimelb.csse.trollsvsgoats.core.model.units.BigGoat;
@@ -48,8 +45,6 @@ import au.edu.unimelb.csse.trollsvsgoats.core.model.units.SpittingTroll;
 import au.edu.unimelb.csse.trollsvsgoats.core.model.units.Troll;
 import au.edu.unimelb.csse.trollsvsgoats.core.model.units.Unit;
 import au.edu.unimelb.csse.trollsvsgoats.core.model.units.Unit.State;
-import au.edu.unimelb.csse.trollsvsgoats.core.view.MessageBox.ChoiceCallBack;
-import au.edu.unimelb.csse.trollsvsgoats.core.view.MessageBox.SimpleCallBack;
 import tripleplay.game.ScreenStack;
 import tripleplay.ui.Background;
 import tripleplay.ui.Button;
@@ -58,7 +53,6 @@ import tripleplay.ui.Group;
 import tripleplay.ui.Icon;
 import tripleplay.ui.Icons;
 import tripleplay.ui.Label;
-import tripleplay.ui.Layout.Constraint;
 import tripleplay.ui.Shim;
 import tripleplay.ui.Style;
 import tripleplay.ui.Style.Binding;
@@ -70,12 +64,10 @@ public class LevelScreenEx extends View {
 
 	//User interface information.
 	public static final int SQUARE_HEIGHT = 44, SQUARE_WIDTH = SQUARE_HEIGHT;
-	private static final int Y_SHIM = 25;
 
 	//Button Bindings
 	private static Binding<Background> selOn;
 	private static Binding<Background> selOff;
-	private static Binding<Background> selected;
 
 	//Gameplay constants
 	private static final float MAX_MOMENT = 20;
@@ -83,7 +75,6 @@ public class LevelScreenEx extends View {
 	private boolean started = false, paused = false, hasMovingUnit = false;
 
 	//For changes between big and small bridges
-	private static float MIDDLE_SHIM_HEIGHT = 105;
 	private static String BRIDGEBG = "gameplay/1024_720/gameplay_bridge";
 	private static String BIGBRIDGEBG = "gameplay/1024_720/gameplay_bridge_big";
 	private static String SMALLWALL = "gameplay/1024_720/gameplay_bridge_wall";
@@ -96,6 +87,20 @@ public class LevelScreenEx extends View {
 	private static String BOTTOMLATCH = "gameplay/1024_720/gameplay_latch_bottom";
 	private static String SMALLGATE = "gameplay/1024_720/gameplay_gate";
 
+	//For changes between big and small bridges
+	private static String LRBRIDGEBG = "gameplay/800_600/gameplay_bridge";
+	private static String LRBIGBRIDGEBG = "gameplay/800_600/gameplay_bridge_big";
+	private static String LRSMALLWALL = "gameplay/800_600/gameplay_bridge_wall";
+	private static String LRBIGWALL = "gameplay/800_600/gameplay_bridge_wall_big";
+	private static String LRGAMEBG = "gameplay/800_600/gameplay_back";
+
+	//The Gates and Pivots
+	private static String LRBIGGATE = "gameplay/800_600/gameplay_gate_big";
+	private static String LRLATCH = "gameplay/800_600/gameplay_latch";
+	private static String LRBOTTOMLATCH = "gameplay/800_600/gameplay_latch_bottom";
+	private static String LRSMALLGATE = "gameplay/800_600/gameplay_gate";
+
+
 	//The Unit Frames
 	private static String HIGHLIGHTEDIMAGE = "cut_screens/gameplay/unit_frame_active";
 	private static String UNSELECTEDIMAGE = "cut_screens/gameplay/unit_frame_inactive";
@@ -103,15 +108,26 @@ public class LevelScreenEx extends View {
 
 	//For positioning of UI Groups
 
-	private static final float BIGTOPLABELY = -70;
 	private static final float BIGTOPBOARDY = -80;
 	private static final float BIGGAMEBOARDY = -55;
 	private static final float BIGBOTTOMPANELY = 457;
-
-	private static final float SMALLTOPLABELY = -70;
+	private static final float BIGGATEINSIDE = 488;
 	private static final float SMALLTOPBOARDY = -80;
 	private static final float SMALLGAMEBOARDY = 120;
 	private static final float SMALLBOTTOMPANELY = 440;
+	private static final float SMALLGATEINSIDE = 488;
+	private static final float TOPLATCH = 460;
+
+	private static final float LRBIGTOPBOARDY = -80;
+	private static final float LRBIGGAMEBOARDY = -55;
+	private static final float LRBIGBOTTOMPANELY = 457;
+	private static final float LRBIGGATEINSIDE = 488;
+	private static final float LRSMALLTOPBOARDY = -80;
+	private static final float LRSMALLGAMEBOARDY = -80;
+	private static final float LRSMALLBOTTOMPANELY = 320;
+	private static final float LRSMALLGATEINSIDE = 488;
+	private static final float LRTOPLATCH = 360;
+
 
 
 
@@ -134,9 +150,7 @@ public class LevelScreenEx extends View {
 	private static float CENTERLEFT = 380;
 	private static final float CENTERRIGHT = 380;
 	private static final float BOTTOMBRIDGEOFFSET = -20;
-	private static final float TOPGAMEBOARDOFFSET = 28;
-	private static final int INITIALEDGE = 10;
-	private static final int INITIALTOP = 2;
+	private static final int INITIALEDGE = 25;
 	private static final int TILEGAP = 4;
 
 
@@ -147,17 +161,16 @@ public class LevelScreenEx extends View {
 	private boolean messageShown = false;
 	protected Label momentLabel;
 	protected Label costLabel;
-
-	private static float TOPLABELY;
+	private static float LATCHLOC;
+	private static float GATELOC;
 	private static float TOPBOARDY;
 	private static float GAMEBOARDY;
 	private static float BOTTOMPANELY;
-	
+
 	//Walk animations
 	private static Map<String, Integer> walkAnims = new HashMap<String, Integer>();
 
 	//Our count labels to update
-	private Map<String, Label> countLabels = new HashMap<String, Label>();
 	protected Label bigTrollLabel;
 	protected Label normalTrollLabel;
 	protected Label fastTrollLabel;
@@ -231,24 +244,54 @@ public class LevelScreenEx extends View {
 
 		this.json = json().parse(levelJson);
 		laneCount = json.getArray("tiles").length();
+		
+		System.out.println(game.model().width);
+		if(this.width()==800){
+			if(laneCount<7){
+				BRIDGE = LRBRIDGEBG;
+				GATE = LRSMALLGATE;
+				WALL = LRSMALLWALL; 
+				GAMEBOARDY = LRSMALLGAMEBOARDY;
+				BOTTOMPANELY = LRSMALLBOTTOMPANELY;
+				TOPBOARDY = LRSMALLTOPBOARDY;
+				GATELOC = LRSMALLGATEINSIDE;
+				LATCHLOC = LRTOPLATCH;
 
-		//Set the appropriate bridge background
-		if(laneCount<7){
-			BRIDGE = BRIDGEBG;
-			GATE = SMALLGATE;
-			WALL = SMALLWALL; 
-			GAMEBOARDY = SMALLGAMEBOARDY;
-			BOTTOMPANELY = SMALLBOTTOMPANELY;
-			TOPBOARDY = SMALLTOPBOARDY;
-		} else {
-			BRIDGE = BIGBRIDGEBG;
-			GATE = BIGGATE;
-			WALL = BIGWALL;
-			GAMEBOARDY = BIGGAMEBOARDY;
-			BOTTOMPANELY = BIGBOTTOMPANELY;
-			TOPBOARDY = BIGTOPBOARDY;
+			} else {
+				BRIDGE = LRBIGBRIDGEBG;
+				GATE = LRBIGGATE;
+				WALL = LRBIGWALL;
+				GAMEBOARDY = LRBIGGAMEBOARDY;
+				BOTTOMPANELY = LRBIGBOTTOMPANELY;
+				TOPBOARDY = LRBIGTOPBOARDY;
+				GATELOC = LRBIGGATEINSIDE;
+				LATCHLOC = LRTOPLATCH;
+			}
 
+		}else {
+			//Set the appropriate bridge background
+			if(laneCount<7){
+				BRIDGE = BRIDGEBG;
+				GATE = SMALLGATE;
+				WALL = SMALLWALL; 
+				GAMEBOARDY = SMALLGAMEBOARDY;
+				BOTTOMPANELY = SMALLBOTTOMPANELY;
+				TOPBOARDY = SMALLTOPBOARDY;
+				GATELOC = SMALLGATEINSIDE;
+				LATCHLOC = TOPLATCH;
+			} else {
+				BRIDGE = BIGBRIDGEBG;
+				GATE = BIGGATE;
+				WALL = BIGWALL;
+				GAMEBOARDY = BIGGAMEBOARDY;
+				BOTTOMPANELY = BIGBOTTOMPANELY;
+				TOPBOARDY = BIGTOPBOARDY;
+				GATELOC = BIGGATEINSIDE;
+				LATCHLOC = TOPLATCH;
+
+			}
 		}
+		
 
 		//Check if we should be showing moments
 		if (model.levelIndex() <= 1){
@@ -259,7 +302,6 @@ public class LevelScreenEx extends View {
 		//Set the styles for our level
 		selOn = Style.BACKGROUND.is(Background.image(getImage(HIGHLIGHTEDIMAGE)));
 		selOff =Style.BACKGROUND.is(Background.image(getImage(UNSELECTEDIMAGE)));
-		selected = Style.BACKGROUND.is(Background.image(getImage(SELECTEDIMAGE)));
 	}
 
 	@Override
@@ -343,8 +385,8 @@ public class LevelScreenEx extends View {
 		bridgeLocation = (width - 1) / 2;
 
 		//Add the latch and gate
-		middleDrawingPanel.add(AbsoluteLayout.at(new Label(getIcon(LATCH)),(segmentToX(bridgeLocation, getIcon(LATCH)))+(getImage(LATCH).width()/16),0));
-		middleDrawingPanel.add(AbsoluteLayout.at(new Label(getIcon(GATE)),(segmentToX(bridgeLocation, getIcon(GATE)))+(getIcon(GATE).width()/3),GATESHIM));
+		middleDrawingPanel.add(AbsoluteLayout.at(new Label(getIcon(LATCH)),LATCHLOC,0));
+		middleDrawingPanel.add(AbsoluteLayout.at(new Label(getIcon(GATE)),GATELOC,GATESHIM));
 		System.out.println(laneCount);
 		if(laneCount>6){
 			//Draw bottom latch
@@ -467,7 +509,7 @@ public class LevelScreenEx extends View {
 			GroupLayer layer = troll.widget().layer;
 			troll.widget()
 			.addStyles(
-					Style.BACKGROUND.is(Background.solid(bgColor)));
+					Style.BACKGROUND.is(Background.blank()));
 
 			//			Animation moveAnimation = new Animation(
 			//					getImage("animations/trolls_animations/walk/"+selTrollType+"_troll_walk"), 16, troll
@@ -479,7 +521,7 @@ public class LevelScreenEx extends View {
 
 			Animation pushAnimation = new Animation(getImage("animations/trolls_animations/push/" + selTrollType + "_troll_push"), 23, troll.frameTime());
 			troll.setPushAnimation(pushAnimation);
-			
+
 			troll.setSquare(square);
 			troll.setMoveAnimation(moveAnimation);
 			troll.setDefaultImage(getImage("animations/trolls_animations/normal/"+selTrollType+"_troll_normal"));
@@ -581,7 +623,7 @@ public class LevelScreenEx extends View {
 		Animation moveAnimation = new Animation(getTileImages(
 				tileSymbol).get(1), 16, goat.frameTime());
 		goat.setMoveAnimation(moveAnimation);
-		
+
 		Animation pushAnimation = new Animation(getImage("animations/goats_animations/push/" +goat.type() + "_goat_push"), 23, goat.frameTime());
 		goat.setPushAnimation(pushAnimation);
 
@@ -704,13 +746,13 @@ public class LevelScreenEx extends View {
 	}
 
 	private Group createTrollPanel(final Troll troll, Json.Object trolls){
-		
+
 		Group goatGroup = new Group(new AbsoluteLayout());
-	
+
 		final Button trollIcon = new Button(getIcon(UNSELECTEDIMAGE)).addStyles(Style.HALIGN.center);
 		trollIcon.setStyles(selOff);
 		trollIcon.setConstraint(Constraints.fixedSize(68,68));
-		
+
 		System.out.println(HEADPATH + troll.type() + "_troll");
 		Label icon = new Label(getIcon(HEADPATH + troll.type() + "_troll"));
 
@@ -738,14 +780,14 @@ public class LevelScreenEx extends View {
 				selTrollType = troll.type();
 			}
 		});
-		
+
 		//Add the imagery
 		goatGroup.add(AbsoluteLayout.at(trollIcon, 10,10));
 		goatGroup.add(AbsoluteLayout.at(new Label(getIcon(STRENGTHICON)),0.0f,88-(getIcon(STRENGTHICON).height())));
 		goatGroup.add(AbsoluteLayout.at(new Label(getIcon(SPEEDICON)),88-(getImage(SPEEDICON).width()),88-(getIcon(STRENGTHICON).height())));
 		System.out.println(troll.type());
 		goatGroup.add(AbsoluteLayout.at(icon, 44-(getIcon(HEADPATH + troll.type() + "_troll").width()/2), 44-(getIcon(HEADPATH + troll.type() + "_troll").height()/2)));
-		
+
 		//Add stuff for the adding
 		Label speed = new Label(String.valueOf((int)troll.speed())).setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 8)),
 				Style.HALIGN.left, 
@@ -767,8 +809,8 @@ public class LevelScreenEx extends View {
 				Style.HALIGN.left, 
 				Style.COLOR.is(0xFFFFFFFF),
 				Style.TEXT_EFFECT.shadow);
-		
-		
+
+
 		//Position the labels
 		goatGroup.add(AbsoluteLayout.at(name, 6,-10));
 		goatGroup.add(AbsoluteLayout.at(count, 6,5));
@@ -785,7 +827,7 @@ public class LevelScreenEx extends View {
 			System.out.println("Got ehre");
 			this.selTrollIcon = trollIcon;
 		}
-		
+
 		return goatGroup;
 	}
 
@@ -846,13 +888,13 @@ public class LevelScreenEx extends View {
 	}
 
 	private Group createGoatPanel(final Goat goat){
-		
+
 		Group goatGroup = new Group(new AbsoluteLayout());
-	
+
 		final Button goatIcon = new Button(getIcon(UNSELECTEDIMAGE)).addStyles(Style.HALIGN.center);
 		goatIcon.setStyles(selOff);
 		goatIcon.setConstraint(Constraints.fixedSize(68,68));
-		
+
 		Label icon = new Label(getIcon(HEADPATH + goat.type() + "_goat"));
 
 		goatIcons.put(goat.type(), goatIcon);
@@ -866,13 +908,13 @@ public class LevelScreenEx extends View {
 			}
 
 		});
-		
+
 		//Add the imagery
 		goatGroup.add(AbsoluteLayout.at(goatIcon, 10,10));
 		goatGroup.add(AbsoluteLayout.at(new Label(getIcon(STRENGTHICON)),0.0f,88-(getIcon(STRENGTHICON).height())));
 		goatGroup.add(AbsoluteLayout.at(new Label(getIcon(SPEEDICON)),88-(getImage(SPEEDICON).width()),88-(getIcon(STRENGTHICON).height())));
 		goatGroup.add(AbsoluteLayout.at(icon, 44-(getIcon(HEADPATH + goat.type() + "_goat").width()/2), 44-(getIcon(HEADPATH + goat.type() + "_goat").height()/2)));
-		
+
 		//Add stuff for the adding
 		Label speed = new Label(String.valueOf((int)goat.speed())).setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 8)),
 				Style.HALIGN.left, 
@@ -886,7 +928,7 @@ public class LevelScreenEx extends View {
 				Style.HALIGN.left, 
 				Style.COLOR.is(0xFFFFFFFF),
 				Style.TEXT_EFFECT.shadow);
-		
+
 		//Position the labels
 		goatGroup.add(AbsoluteLayout.at(name, 6,-10));
 		goatGroup.add(AbsoluteLayout.at(strength, 22,70));
@@ -894,7 +936,7 @@ public class LevelScreenEx extends View {
 
 		return goatGroup;
 	}
-	
+
 	////////////////////////////////////////////////////////////////////
 	// GAME CONTROL METHODS 									    ////
 	////////////////////////////////////////////////////////////////////
@@ -983,7 +1025,7 @@ public class LevelScreenEx extends View {
 		for (Unit goat : headGoats.values()) {
 			goatsMoments += updateUnits(goat, delta);
 		}
-		
+
 		//Calculate the toll moments
 		for (Unit troll : headTrolls.values()) {
 			troll.setOldX(troll.square().getX());
@@ -1029,11 +1071,11 @@ public class LevelScreenEx extends View {
 		float moments = 0;
 		while (unit != null) {
 			boolean pushing = false;
-			
+
 			if (!unit.state().equals(State.PUSHING)
 					&& !unit.state().equals(State.BLOCKED) && unit.speed() != 0) {
 				hasMovingUnit = true;
-				
+
 				if (adjacent(unit, unit.front())) {
 					State state = unit.front().state();
 					if (state.equals(State.PUSHING))
@@ -1041,7 +1083,7 @@ public class LevelScreenEx extends View {
 					else if (state.equals(State.BLOCKED))
 						unit.setState(State.BLOCKED);
 				}
-				
+
 				// If a unit can move.
 				if (unit.updatePosition(delta)
 						&& !unit.state().equals(State.BLOCKED)) {
@@ -1059,31 +1101,31 @@ public class LevelScreenEx extends View {
 							removeUnit(unit);
 						}
 					}
-					
+
 					if (!adjacent(unit, unit.front()) || unit.speed() == unit.front().speed()
 							|| unit.state().equals(State.JUMPING)) {
 						Square s1 = unit.square();
 						// Initialises the front square.
 						int moveDistance = unit.state().equals(State.JUMPING) ? 2 : 1;
 						Square s2 = new Square(s1.lane(),s1.segment() < bridgeLocation ? s1.segment() + moveDistance : s1.segment() - moveDistance);
-						
+
 						s2.setX(segmentToX(s2.segment(),unit.widget().icon.get())+6);
 						s2.setY(s1.getY());
-						
+
 						s2.setDistance(s1.distance() - moveDistance);
-						
+
 						unit.move(s2);
 
 						unit.setState(State.MOVING);
 						if (s2.distance() == 1 || adjacent(unit, unit.front())
 								&& unit.front().state().equals(State.PUSHING))
 							pushing = true;
-						}
-					
+					}
+
 				}
 			} else if (unit.speed() != 0)
 				pushing = true;
-			
+
 			if (pushing) {
 				// Handles HungryTroll.
 				if (unit.square().distance() == 1
@@ -1325,24 +1367,24 @@ public class LevelScreenEx extends View {
 			return false;
 		return Math.abs(u1.square().distance() - u2.square().distance()) == 1;
 	}
-	
+
 	private Label getTrollCountLabel(String type){
 		if(type.equals("normal")){
 			return this.normalTrollLabel;
 		} else if(type.equals("fast")){
 			return this.fastTrollLabel;
 		}
-	
+
 		return new Label();
 	}
-	
+
 	private void setTrollCountLabel(String type, Label label){
 		if(type.equals("normal")){
 			this.normalTrollLabel = label;
 		} else if(type.equals("fast")){
 			this.fastTrollLabel = label;
 		}
-	
+
 	}
 
 	private List<Image> getTileImages(char symbol) {
@@ -1475,6 +1517,19 @@ public class LevelScreenEx extends View {
 		names.add(LATCH);
 		names.add(BOTTOMLATCH);
 
+		//The bridge backgrounds
+		names.add(LRBRIDGEBG);
+		names.add(LRBIGBRIDGEBG);
+		names.add(LRSMALLWALL);
+		names.add(LRBIGWALL);
+		names.add(LRGAMEBG);
+
+		//The gates
+		names.add(LRSMALLGATE);
+		names.add(LRBIGGATE);
+		names.add(LRLATCH);
+		names.add(LRBOTTOMLATCH);
+
 		//The Buttons
 		String[] buttons = new String[]{"_inactive", "_active", "_select"};
 		for(String btype: buttons){
@@ -1499,6 +1554,9 @@ public class LevelScreenEx extends View {
 		walkAnims.put("cheerleader", 16);
 		walkAnims.put("hungry", 1);
 		walkAnims.put("mega", 16);
+		walkAnims.put("spitting", 1);
+		walkAnims.put("digging", 1);
+
 
 		//Add the label icons for the bottom
 		names.add(STRENGTHICON);
