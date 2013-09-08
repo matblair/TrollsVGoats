@@ -124,9 +124,9 @@ public class LevelWinScreen extends View {
 			if(star!=null){
 				if(i==1){
 					//To handle the raised star
-					stars.add(AbsoluteLayout.at(star,81*i,-20));
+					stars.add(AbsoluteLayout.at(star,(int)82.5*i,-20));
 				}else{
-					stars.add(AbsoluteLayout.at(star,81*i,0));
+					stars.add(AbsoluteLayout.at(star,(int)82.5*i,0));
 				}
 			} else {
 				break;

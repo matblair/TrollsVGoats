@@ -146,13 +146,21 @@ public abstract class Unit {
     
     public boolean updatePosition(float timeDelta) { 
     	
-    	if (this.moveDelta == -1) {
-    		this.moveDelta = LevelScreenEx.SQUARE_WIDTH / (this.moveDelay / timeDelta); 
-        }
+    
+    	this.moveDelta = LevelScreenEx.SQUARE_WIDTH / (this.moveDelay / timeDelta); 
     	
-    	tempNewX = tempNewX + (this instanceof Troll ? this.moveDelta : - this.moveDelta); 
-    	float previousX = square.getX();
-    	if (Math.abs(tempNewX - previousX) >= LevelScreenEx.SQUARE_WIDTH) { 
+    	float oldTempX = tempNewX;
+    	
+    	tempNewX = tempNewX + (this instanceof Troll ? this.moveDelta : - this.moveDelta);
+    	if(this instanceof Troll){
+        	System.out.println(timeDelta);
+    		System.out.println("Temp new x " + tempNewX + " and old temp is " + oldTempX + "with move delta " + this.moveDelta);
+    	}
+
+
+       	float previousX = square.getX();
+
+       	if (Math.abs(tempNewX - previousX) >= LevelScreenEx.SQUARE_WIDTH) { 
     		canMove = true; 
     	}else { 
     		parent.add(AbsoluteLayout.at(widget(), tempNewX, square().getY())); 

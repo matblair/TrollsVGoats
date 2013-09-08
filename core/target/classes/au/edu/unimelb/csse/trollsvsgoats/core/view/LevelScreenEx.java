@@ -467,7 +467,7 @@ public class LevelScreenEx extends View {
 			GroupLayer layer = troll.widget().layer;
 			troll.widget()
 			.addStyles(
-					Style.BACKGROUND.is(Background.blank()));
+					Style.BACKGROUND.is(Background.solid(bgColor)));
 
 			//			Animation moveAnimation = new Animation(
 			//					getImage("animations/trolls_animations/walk/"+selTrollType+"_troll_walk"), 16, troll
@@ -522,7 +522,6 @@ public class LevelScreenEx extends View {
 								selOn);
 					}
 					updateTrollInfo(troll.type());
-					updateUnitAbility(troll);
 					if (showUnitMoment)
 					{
 						updateMomentLabel((int) unitMoment(troll));
@@ -536,13 +535,12 @@ public class LevelScreenEx extends View {
 						trollIcons.get(troll.type()).setStyles(
 								selOff);
 					}
-					updateUnitAbility(troll);
 					updateMomentLabel(moment);
 				}
 			});
 			updateCost(troll.cost());
 			updateTrollInfo(troll.type());
-			playSound("sounds/sound_unitDeployed");
+			playSound("sound_unitDeployed");
 		}
 	}
 
@@ -740,23 +738,23 @@ private Group createTrollPanel(final Troll troll, Json.Object trolls){
 		goatGroup.add(AbsoluteLayout.at(icon, 44-(getIcon(HEADPATH + troll.type() + "_troll").width()/2), 44-(getIcon(HEADPATH + troll.type() + "_troll").height()/2)));
 		
 		//Add stuff for the adding
-		Label speed = new Label(String.valueOf((int)troll.speed())).setStyles(Style.FONT.is(PlayN.graphics().createFont("Helvetica", Font.Style.BOLD, 8)),
+		Label speed = new Label(String.valueOf((int)troll.speed())).setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 8)),
 				Style.HALIGN.left, 
 				Style.COLOR.is(0xFFFFFFFF),
 				Style.TEXT_EFFECT.shadow);
-		Label strength = new Label(Integer.toString((int)troll.speed())).setStyles(Style.FONT.is(PlayN.graphics().createFont("Helvetica", Font.Style.BOLD, 8)),
+		Label strength = new Label(Integer.toString((int)troll.speed())).setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 8)),
 				Style.HALIGN.left, 
 				Style.COLOR.is(0xFFFFFFFF),
 				Style.TEXT_EFFECT.shadow);
-		Label name = new Label(troll.type().toUpperCase() + " TROLL").setStyles(Style.FONT.is(PlayN.graphics().createFont("Helvetica", Font.Style.BOLD, 12)),
+		Label name = new Label(troll.type().toUpperCase() + " TROLL").setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 12)),
 				Style.HALIGN.left, 
 				Style.COLOR.is(0xFFFFFFFF),
 				Style.TEXT_EFFECT.shadow);
-		Label count = new Label("x" + (int) this.trollCounts.get(troll.type())).setStyles(Style.FONT.is(PlayN.graphics().createFont("Helvetica", Font.Style.BOLD, 16)),
+		Label count = new Label("x" + (int) this.trollCounts.get(troll.type())).setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 16)),
 				Style.HALIGN.left, 
 				Style.COLOR.is(0xFFE5004F),
 				Style.TEXT_EFFECT.shadow);
-		Label cost = new Label("$" + (int)troll.cost()).setStyles(Style.FONT.is(PlayN.graphics().createFont("Helvetica", Font.Style.BOLD, 16)),
+		Label cost = new Label("$" + (int)troll.cost()).setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 16)),
 				Style.HALIGN.left, 
 				Style.COLOR.is(0xFFFFFFFF),
 				Style.TEXT_EFFECT.shadow);
@@ -867,15 +865,15 @@ private Group createTrollPanel(final Troll troll, Json.Object trolls){
 		goatGroup.add(AbsoluteLayout.at(icon, 44-(getIcon(HEADPATH + goat.type() + "_goat").width()/2), 44-(getIcon(HEADPATH + goat.type() + "_goat").height()/2)));
 		
 		//Add stuff for the adding
-		Label speed = new Label(String.valueOf((int)goat.speed())).setStyles(Style.FONT.is(PlayN.graphics().createFont("Helvetica", Font.Style.BOLD, 8)),
+		Label speed = new Label(String.valueOf((int)goat.speed())).setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 8)),
 				Style.HALIGN.left, 
 				Style.COLOR.is(0xFFFFFFFF),
 				Style.TEXT_EFFECT.shadow);
-		Label strength = new Label(String.valueOf((int)goat.speed())).setStyles(Style.FONT.is(PlayN.graphics().createFont("Helvetica", Font.Style.BOLD, 8)),
+		Label strength = new Label(String.valueOf((int)goat.speed())).setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 8)),
 				Style.HALIGN.left, 
 				Style.COLOR.is(0xFFFFFFFF),
 				Style.TEXT_EFFECT.shadow);
-		Label name = new Label(goat.type().toUpperCase() + " GOAT").setStyles(Style.FONT.is(PlayN.graphics().createFont("Helvetica", Font.Style.BOLD, 12)),
+		Label name = new Label(goat.type().toUpperCase() + " GOAT").setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 12)),
 				Style.HALIGN.left, 
 				Style.COLOR.is(0xFFFFFFFF),
 				Style.TEXT_EFFECT.shadow);
@@ -939,6 +937,8 @@ private Group createTrollPanel(final Troll troll, Json.Object trolls){
 			}
 		}
 
+		this.cost=0;
+		this.updateCost(0);
 	}
 
 	private void proceed() {
@@ -974,7 +974,7 @@ private Group createTrollPanel(final Troll troll, Json.Object trolls){
 
 		//Calculate the toll moments
 		for (Unit troll : headTrolls.values()) {
-			troll.setOldX(troll.square().getX());
+			//troll.setOldX(troll.square().getX());
 			trollsMoments += updateUnits(troll, delta);
 		}
 
@@ -1015,12 +1015,13 @@ private Group createTrollPanel(final Troll troll, Json.Object trolls){
 	 */
 	private float updateUnits(Unit unit, float delta) {
 		float moments = 0;
-
 		while (unit != null) {
 			boolean pushing = false;
+			
 			if (!unit.state().equals(State.PUSHING)
 					&& !unit.state().equals(State.BLOCKED) && unit.speed() != 0) {
 				hasMovingUnit = true;
+				
 				if (adjacent(unit, unit.front())) {
 					State state = unit.front().state();
 					if (state.equals(State.PUSHING))
@@ -1028,6 +1029,7 @@ private Group createTrollPanel(final Troll troll, Json.Object trolls){
 					else if (state.equals(State.BLOCKED))
 						unit.setState(State.BLOCKED);
 				}
+				
 				// If a unit can moves.
 				if (unit.updatePosition(delta)
 						&& !unit.state().equals(State.BLOCKED)) {
@@ -1067,7 +1069,6 @@ private Group createTrollPanel(final Troll troll, Json.Object trolls){
 				}
 			} else if (unit.speed() != 0)
 				pushing = true;
-
 			if (pushing) {
 				// Handles HungryTroll.
 				if (unit.square().distance() == 1
@@ -1105,56 +1106,6 @@ private Group createTrollPanel(final Troll troll, Json.Object trolls){
 		else
 			text += "  Speed: " + (int) goat.speed();
 		//->goatInfoLabel.text.update(text);
-	}
-
-	private void updateUnitAbility(Unit unit) {
-		/*Group strength, speed;
-        if (unit instanceof Troll) {
-            strength = trollForceBars.get(unit.type());
-            speed = trollSpeedBars.get(unit.type());
-        } else {
-            strength = goatStrengthBars.get(unit.type());
-            speed = goatSpeedBars.get(unit.type());
-        }
-        strength.removeAll();
-        speed.removeAll();
-
-        for (int j = 0; j < unit.force(); j++) {
-            strength.add(new Shim(ABILITY_BAR_WIDTH, 5)
-                    .addStyles(Style.BACKGROUND.is(Background
-                            .solid(STRENGTH_BAR_COLOR))));
-        }
-        if (unit.force() > (int) unit.force()) {
-            int div;
-            if (unit instanceof Goat)
-                div = 1;
-            else
-                div = 2;
-            strength.add(new Shim(ABILITY_BAR_WIDTH / div, 5)
-                    .addStyles(Style.BACKGROUND.is(Background
-                            .solid(STRENGTH_BAR_COLOR))));
-            if (unit instanceof Goat)
-                strength.childAt(0).setConstraint(
-                        Constraints.fixedWidth(ABILITY_BAR_WIDTH / 2));
-        }
-
-        for (int j = 0; j < (int) unit.speed(); j++) {
-            speed.add(new Shim(ABILITY_BAR_WIDTH, 5).addStyles(Style.BACKGROUND
-                    .is(Background.solid(SPEED_BAR_COLOR))));
-        }
-        if (unit.speed() > (int) unit.speed()) {
-            int div;
-            if (unit instanceof Goat)
-                div = 1;
-            else
-                div = 2;
-            speed.add(new Shim(ABILITY_BAR_WIDTH / div, 5)
-                    .addStyles(Style.BACKGROUND.is(Background
-                            .solid(SPEED_BAR_COLOR))));
-            if (unit instanceof Goat)
-                speed.childAt(0).setConstraint(
-                        Constraints.fixedWidth(ABILITY_BAR_WIDTH / 2));
-        }*/
 	}
 
 	private void updateTrollInfo(String type) {
@@ -1547,7 +1498,7 @@ private Group createTrollPanel(final Troll troll, Json.Object trolls){
 	@Override
 	public String[] sounds() {
 		List<String> sounds = new ArrayList<String>();
-		sounds.add( "sounds/sound_unitDeployed");
+		sounds.add( "sound_unitDeployed");
 		return sounds.toArray(new String[sounds.size()]);
 	}
 
