@@ -24,7 +24,6 @@ public class Animation {
         this.parentImage = parentImage;
         this.frameCount = frameCount;
         this.frameWidth = parentImage.width() / frameCount;
-        System.out.println(frameWidth);
         this.frameTime = frameTime;
     }
 
