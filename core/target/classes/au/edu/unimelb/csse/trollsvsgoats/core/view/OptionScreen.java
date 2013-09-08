@@ -31,8 +31,13 @@ public class OptionScreen extends View {
 
 	@Override
 	protected Group createIface() {
-		root.addStyles(Style.BACKGROUND.is(Background
-				.image(getImage("backgrounds/1024_720/badges_back_1024_720"))));
+		Image bg;
+		if (this.width() == 800)
+			bg = getImage("backgrounds/800_600/badges_back_800_600");
+		else
+			bg = getImage("backgrounds/1024_720/badges_back_1024_720");
+		root.addStyles(Style.BACKGROUND.is(Background.image(bg)));
+		
 		topPanel.addStyles(Style.BACKGROUND.is(Background.blank()));
 
 		Group myroot = new Group(new AbsoluteLayout());
@@ -161,13 +166,15 @@ public class OptionScreen extends View {
 				float sliderPos = (int)targetOffset / 34;
 				speedSlider.layer.setOrigin(-sliderPos * 34, 0);
 				
-				float targetSpeed = sliderPos / 2 + 1 - MAX_SPEED;
+				float targetSpeed = (MAX_SPEED - sliderPos) / 2;
 				game.setMovementTime(targetSpeed);
+				System.out.println(targetSpeed);
 			}
 		});
 		
 		tiles.add (AbsoluteLayout.at(speedSlider, 115, 107));
-		speedSlider.layer.setOrigin(-(MAX_SPEED + 1 - (int) (model.movementTime() * 2)) * 34, 0);
+		speedSlider.layer.setOrigin(-(MAX_SPEED - (int) (model.movementTime() * 2)) * 34, 0);
+		System.out.println(model.movementTime());
 		
 		// Screen size buttons
 		final Image screen800Sel = getImage("cut_screens/options/screen_b_800");
@@ -264,6 +271,7 @@ public class OptionScreen extends View {
 		names.add("cut_screens/options/screen_b_1024_active");
 		names.add("cut_screens/options/screen_b_1024_inactive");
 
+		names.add("backgrounds/800_600/badges_back_800_600");
 		names.add("backgrounds/1024_720/badges_back_1024_720");
 
 		return names.toArray(new String[0]);

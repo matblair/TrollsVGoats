@@ -44,9 +44,13 @@ public class LevelSelScreenEx extends View {
 
 	@Override
 	protected Group createIface() {
-
-		root.addStyles(Style.BACKGROUND.is(Background.image(getImage("backgrounds/1024_720/main_back_1024_720"))));
-
+		Image bg;
+		if (this.width() == 800)
+			bg = getImage("backgrounds/800_600/main_back_800_600");
+		else
+			bg = getImage("backgrounds/1024_720/main_back_1024_720");
+		root.addStyles(Style.BACKGROUND.is(Background.image(bg)));
+		
 		//topPanel.addStyles(Style.BACKGROUND.is(Background.image(getImage("cut_screens/select_levels/title_board"))));
 
 		//topPanel.add(new Shim(0, 20));
@@ -299,6 +303,7 @@ public class LevelSelScreenEx extends View {
 		names.add("cut_screens/select_levels/title_board");
 		names.add("cut_screens/select_levels/title_sl");
 
+		names.add("backgrounds/800_600/main_back_800_600");
 		names.add("backgrounds/1024_720/main_back_1024_720");
 
 		return names.toArray(new String[names.size()]);
