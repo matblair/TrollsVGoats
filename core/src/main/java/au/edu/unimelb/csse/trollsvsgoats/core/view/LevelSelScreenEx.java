@@ -61,7 +61,7 @@ public class LevelSelScreenEx extends View {
 		int y_pos = Y_START_POS ;
 		
 		// Add top panel stuff
-		float title_board_x = 565;
+		float title_board_x = this.width() - 460;
 		float title_board_y = -101;
 		//Board
 		Icon titleBoard = getIcon ("cut_screens/select_levels/title_board");
@@ -165,7 +165,7 @@ public class LevelSelScreenEx extends View {
 			y_pos += iconChildBoard.height() + (rope_l.height()-55 ); //30 - hanger rope height
 		}
 
-		myroot.add(AbsoluteLayout.at(tiles, 575, 10, iconChildBoard.width(), iconChildBoard.height() * tileCount));
+		myroot.add(AbsoluteLayout.at(tiles, title_board_x+10, 10, iconChildBoard.width(), iconChildBoard.height() * tileCount));
 		
 		int pageHeight = (int)(iconChildBoard.height() + (rope_l.height()-55 ));
 		int scrollRange = tileCount * pageHeight;
@@ -189,7 +189,7 @@ public class LevelSelScreenEx extends View {
 		if (scrollRange > PAGE_RANGE)
 		{
 			top.add(AbsoluteLayout.at (new Label (rope_l), title_board_x+319, bottomRopeY, rope_l.width(), rope_l.height()));
-			myroot.add(AbsoluteLayout.at(scroll, 869, Y_START_POS + 9, scrollBG.width(), scrollBG.height()));
+			myroot.add(AbsoluteLayout.at(scroll, title_board_x+304, Y_START_POS + 9, scrollBG.width(), scrollBG.height()));
 		}
 		
 		myroot.add(AbsoluteLayout.at(top, 0, 0));

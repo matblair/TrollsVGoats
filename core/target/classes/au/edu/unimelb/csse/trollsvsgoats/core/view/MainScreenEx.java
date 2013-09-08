@@ -4,6 +4,7 @@ import java.awt.Cursor;
 import java.util.ArrayList;
 
 import playn.core.Font;
+import playn.core.Image;
 import playn.core.Mouse;
 import playn.core.Mouse.ButtonEvent;
 import playn.core.Mouse.MotionEvent;
@@ -45,8 +46,12 @@ public class MainScreenEx extends View {
 
 	@Override
 	protected Group createIface() {
-		root.addStyles(Style.BACKGROUND.is(Background
-				.image(getImage("backgrounds/1024_720/main_back_1024_720"))));
+		Image bg;
+		if (this.width() == 800)
+			bg = getImage("backgrounds/800_600/main_back_800_600");
+		else
+			bg = getImage("backgrounds/1024_720/main_back_1024_720");
+		root.addStyles(Style.BACKGROUND.is(Background.image(bg)));
 		
 		back.setVisible(false);
 
@@ -61,7 +66,7 @@ public class MainScreenEx extends View {
 		int y_pos_offset = (int)(boardHeight + (rope_l.height()-55));
 
 		// Add top panel stuff
-		float title_board_x = 545;
+		float title_board_x = this.width() - 480;
 		float title_board_y = -47;
 		//Board
 		Icon titleBoard = getIcon ("cut_screens/home_page/title_board");
@@ -82,7 +87,6 @@ public class MainScreenEx extends View {
 				Style.COLOR.is(0xFFFFFFFF));
 		final Label labelUser = new Label(game.userName()).addStyles(bigLabel);
 		float labelWidth = 200;
-		System.out.println(labelWidth);
 		top.add(AbsoluteLayout.at(labelUser, title_board_x + (titleBoard.width() - labelWidth)/2, title_board_y + 15 + titleBoard.height()/2, labelWidth, 0));
 		
 		// Start button
@@ -250,9 +254,15 @@ public class MainScreenEx extends View {
 
 
 		// Background
+		names.add("backgrounds/800_600/main_back_800_600");
 		names.add("backgrounds/1024_720/main_back_1024_720");
 
 		return names.toArray(new String[names.size()]);
+	}
+	
+	@Override
+	public void wasShown() {
+		wasAdded();
 	}
 
 	@Override

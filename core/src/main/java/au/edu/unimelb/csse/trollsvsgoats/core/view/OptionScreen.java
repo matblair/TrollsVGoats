@@ -2,62 +2,111 @@ package au.edu.unimelb.csse.trollsvsgoats.core.view;
 
 import static tripleplay.ui.layout.TableLayout.*;
 
+import java.util.ArrayList;
+
 import playn.core.Font;
+import playn.core.Image;
+import playn.core.Mouse;
+import playn.core.Mouse.ButtonEvent;
+import playn.core.Mouse.MotionEvent;
+import pythagoras.f.IPoint;
 import au.edu.unimelb.csse.trollsvsgoats.core.TrollsVsGoatsGame;
 import react.Function;
 import react.UnitSlot;
 import tripleplay.ui.*;
+import tripleplay.ui.layout.AbsoluteLayout;
 import tripleplay.ui.layout.AxisLayout;
 import tripleplay.ui.layout.TableLayout;
+import tripleplay.util.Dragger;
 
 public class OptionScreen extends View {
 
-    private static final float MAX_SPEED = 6;
-    private Label speedValue;
+	private final int Y_START_POS = 0;
+	private static final int MAX_SPEED = 6;
+	private Label speedValue;
 
-    public OptionScreen(TrollsVsGoatsGame game) {
-        super(game);
-    }
+	public OptionScreen(TrollsVsGoatsGame game) {
+		super(game);
+	}
 
-    @Override
-    protected Group createIface() {
-    	root.addStyles(Style.BACKGROUND.is(Background
-                .image(getImage("bg_level"))));
-    	topPanel.addStyles(Style.BACKGROUND.is(Background.blank()));
-    	
-        Group iface = new Group(new TableLayout(COL.alignLeft().fixed(), COL
-                .alignLeft().fixed()).gaps(20, 10));
-        String title;
-        if (model.isSoundEnabled())
-            title = "ON";
-        else
-            title = "OFF";
+	@Override
+	protected Group createIface() {
+		root.addStyles(Style.BACKGROUND.is(Background
+				.image(getImage("backgrounds/1024_720/badges_back_1024_720"))));
+		topPanel.addStyles(Style.BACKGROUND.is(Background.blank()));
 
-        final ToggleButton sound = newToggle(title, 60, title.equals("ON"));
-        sound.clicked().connect(new UnitSlot() {
+		Group myroot = new Group(new AbsoluteLayout());
+		Group top = new Group(new AbsoluteLayout());
+		Group tiles = new Group(new AbsoluteLayout());
 
-            @Override
-            public void onEmit() {
-                if (sound.selected.get()) {
-                    sound.addStyles(Style.BACKGROUND.is(butSelBg));
-                    sound.text.update("ON");
-                    model.setSoundEnabled(true);
-                    game.persist();
-                } else {
-                    sound.addStyles(Style.BACKGROUND.is(butBg));
-                    sound.text.update("OFF");
-                    model.setSoundEnabled(false);
-                    game.persist();
-                }
-            }
-        });
-        if (title.equals("ON")) {
-        	sound.selected.update(true);
-            model.setSoundEnabled(true);
-        }
-        iface.add(new Label("Sound").addStyles(Style.FONT.is(SUBTITLE_FONT)))
-                .add(sound);
+		Icon rope_l = getIcon("cut_screens/options/rope");
+		int y_pos = Y_START_POS + 30;
+		int boardWidth = (int)getImage("cut_screens/options/options_board").width();
+		int boardHeight = (int)getImage("cut_screens/options/options_board").height();
 
+		// Add top panel stuff
+		float title_board_x = this.width() - 480;
+		float title_board_y = y_pos - 102;
+		//Board
+		Icon titleBoard = getIcon ("cut_screens/options/title_board");
+		Icon title = getIcon ("cut_screens/options/options_title");
+		top.add (AbsoluteLayout.at (new Label (titleBoard), title_board_x, title_board_y, titleBoard.width(), titleBoard.height()));
+		float title_x = title_board_x + titleBoard.width()/2 - title.width()/2;
+		float title_y = title_board_y + titleBoard.height()/2 - title.height()/2;
+		top.add (AbsoluteLayout.at (new Label (title), title_x, title_y, title.width(), title.height()));
+		//Top ropes
+		Icon lRope = getIcon ("cut_screens/options/rope_title_l");
+		Icon rRope = getIcon ("cut_screens/options/rope_title_r");
+		top.add(AbsoluteLayout.at (new Label (lRope), title_board_x+79, title_board_y-38, lRope.width(), lRope.height()));
+		top.add(AbsoluteLayout.at (new Label (rRope), title_board_x+256, title_board_y-38, rRope.width(), rRope.height()));
+
+		// Add the main board and ropes
+		Icon board = getIcon("cut_screens/options/options_board");
+		tiles.add(AbsoluteLayout.at (new Label(board), 0, 0));
+		tiles.add(AbsoluteLayout.at(new Label(rope_l), 12, -34, rope_l.width(), rope_l.height()));
+		tiles.add(AbsoluteLayout.at(new Label(rope_l), (boardWidth-46), -34, rope_l.width(), rope_l.height()));
+
+		// Sound buttons
+		int soundBtnX = 126;
+		final Image soundOnSel = getImage("cut_screens/options/sound_on_b");
+		final Image soundOffSel = getImage("cut_screens/options/sound_off_b");
+
+		final Button soundOnButton = createButton("sound_on_b");
+		tiles.add (AbsoluteLayout.at(soundOnButton, soundBtnX + 56, 40));
+		final Button soundOffButton = createButton("sound_off_b");
+		tiles.add (AbsoluteLayout.at(soundOffButton, soundBtnX, 40));
+
+		if (model.isSoundEnabled())
+			soundOnButton.setStyles(Style.BACKGROUND.is(Background.image(soundOnSel)));
+		else
+			soundOffButton.setStyles(Style.BACKGROUND.is(Background.image(soundOffSel)));
+
+		soundOnButton.layer.addListener(new Mouse.LayerAdapter() {
+			@Override
+			public void onMouseUp(ButtonEvent event) {
+				soundOffButton.setStyles(Style.BACKGROUND.is(Background.blank()));
+				soundOnButton.setStyles(Style.BACKGROUND.is(Background.image(soundOnSel)));
+				model.setSoundEnabled(true);
+				game.persist();
+				super.onMouseUp(event);
+			}
+		});
+
+		soundOffButton.layer.addListener(new Mouse.LayerAdapter() {
+			@Override
+			public void onMouseUp(ButtonEvent event) {
+				soundOnButton.setStyles(Style.BACKGROUND.is(Background.blank()));
+				soundOffButton.setStyles(Style.BACKGROUND.is(Background.image(soundOffSel)));
+				model.setSoundEnabled(false);
+				game.persist();
+				super.onMouseUp(event);
+			}
+		});
+
+		// Speed slider
+		
+		/*
+	       
         int currentSpeed = (int) (MAX_SPEED + 1 - (int) (model.movementTime() * 2));
         Slider speed = new Slider(currentSpeed, 1, MAX_SPEED).setIncrement(1);
         speedValue = new Label(String.valueOf(currentSpeed)).setConstraint(
@@ -72,68 +121,163 @@ public class OptionScreen extends View {
         iface.add(new Label("Speed").addStyles(Style.FONT.is(SUBTITLE_FONT)))
                 .add(new Group(AxisLayout.vertical()).add(speed)
                         .add(speedValue));
+*/
+		int currentSpeed = MAX_SPEED + 1 - (int)(model.movementTime() * 2);
+		final Button speedSlider = createButton("slider");
+		speedSlider.layer.addListener(new Mouse.LayerAdapter() {
+			@Override
+			public void onMouseDown(ButtonEvent event) {
+				Icon activeIcon = getIcon("cut_screens/options/slider_select");
+				speedSlider.icon.update(activeIcon);
+				super.onMouseDown(event);
+			}
 
-        Group screenSizes;
-        iface.add(
-                new Label("Screen Size").addStyles(Style.FONT.is(SUBTITLE_FONT)))
-                .add(screenSizes = new Group(AxisLayout.horizontal()));
-        ToggleButton[] toggles = { newToggle("800 X 600", 120, width() == 800),
-                newToggle("1024 X 720", 120, width() == 1024) };
-        for (final ToggleButton toggle : toggles) {
-            final String size = toggle.text.get();
-            
-            toggle.clicked().connect(new UnitSlot() {
-                @Override
-                public void onEmit() {
-                    if (toggle.selected.get()) {
-                        toggle.addStyles(Style.BACKGROUND.is(butSelBg));
-                        if (width() != stringToWidth(size)) {
-                            game.setScreenSize(stringToWidth(size), stringToHeight(size));
-                            game.refreshMainScreen();
-                            game.persist();
-                            wasAdded();
-                        }
-                    } else {
-                        toggle.addStyles(Style.BACKGROUND.is(butSelBg));
-                        toggle.selected.update(true);
-                    }
-                }
+			@Override
+			public void onMouseUp(ButtonEvent event) {
+				Icon activeIcon = getIcon("cut_screens/options/slider_active");
+				speedSlider.icon.update(activeIcon);
+				super.onMouseUp(event);
+			}
+		});
+		
+		speedSlider.layer.addListener(new Dragger() {
+			float originX;
+			boolean originSet = false;
+			int horizDist = 170;
 
-                private int stringToWidth(String string) {
-                    return Integer.valueOf(string.split("X")[0].trim());
-                }
+			@Override
+			public void onDragged(IPoint current, IPoint start) {
+				if (!originSet) {
+					originX = start.x() + speedSlider.layer.originX();
+					originSet = true;
+				}
 
-                private int stringToHeight(String string) {
-                    return Integer.valueOf(string.split("X")[1].trim());
-                }
-            });
-            screenSizes.add(toggle);
-        }
+				float targetOffset = current.x() - originX;
+				if (targetOffset < 0)
+					targetOffset = 0;
+				else if (targetOffset > horizDist)
+					targetOffset = horizDist;
 
-        return iface.add(new Shim(0, 100));
-    }
+				float sliderPos = (int)targetOffset / 34;
+				speedSlider.layer.setOrigin(-sliderPos * 34, 0);
+				
+				float targetSpeed = sliderPos / 2 + 1 - MAX_SPEED;
+				game.setMovementTime(targetSpeed);
+			}
+		});
+		
+		tiles.add (AbsoluteLayout.at(speedSlider, 115, 107));
+		speedSlider.layer.setOrigin(-(MAX_SPEED + 1 - (int) (model.movementTime() * 2)) * 34, 0);
+		
+		// Screen size buttons
+		final Image screen800Sel = getImage("cut_screens/options/screen_b_800");
+		final Image screen1024Sel = getImage("cut_screens/options/screen_b_1024");
 
-    private ToggleButton newToggle(String title, int width, boolean selected) {
-        final ToggleButton toggle = new ToggleButton(title)
-                .setConstraint(Constraints.fixedWidth(width));
-        toggle.addStyles(Style.BACKGROUND.is(butBg),
-                Style.FONT.is(font(Font.Style.PLAIN, 18)));
-        if (selected) {
-        	toggle.selected.update(true);
-            toggle.addStyles(Style.BACKGROUND.is(butSelBg));
-        }
-        return toggle;
-    }
+		final Button screen800Btn = createButton("screen_b_800");
+		tiles.add (AbsoluteLayout.at(screen800Btn, soundBtnX, 166));
+		final Button screen1024Btn = createButton("screen_b_1024");
+		tiles.add (AbsoluteLayout.at(screen1024Btn, soundBtnX + 91, 166));
+		
+		if (this.width() == 1024)
+			screen1024Btn.setStyles(Style.BACKGROUND.is(Background.image(screen1024Sel)));
+		else
+			screen800Btn.setStyles(Style.BACKGROUND.is(Background.image(screen800Sel)));
 
-    @Override
-    protected String title() {
-        return "OPTIONS";
-    }
+		screen800Btn.layer.addListener(new Mouse.LayerAdapter() {
+			@Override
+			public void onMouseUp(ButtonEvent event) {
+				soundOffButton.setStyles(Style.BACKGROUND.is(Background.blank()));
+				screen800Btn.setStyles(Style.BACKGROUND.is(Background.image(screen800Sel)));
+				game.setScreenSize(800, 600);
+				game.refreshMainScreen();
+				game.persist();
+				wasAdded();
+				super.onMouseUp(event);
+			}
+		});
 
-    @Override
-    public void wasHidden() {
-        game.setMovementTime((MAX_SPEED + 1 - Float.valueOf(speedValue.text
-                .get())) / 2);
-    }
+		screen1024Btn.layer.addListener(new Mouse.LayerAdapter() {
+			@Override
+			public void onMouseUp(ButtonEvent event) {
+				screen800Btn.setStyles(Style.BACKGROUND.is(Background.blank()));
+				screen1024Btn.setStyles(Style.BACKGROUND.is(Background.image(screen1024Sel)));
+				game.setScreenSize(1024, 720);
+				game.refreshMainScreen();
+				game.persist();
+				wasAdded();
+				super.onMouseUp(event);
+			}
+		});
+
+		myroot.add(AbsoluteLayout.at(top, 0, 0));
+		myroot.add(AbsoluteLayout.at(tiles, title_board_x + 10, 39, boardWidth, boardHeight));
+
+		return myroot;
+	}
+
+	private Button createButton(final String btnName) {
+		Icon icon = getIcon("cut_screens/options/" + btnName + "_inactive");
+		final Button btn = new Button(icon).setStyles(Style.VALIGN.center, Style.HALIGN.center, Style.BACKGROUND.is(Background.blank()));
+
+		btn.layer.addListener(new Mouse.LayerAdapter() {
+			@Override
+			public void onMouseOver(MotionEvent event) {
+				Icon activeIcon = getIcon("cut_screens/options/" + btnName + "_active");
+				btn.icon.update(activeIcon);
+			}
+
+			@Override
+			public void onMouseOut(MotionEvent event) {
+				btn.icon.update(getIcon("cut_screens/options/" + btnName + "_inactive"));
+			}
+		});
+
+		return btn;
+	}
+
+	@Override
+	public String[] images() {
+		ArrayList<String> names = new ArrayList<String>();
+
+		names.add("cut_screens/options/title_board");
+		names.add("cut_screens/options/options_board");
+		names.add("cut_screens/options/options_title");
+		names.add("cut_screens/options/rope_title_l");
+		names.add("cut_screens/options/rope_title_r");
+		names.add("cut_screens/options/rope");
+
+		names.add("cut_screens/options/slider_active");
+		names.add("cut_screens/options/slider_inactive");
+		names.add("cut_screens/options/slider_select");
+
+		names.add("cut_screens/options/sound_off_b");
+		names.add("cut_screens/options/sound_off_b_active");
+		names.add("cut_screens/options/sound_off_b_inactive");
+		names.add("cut_screens/options/sound_on_b");
+		names.add("cut_screens/options/sound_on_b_active");
+		names.add("cut_screens/options/sound_on_b_inactive");
+
+		names.add("cut_screens/options/screen_b_800");
+		names.add("cut_screens/options/screen_b_800_active");
+		names.add("cut_screens/options/screen_b_800_inactive");
+		names.add("cut_screens/options/screen_b_1024");
+		names.add("cut_screens/options/screen_b_1024_active");
+		names.add("cut_screens/options/screen_b_1024_inactive");
+
+		names.add("backgrounds/1024_720/badges_back_1024_720");
+
+		return names.toArray(new String[0]);
+	}
+
+	@Override
+	protected String title() {
+		return "";
+	}
+
+	@Override
+	public void wasHidden() {
+		//        game.setMovementTime((MAX_SPEED + 1 - Float.valueOf(speedValue.text
+		//                .get())) / 2);
+	}
 
 }
