@@ -161,13 +161,15 @@ public class OptionScreen extends View {
 				float sliderPos = (int)targetOffset / 34;
 				speedSlider.layer.setOrigin(-sliderPos * 34, 0);
 				
-				float targetSpeed = sliderPos / 2 + 1 - MAX_SPEED;
+				float targetSpeed = (MAX_SPEED - sliderPos) / 2;
 				game.setMovementTime(targetSpeed);
+				System.out.println(targetSpeed);
 			}
 		});
 		
 		tiles.add (AbsoluteLayout.at(speedSlider, 115, 107));
-		speedSlider.layer.setOrigin(-(MAX_SPEED + 1 - (int) (model.movementTime() * 2)) * 34, 0);
+		speedSlider.layer.setOrigin(-(MAX_SPEED - (int) (model.movementTime() * 2)) * 34, 0);
+		System.out.println(model.movementTime());
 		
 		// Screen size buttons
 		final Image screen800Sel = getImage("cut_screens/options/screen_b_800");
