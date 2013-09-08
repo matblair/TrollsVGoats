@@ -477,6 +477,9 @@ public class LevelScreenEx extends View {
 					getImage("animations/trolls_animations/walk/"+selTrollType+"_troll_walk"), walkAnims.get(selTrollType), troll
 					.frameTime());
 
+			Animation pushAnimation = new Animation(getImage("animations/trolls_animations/push/" + selTrollType + "_troll_push"), 23, troll.frameTime());
+			troll.setPushAnimation(pushAnimation);
+			
 			troll.setSquare(square);
 			troll.setMoveAnimation(moveAnimation);
 			troll.setDefaultImage(getImage("animations/trolls_animations/normal/"+selTrollType+"_troll_normal"));
@@ -572,10 +575,16 @@ public class LevelScreenEx extends View {
 		square.setY(midPanelY);
 		goat.setSquare(square);
 		unitsLocations.put(square, goat);
-
+		System.out.println(tileSymbol);
+		System.out.println(getTileImages(
+				tileSymbol).get(1));
 		Animation moveAnimation = new Animation(getTileImages(
 				tileSymbol).get(1), 16, goat.frameTime());
 		goat.setMoveAnimation(moveAnimation);
+		
+		Animation pushAnimation = new Animation(getImage("animations/goats_animations/push/" +goat.type() + "_goat_push"), 23, goat.frameTime());
+		goat.setPushAnimation(pushAnimation);
+
 		goat.setDefaultImage(image);
 		squareLayer.setOrigin(0, image.height());
 		squareLayer.setDepth(1);
@@ -694,9 +703,7 @@ public class LevelScreenEx extends View {
 		CENTERLEFT = 420 - (numtrolls*98);
 	}
 
-
-	
-private Group createTrollPanel(final Troll troll, Json.Object trolls){
+	private Group createTrollPanel(final Troll troll, Json.Object trolls){
 		
 		Group goatGroup = new Group(new AbsoluteLayout());
 	
@@ -704,6 +711,7 @@ private Group createTrollPanel(final Troll troll, Json.Object trolls){
 		trollIcon.setStyles(selOff);
 		trollIcon.setConstraint(Constraints.fixedSize(68,68));
 		
+		System.out.println(HEADPATH + troll.type() + "_troll");
 		Label icon = new Label(getIcon(HEADPATH + troll.type() + "_troll"));
 
 		trollIcons.put(troll.type(), trollIcon);
@@ -735,6 +743,7 @@ private Group createTrollPanel(final Troll troll, Json.Object trolls){
 		goatGroup.add(AbsoluteLayout.at(trollIcon, 10,10));
 		goatGroup.add(AbsoluteLayout.at(new Label(getIcon(STRENGTHICON)),0.0f,88-(getIcon(STRENGTHICON).height())));
 		goatGroup.add(AbsoluteLayout.at(new Label(getIcon(SPEEDICON)),88-(getImage(SPEEDICON).width()),88-(getIcon(STRENGTHICON).height())));
+		System.out.println(troll.type());
 		goatGroup.add(AbsoluteLayout.at(icon, 44-(getIcon(HEADPATH + troll.type() + "_troll").width()/2), 44-(getIcon(HEADPATH + troll.type() + "_troll").height()/2)));
 		
 		//Add stuff for the adding
@@ -885,6 +894,7 @@ private Group createTrollPanel(final Troll troll, Json.Object trolls){
 
 		return goatGroup;
 	}
+	
 	////////////////////////////////////////////////////////////////////
 	// GAME CONTROL METHODS 									    ////
 	////////////////////////////////////////////////////////////////////
@@ -933,7 +943,9 @@ private Group createTrollPanel(final Troll troll, Json.Object trolls){
 			unit = unitsLocations.get(square);
 			//Check if not goat and remove.
 			if(unit instanceof Troll){
+				this.trollCounts.put(unit.type(), this.trollCounts.get(unit.type())+1);
 				removeUnit(unit);
+				this.updateTrollInfo(unit.type());
 			}
 		}
 
@@ -971,10 +983,10 @@ private Group createTrollPanel(final Troll troll, Json.Object trolls){
 		for (Unit goat : headGoats.values()) {
 			goatsMoments += updateUnits(goat, delta);
 		}
-
+		
 		//Calculate the toll moments
 		for (Unit troll : headTrolls.values()) {
-			//troll.setOldX(troll.square().getX());
+			troll.setOldX(troll.square().getX());
 			trollsMoments += updateUnits(troll, delta);
 		}
 
@@ -1030,7 +1042,7 @@ private Group createTrollPanel(final Troll troll, Json.Object trolls){
 						unit.setState(State.BLOCKED);
 				}
 				
-				// If a unit can moves.
+				// If a unit can move.
 				if (unit.updatePosition(delta)
 						&& !unit.state().equals(State.BLOCKED)) {
 					// Handles collision.
@@ -1047,28 +1059,31 @@ private Group createTrollPanel(final Troll troll, Json.Object trolls){
 							removeUnit(unit);
 						}
 					}
+					
 					if (!adjacent(unit, unit.front()) || unit.speed() == unit.front().speed()
 							|| unit.state().equals(State.JUMPING)) {
 						Square s1 = unit.square();
 						// Initialises the front square.
 						int moveDistance = unit.state().equals(State.JUMPING) ? 2 : 1;
-						Square s2 = new Square(s1.lane(),
-								s1.segment() < bridgeLocation ? s1.segment()
-										+ moveDistance : s1.segment()
-										- moveDistance);
-						s2.setX(segmentToX(s2.segment(),unit.widget().icon.get()));
+						Square s2 = new Square(s1.lane(),s1.segment() < bridgeLocation ? s1.segment() + moveDistance : s1.segment() - moveDistance);
+						
+						s2.setX(segmentToX(s2.segment(),unit.widget().icon.get())+6);
 						s2.setY(s1.getY());
+						
 						s2.setDistance(s1.distance() - moveDistance);
+						
 						unit.move(s2);
 
 						unit.setState(State.MOVING);
 						if (s2.distance() == 1 || adjacent(unit, unit.front())
 								&& unit.front().state().equals(State.PUSHING))
 							pushing = true;
-					}
+						}
+					
 				}
 			} else if (unit.speed() != 0)
 				pushing = true;
+			
 			if (pushing) {
 				// Handles HungryTroll.
 				if (unit.square().distance() == 1
@@ -1257,7 +1272,7 @@ private Group createTrollPanel(final Troll troll, Json.Object trolls){
 		//We want our image centered, so we have to take away a third of the icon so it sits on the tile
 		float tiledist = SQUARE_WIDTH * segment;
 		float tilespacing = INITIALEDGE + segment*TILEGAP;
-		return tiledist+tilespacing - (icon.width()/3);
+		return tiledist+tilespacing - (90/3);
 	}
 
 	private float laneToY(float lane, Image img) {
@@ -1351,7 +1366,6 @@ private Group createTrollPanel(final Troll troll, Json.Object trolls){
 		case 'B':// Big goat.
 		case 'F':// Fast goat.
 		case 'T':// Butting goat.
-		case 'J':// Jumping goat.
 			names.add("animations/goats_animations/normal/"+newGoat(symbol).type()+"_goat_normal");
 			names.add("animations/goats_animations/walk/"+newGoat(symbol).type()+"_goat_walk");
 			break;
@@ -1420,9 +1434,8 @@ private Group createTrollPanel(final Troll troll, Json.Object trolls){
 		String[] tiles = new String[] { "cut_screens/gameplay/segment", "cut_screens/gameplay/gap", "cut_screens/gameplay/gate", "cut_screens/gameplay/pivot" };
 
 		//Types of trolls and goats
-		String[] normalTrolls = new String[] { "normal", "little", "fast","cheerleader", "hungry", "mega"};
-		String[] goats = new String[] { "little", "normal", "big", "fast",
-		"butting" };
+		String[] normalTrolls = new String[] { "normal", "little", "fast","cheerleader", "hungry", "mega", "spitting", "digging"};
+		String[] goats = new String[] { "little", "normal", "big", "fast","butting" };
 		//Create new array of names
 		List<String> names = new ArrayList<String>(Arrays.asList(tiles));
 
@@ -1434,7 +1447,7 @@ private Group createTrollPanel(final Troll troll, Json.Object trolls){
 		}
 
 		//Add standard strolls and goats animations
-		String[] anim_types = new String[] {"normal", "push", "stay_to_walk", "walk", "stay_to_push"};
+		String[] anim_types = new String[] {"normal", "push", "walk"};
 		for(String type: anim_types){
 			for(String name: normalTrolls){
 				names.add("animations/trolls_animations/"+type+"/"+name+"_troll_"+type);

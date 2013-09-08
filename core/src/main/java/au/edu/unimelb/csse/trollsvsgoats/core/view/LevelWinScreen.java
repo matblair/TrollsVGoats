@@ -56,7 +56,7 @@ public class LevelWinScreen extends View {
 		//Create the button panel to put in the group
 		createPanel();
 		//Add the panel to the top layer, centered and dropped from the top.
-		iFace.add(AbsoluteLayout.at(panel, ((model.width/2)-PANELWIDTH), PANELSTART));
+		iFace.add(AbsoluteLayout.at(panel, ((model.width)-2*PANELWIDTH-30), PANELSTART));
 		return iFace;
 	}
 
