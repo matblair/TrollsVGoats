@@ -108,21 +108,21 @@ public class LevelScreenEx extends View {
 
 	//For positioning of UI Groups
 
-	private static final float BIGTOPBOARDY = -80;
+	private static final float BIGTOPBOARDY = -70;
 	private static final float BIGGAMEBOARDY = -55;
 	private static final float BIGBOTTOMPANELY = 457;
 	private static final float BIGGATEINSIDE = 488;
-	private static final float SMALLTOPBOARDY = -80;
+	private static final float SMALLTOPBOARDY = -70;
 	private static final float SMALLGAMEBOARDY = 120;
 	private static final float SMALLBOTTOMPANELY = 440;
 	private static final float SMALLGATEINSIDE = 488;
 	private static final float TOPLATCH = 460;
 
-	private static final float LRBIGTOPBOARDY = -80;
+	private static final float LRBIGTOPBOARDY = -70;
 	private static final float LRBIGGAMEBOARDY = -55;
 	private static final float LRBIGBOTTOMPANELY = 457;
 	private static final float LRBIGGATEINSIDE = 488;
-	private static final float LRSMALLTOPBOARDY = -80;
+	private static final float LRSMALLTOPBOARDY = -70;
 	private static final float LRSMALLGAMEBOARDY = -80;
 	private static final float LRSMALLBOTTOMPANELY = 320;
 	private static final float LRSMALLGATEINSIDE = 488;
@@ -137,7 +137,7 @@ public class LevelScreenEx extends View {
 	private static final String STARTBUTTON = "cut_screens/gameplay/play";
 	private static final String RESETBUTTON = "cut_screens/gameplay/reset";
 	private static final String HEADPATH = "trolls_goats_menu/";
-	private static final String BACKUNIT = "cut_screens/gameplay/back_unit";
+	private static final String BACKUNIT = "cut_screens/gameplay/next_unit";
 	private static final String NEXTUNIT = "cut_screens/gameplay/back_unit";
 	private static final String UNITSLOCKED = "_locked";
 	private static final String STRENGTHICON = "cut_screens/gameplay/strength";
@@ -175,7 +175,22 @@ public class LevelScreenEx extends View {
 	protected Label normalTrollLabel;
 	protected Label fastTrollLabel;
 	protected Label hungryTrollLabel;
+	protected Label littleTrollLabel;
+	protected Label spittingTrollLabel;
+	protected Label megaTrollLabel;
+	protected Label cheerLeaderTrollLabel;
+	protected Label diggingTrollLabel;
 
+
+
+	//ArrayLists for accesing the 
+	private ArrayList<Group> trollHeads = new ArrayList<Group>();
+	private ArrayList<Group> goatHeads = new ArrayList<Group>();
+	private int goatIndex=0;
+	private int trollIndex=0;
+	private static int MAXHEADS= 4;
+	private Group trollScroll;
+	private Group goatScroll;
 
 	// The first unit in a lane.
 	// A lane of units is represented as a linked list.
@@ -222,8 +237,6 @@ public class LevelScreenEx extends View {
 	protected Group goatGroup;
 	protected Group trollGroup;
 
-
-
 	//For creating the middle game
 	private boolean hasPivot;
 	private boolean isTrollSide;
@@ -244,7 +257,7 @@ public class LevelScreenEx extends View {
 
 		this.json = json().parse(levelJson);
 		laneCount = json.getArray("tiles").length();
-		
+
 		System.out.println(game.model().width);
 		if(this.width()==800){
 			if(laneCount<7){
@@ -291,7 +304,7 @@ public class LevelScreenEx extends View {
 
 			}
 		}
-		
+
 
 		//Check if we should be showing moments
 		if (model.levelIndex() <= 1){
@@ -347,11 +360,22 @@ public class LevelScreenEx extends View {
 	 * 	the moment board
 	 */
 	private void createTopPanel(){
+
 		topMomentPanel = new Group(new AbsoluteLayout());
 		Icon momentBoard = getIcon(MOMENTBOARD);
 		topMomentPanel.add(AbsoluteLayout.at(new Label(momentBoard),model.screenWidth()/2-momentBoard.width()/2,0));
+
+		Label levelLabel = new Label("LEVEL " + this.model.levelIndex());
+		levelLabel.setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 26)),
+				Style.HALIGN.left, 
+				Style.COLOR.is(0xFFCCFF00),
+				Style.TEXT_EFFECT.shadow);
+
+		topMomentPanel.add(AbsoluteLayout.at(levelLabel,this.width()/2 - 48,-45));
+
 		momentLabel = new Label();
-		momentLabel.setStyles(Style.FONT.is(PlayN.graphics().createFont("Helvetica", Font.Style.BOLD, 20)),
+		momentLabel.setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 20)),
+				Style.TEXT_EFFECT.shadow,
 				Style.HALIGN.center, 
 				Style.COLOR.is(0xFFFFFFFF));
 		momentLabel.setConstraint(Constraints.fixedWidth(momentBoard.width()));
@@ -637,7 +661,6 @@ public class LevelScreenEx extends View {
 					preSelGoat.setStyles(selOff);
 				preSelGoat = goatIcons.get(goat.type()).setStyles(
 						selOn);
-				updateGoatInfo(goat);
 				if (showUnitMoment)
 				{
 					updateMomentLabel((int) unitMoment(goat));
@@ -687,7 +710,7 @@ public class LevelScreenEx extends View {
 		trollGroup = new Group(AxisLayout.vertical());
 		bottomTrollPanel = new Group(AxisLayout.horizontal());
 		createTrollsInfoPanel();
-		bottomTrollPanel.add(new Shim(CENTERLEFT,0));
+		bottomTrollPanel.add(new Shim(40,0));
 		trollGroup.add(bottomTrollPanel).addStyles(Style.HALIGN.left);
 
 		//Create the cost label
@@ -701,7 +724,6 @@ public class LevelScreenEx extends View {
 		//add elements to third table column - goats side
 		goatGroup = new Group(AxisLayout.vertical());
 		bottomGoatPanel = new Group(AxisLayout.horizontal());
-		bottomGoatPanel.add(new Shim(CENTERRIGHT,0));
 		createGoatsInfoPanel(goatTypes);
 		goatGroup.add(bottomGoatPanel);
 		goatGroup.add(new Shim(0,50));
@@ -716,13 +738,13 @@ public class LevelScreenEx extends View {
 	private Group createCostBoard(){
 		Group costBoard = new Group(new AbsoluteLayout());
 		Icon costBoardIcon = getIcon(COSTBOARD);
-		costBoard.add(AbsoluteLayout.at(new Label(costBoardIcon),LEFTMARGIN+4,10));
+		costBoard.add(AbsoluteLayout.at(new Label(costBoardIcon),LEFTMARGIN+4,-10));
 		costLabel = new Label();
-		costLabel.setStyles(Style.FONT.is(PlayN.graphics().createFont("Helvetica", Font.Style.BOLD, 12)),
+		costLabel.setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 12)),
 				Style.HALIGN.left, 
 				Style.COLOR.is(0xFFFFFFFF));
 		costLabel.text.update("$0");
-		costBoard.add(AbsoluteLayout.at(costLabel,LEFTMARGIN+60,22));
+		costBoard.add(AbsoluteLayout.at(costLabel,LEFTMARGIN+65,-3));
 		return costBoard;
 	}
 
@@ -737,12 +759,63 @@ public class LevelScreenEx extends View {
 		for (final String type : trolls.keys()) {
 			Troll troll = newTroll(type);
 			trollCounts.put(type, (int) trolls.getNumber(type));
-			bottomTrollPanel.add(createTrollPanel(troll,trolls));
+			createTrollPanel(troll,trolls);
 		}
 
-		//Calculate right shim
-		int numtrolls = trolls.keys().length();
-		CENTERLEFT = 420 - (numtrolls*98);
+		Group scrollGroup = new Group(new AxisLayout.Horizontal());
+
+		if(this.trollHeads.size()>4){
+			//Add the first thing
+			Button backButton = this.createButton(BACKUNIT);
+			backButton.clicked().connect(new UnitSlot(){
+				@Override
+				public void onEmit() {
+					trollIndex = (trollIndex-1);
+					if(trollIndex<0){
+						trollIndex = (trollHeads.size()-1);
+					}
+					updateTrollScroll();
+				}
+			});
+			scrollGroup.add(backButton);
+		} else {
+			scrollGroup.add(new Label(getIcon(BACKUNIT+UNITSLOCKED)));
+		}
+
+
+		//Add the mid board
+		this.trollScroll = new Group(new AxisLayout.Horizontal());
+		this.trollScroll.setConstraint(Constraints.fixedWidth(410));
+		scrollGroup.add(this.trollScroll);
+		updateTrollScroll();
+
+		//Add the next button
+		if(this.trollHeads.size()>4){
+			Button next = createButton(NEXTUNIT);
+			next.clicked().connect(new UnitSlot(){
+				@Override
+				public void onEmit() {
+					trollIndex = (trollIndex+1);
+					if(trollIndex>=trollHeads.size()){
+						trollIndex = 0;
+					}
+					updateTrollScroll();
+				}
+			});
+			scrollGroup.add(next);
+		} else {
+			scrollGroup.add(new Label(getIcon(NEXTUNIT+UNITSLOCKED)));
+		}
+
+		bottomTrollPanel.add(scrollGroup);
+
+	}
+
+	private void updateTrollScroll(){
+		this.trollScroll.removeAll();
+		for(int i=0; i<4; i++){
+			this.trollScroll.add(this.trollHeads.get((this.trollIndex + i)%this.trollHeads.size()));
+		}
 	}
 
 	private Group createTrollPanel(final Troll troll, Json.Object trolls){
@@ -789,11 +862,11 @@ public class LevelScreenEx extends View {
 		goatGroup.add(AbsoluteLayout.at(icon, 44-(getIcon(HEADPATH + troll.type() + "_troll").width()/2), 44-(getIcon(HEADPATH + troll.type() + "_troll").height()/2)));
 
 		//Add stuff for the adding
-		Label speed = new Label(String.valueOf((int)troll.speed())).setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 8)),
+		Label speed = new Label(String.valueOf((int)troll.speed())).setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 10)),
 				Style.HALIGN.left, 
 				Style.COLOR.is(0xFFFFFFFF),
 				Style.TEXT_EFFECT.shadow);
-		Label strength = new Label(Integer.toString((int)troll.speed())).setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 8)),
+		Label strength = new Label(Integer.toString((int)troll.speed())).setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 10)),
 				Style.HALIGN.left, 
 				Style.COLOR.is(0xFFFFFFFF),
 				Style.TEXT_EFFECT.shadow);
@@ -803,31 +876,31 @@ public class LevelScreenEx extends View {
 				Style.TEXT_EFFECT.shadow);
 		Label count = new Label("x" + (int) this.trollCounts.get(troll.type())).setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 16)),
 				Style.HALIGN.left, 
-				Style.COLOR.is(0xFFE5004F),
+				Style.COLOR.is(0xFF77FF00),
 				Style.TEXT_EFFECT.shadow);
 		Label cost = new Label("$" + (int)troll.cost()).setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 16)),
 				Style.HALIGN.left, 
-				Style.COLOR.is(0xFFFFFFFF),
+				Style.COLOR.is(0xFFFFCC00),
 				Style.TEXT_EFFECT.shadow);
 
 
 		//Position the labels
-		goatGroup.add(AbsoluteLayout.at(name, 6,-10));
-		goatGroup.add(AbsoluteLayout.at(count, 6,5));
-		goatGroup.add(AbsoluteLayout.at(cost, 52, 5));
+		goatGroup.add(AbsoluteLayout.at(name, 0,-10));
+		goatGroup.add(AbsoluteLayout.at(count, 56,5));
+		goatGroup.add(AbsoluteLayout.at(cost, 6, 5));
 
-		goatGroup.add(AbsoluteLayout.at(strength, 22,70));
-		goatGroup.add(AbsoluteLayout.at(speed, 64,70));
+		goatGroup.add(AbsoluteLayout.at(strength, 20,64));
+		goatGroup.add(AbsoluteLayout.at(speed, 72,64));
 
 		//Set the count label
 		this.setTrollCountLabel(troll.type(), count);
 
 		//Preselect the first one
 		if(this.trollCounts.size()==1){
-			System.out.println("Got ehre");
 			this.selTrollIcon = trollIcon;
 		}
 
+		this.trollHeads.add(goatGroup);
 		return goatGroup;
 	}
 
@@ -846,7 +919,6 @@ public class LevelScreenEx extends View {
 				} else {
 					started = false;
 					pause(false);
-					//-> pause.text.update("PAUSE");
 					restart();
 				}
 			}
@@ -872,19 +944,59 @@ public class LevelScreenEx extends View {
 	}
 
 	private void createGoatsInfoPanel(Set<String> types) {
-		//Calculate left shim
-		int numgoats = types.size();
-		CENTERLEFT = 420 - (numgoats*98);
-
+		
 		for (String symbol : types) {
 			final Goat goat = newGoat(symbol.charAt(0));
-			bottomGoatPanel.add(createGoatPanel(goat));
-			//What is this for?
-			//updateUnitAbility(goat);
+			createGoatPanel(goat);
 		}
+		
+		Group scrollGroup = new Group(new AxisLayout.Horizontal());
+
+		if(this.goatHeads.size()>4){
+			//Add the first thing
+			Button backButton = this.createButton(BACKUNIT);
+			backButton.clicked().connect(new UnitSlot(){
+				@Override
+				public void onEmit() {
+					goatIndex = (goatIndex-1);
+					if(goatIndex<0){
+						goatIndex = (goatHeads.size()-1);
+					}
+					updateGoatScroll();
+				}
+			});
+			scrollGroup.add(backButton);
+		} else {
+			scrollGroup.add(new Label(getIcon(BACKUNIT+UNITSLOCKED)));
+		}
+
+
+		//Add the mid board
+		this.goatScroll = new Group(new AxisLayout.Horizontal());
+		this.goatScroll.setConstraint(Constraints.fixedWidth(410));
+		scrollGroup.add(this.goatScroll);
+
+		updateGoatScroll();
+
+		//Add the next button
+		if(this.goatHeads.size()>4){
+			Button next = createButton(NEXTUNIT);
+			scrollGroup.add(next);
+		} else {
+			scrollGroup.add(new Label(getIcon(NEXTUNIT+UNITSLOCKED)));
+		}
+
+		bottomTrollPanel.add(scrollGroup);
 
 		//Finally add the shim
 		bottomGoatPanel.add(new Shim(RIGHTMARGIN,0));
+	}
+
+	private void updateGoatScroll(){
+		this.goatScroll.removeAll();
+		for(int i=0; i<4; i++){
+			this.goatScroll.add(this.goatHeads.get((this.goatIndex + i)%this.goatHeads.size()));
+		}
 	}
 
 	private Group createGoatPanel(final Goat goat){
@@ -916,11 +1028,11 @@ public class LevelScreenEx extends View {
 		goatGroup.add(AbsoluteLayout.at(icon, 44-(getIcon(HEADPATH + goat.type() + "_goat").width()/2), 44-(getIcon(HEADPATH + goat.type() + "_goat").height()/2)));
 
 		//Add stuff for the adding
-		Label speed = new Label(String.valueOf((int)goat.speed())).setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 8)),
+		Label speed = new Label(String.valueOf((int)goat.speed())).setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 10)),
 				Style.HALIGN.left, 
 				Style.COLOR.is(0xFFFFFFFF),
 				Style.TEXT_EFFECT.shadow);
-		Label strength = new Label(String.valueOf((int)goat.speed())).setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 8)),
+		Label strength = new Label(String.valueOf((int)goat.speed())).setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 10)),
 				Style.HALIGN.left, 
 				Style.COLOR.is(0xFFFFFFFF),
 				Style.TEXT_EFFECT.shadow);
@@ -930,10 +1042,10 @@ public class LevelScreenEx extends View {
 				Style.TEXT_EFFECT.shadow);
 
 		//Position the labels
-		goatGroup.add(AbsoluteLayout.at(name, 6,-10));
-		goatGroup.add(AbsoluteLayout.at(strength, 22,70));
-		goatGroup.add(AbsoluteLayout.at(speed, 74,70));
-
+		goatGroup.add(AbsoluteLayout.at(name, 0,-10));
+		goatGroup.add(AbsoluteLayout.at(strength, 20,64));
+		goatGroup.add(AbsoluteLayout.at(speed, 72,64));
+		this.goatHeads.add(goatGroup);
 		return goatGroup;
 	}
 
@@ -1154,17 +1266,6 @@ public class LevelScreenEx extends View {
 		return moments;
 	}
 
-	private void updateGoatInfo(Goat goat) {
-		String text = goat.type().substring(0, 1).toUpperCase()
-				+ goat.type().substring(1) + " goat " + goat.ability()
-				+ "\nStrength: " + (int) goat.force();
-		if (goat.speed() != Math.round(goat.speed()))
-			text += "  Speed: " + goat.speed();
-		else
-			text += "  Speed: " + (int) goat.speed();
-		//->goatInfoLabel.text.update(text);
-	}
-
 	private void updateTrollInfo(String type) {
 		Label countLabel = getTrollCountLabel(type);
 		countLabel.text.update(String.valueOf("x" + this.trollCounts.get(type)));
@@ -1312,6 +1413,9 @@ public class LevelScreenEx extends View {
 
 	private float segmentToX(float segment, Icon icon) {
 		//We want our image centered, so we have to take away a third of the icon so it sits on the tile
+		if(segment>this.bridgeLocation){
+			//Do stuff here to fix things
+		}
 		float tiledist = SQUARE_WIDTH * segment;
 		float tilespacing = INITIALEDGE + segment*TILEGAP;
 		return tiledist+tilespacing - (90/3);
@@ -1373,8 +1477,20 @@ public class LevelScreenEx extends View {
 			return this.normalTrollLabel;
 		} else if(type.equals("fast")){
 			return this.fastTrollLabel;
+		} else if(type.equals("little")){
+			return this.littleTrollLabel;
+		} else if(type.equals("hungry")){
+			return this.hungryTrollLabel;
+		} else if(type.equals("cheerleader")){
+			return this.cheerLeaderTrollLabel;
+		} else if(type.equals("mega")){
+			return this.megaTrollLabel;
+		} else if(type.equals("digging")){
+			return this.diggingTrollLabel;
+		} else if(type.equals("spitting")){
+				return this.spittingTrollLabel;
 		}
-
+			
 		return new Label();
 	}
 
@@ -1383,6 +1499,18 @@ public class LevelScreenEx extends View {
 			this.normalTrollLabel = label;
 		} else if(type.equals("fast")){
 			this.fastTrollLabel = label;
+		}else if(type.equals("little")){
+			this.littleTrollLabel = label;
+		} else if(type.equals("hungry")){
+			this.hungryTrollLabel = label;
+		} else if(type.equals("cheerleader")){
+			this.cheerLeaderTrollLabel = label;
+		} else if(type.equals("mega")){
+			this.megaTrollLabel = label;
+		} else if(type.equals("digging")){
+			this.diggingTrollLabel = label;
+		} else if(type.equals("spitting")){
+			this.spittingTrollLabel = label;
 		}
 
 	}

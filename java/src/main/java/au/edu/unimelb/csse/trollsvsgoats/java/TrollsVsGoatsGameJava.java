@@ -13,6 +13,7 @@ public class TrollsVsGoatsGameJava implements IPlatformHandler {
 	
 	public TrollsVsGoatsGameJava() {
 		platform = JavaPlatform.register();
+		platform.graphics().registerFont("komika_title","fonts/komikatitle.ttf");
         PlayN.run(new TrollsVsGoatsGame(new LocalPersistenceClient(), this));
 	}
         
