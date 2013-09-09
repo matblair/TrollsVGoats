@@ -2,6 +2,7 @@ package au.edu.unimelb.csse.trollsvsgoats.java.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +15,7 @@ public class LocalPersistenceClient implements PersistenceClient {
     private int maxCompletedLevel = 0;
     private Map<Integer, Integer> levelScores = new HashMap<Integer, Integer>();
     private List<String> achievedBadges = new ArrayList<String>();
+    
 
     @Override
     public void persist(GameModel model) {
@@ -47,5 +49,12 @@ public class LocalPersistenceClient implements PersistenceClient {
     public void logTrollsDeployment(int level, List<String> lanes) {
 
     }
+
+	@Override
+	public void getRankedHighScoresFor(
+			Callback<LinkedHashMap<String, Integer>> callBack) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

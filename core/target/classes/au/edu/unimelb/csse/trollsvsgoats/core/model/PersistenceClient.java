@@ -1,5 +1,6 @@
 package au.edu.unimelb.csse.trollsvsgoats.core.model;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -22,4 +23,6 @@ public interface PersistenceClient {
     public void getUserName(Callback<String> callBack);
 
     public void logTrollsDeployment(int level, List<String> lanes);
+    
+    public void getRankedHighScoresFor(Callback<LinkedHashMap<String, Integer>> callBack);
 }

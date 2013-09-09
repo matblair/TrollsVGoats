@@ -11,7 +11,14 @@
   
   "trolls":
   {
-    "normal":6
+    "normal":6,
+    "mega":5,
+    "fast":4,
+    "little":6,
+    "spitting":9,
+    "digging":3,
+    "cheerleader":4,
+    "hungry":6
   },
   
   "scores":

@@ -44,12 +44,10 @@ public class HighScoreServiceImpl extends RemoteServiceServlet implements
             throws GameTokenError, InstanceTokenError {
     	
         LinkedHashMap<String, Integer> result = new LinkedHashMap<String, Integer>();
-        
-        
-        
         result.put("test1", 3);
         result.put("test2", 2);
         result.put("test3", 1);
+        
         return result;
     }
 }

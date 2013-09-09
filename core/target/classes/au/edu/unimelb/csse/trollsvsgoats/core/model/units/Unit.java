@@ -105,6 +105,10 @@ public abstract class Unit {
         tempNewX = square.getX(); 
         canMove = false;
     }
+    
+    public void setTempNewX(float x){
+    	tempNewX = x;
+    }
 
     public void move(Square square) {
         //--> this.moved = true;
@@ -138,7 +142,7 @@ public abstract class Unit {
         widget.layer.setVisible(true);
         widget.icon.update(icon != null ? Icons.image(icon) : Icons.image(moveAnimation.frame(0)));
         parent.add(AbsoluteLayout
-                .at(widget(), square().getX(), square().getY()));
+                .at(widget(), tempNewX, square().getY()));
     }
 
     //--> public float updateTimer(float delta) {
@@ -235,17 +239,26 @@ public abstract class Unit {
 
     //--> public abstract void update(float delta);
     public void update(float delta) {
+    	System.out.println(this.type() + " " + this.state.toString());
+
         if (state() == null || state().equals(State.REMOVED)
-                || this.speed() == 0)
-            return;
-        if (canMove)
+                || (this.speed() == 0 && (state!=State.SPECIALABILITY))){
+        	return;
+        }
+            
+        if (canMove){
             parent.add(AbsoluteLayout.at(widget(), square().getX(), square()
                     .getY()));
+        }
+		
         if (state().equals(State.MOVING))
             widget().icon.update(Icons.image(moveAnimation.nextFrame(delta)));
         else if (state().equals(State.PUSHING)) {
             if (pushAnimation != null)
                 widget().icon.update(Icons.image(pushAnimation.nextFrame(delta)));
+        } else if (state().equals(State.SPECIALABILITY)){        	
+        	if (specialAnimation != null)
+                widget().icon.update(Icons.image(specialAnimation.nextFrame(delta)));
         }
     } 
 

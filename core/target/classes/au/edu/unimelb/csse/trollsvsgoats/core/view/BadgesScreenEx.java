@@ -270,8 +270,6 @@ public class BadgesScreenEx extends View {
 		names.add("cut_screens/badges/scroll_bar");
 		names.add("cut_screens/badges/title_board");
 		names.add("cut_screens/badges/badges_title");
-
-		names.add("badge_lock");
 		
 		names.add("backgrounds/800_600/badges_back_800_600");
 		names.add("backgrounds/1024_720/badges_back_1024_720");

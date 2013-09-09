@@ -2,11 +2,14 @@ package au.edu.unimelb.csse.trollsvsgoats.core.model;
 
 public class ALevelBadge extends Badge {
 
+			
     @Override
     public boolean achieved(GameModel game) {
         boolean achieved;
         if (achieved = game.isLevelCompleted() && !game.momentOverZero())
             setAchieved();
+        
+        
         return achieved;
     }
 

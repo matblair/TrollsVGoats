@@ -257,7 +257,7 @@ public class LevelSelScreenEx extends View {
 	public String[] images() {
 		ArrayList<String> names = new ArrayList<String>();
 		for (Badge badge : model.badges()) {
-			names.add("badge_" + badge.name());
+			names.add("badges/" + badge.name());
 		}
 
 		names.add("cut_screens/select_levels/back_active");

@@ -785,8 +785,6 @@ public class LevelScreen extends View {
             troll = new FastTroll();
         else if (type.equals("digging"))
             troll = new DiggingTroll();
-        else if (type.equals("barrow"))
-            troll = new BarrowTroll();
         else if (type.equals("cheerLeader"))
             troll = new CheerleaderTroll();
         else if (type.equals("hungry"))
@@ -817,9 +815,6 @@ public class LevelScreen extends View {
             break;
         case 'T':
             goat = new ButtingGoat();
-            break;
-        case 'J':
-            goat = new JumpingGoat();
             break;
         default:
             goat = null;
@@ -1024,9 +1019,6 @@ public class LevelScreen extends View {
                         if (unit.front() != null)
                             unit.front().notifyColliedWithBack();
                         // Jumping goat becomes the head of a lane.
-                        else if (unit instanceof JumpingGoat)
-                            headGoats.put(unit.square().lane(), unit);
-
                         if (unit instanceof FastTroll) {
                             removeUnit(unit.front());
                             removeUnit(unit);

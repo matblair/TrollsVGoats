@@ -12,6 +12,7 @@ public class SpittingTroll extends Troll {
     @Override
     public void notifyColliedWithBack() {
         this.back().setSpeed(this.back().speed() / 2);
+        this.setState(State.SPECIALABILITY);
     }
 
     @Override

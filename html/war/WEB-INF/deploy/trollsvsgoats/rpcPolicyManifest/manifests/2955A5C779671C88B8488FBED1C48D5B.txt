@@ -1,2 +1,0 @@
-serviceClass: au.edu.unimelb.csse.mugle.client.multiplayer.api.LoggingService
-path: BF823695257033E62BB0112B2A67FAAD.gwt.rpc

@@ -26,7 +26,6 @@ import react.UnitSlot;
 import au.edu.unimelb.csse.trollsvsgoats.core.TrollsVsGoatsGame;
 import au.edu.unimelb.csse.trollsvsgoats.core.model.Animation;
 import au.edu.unimelb.csse.trollsvsgoats.core.model.Square;
-import au.edu.unimelb.csse.trollsvsgoats.core.model.units.BarrowTroll;
 import au.edu.unimelb.csse.trollsvsgoats.core.model.units.BigGoat;
 import au.edu.unimelb.csse.trollsvsgoats.core.model.units.ButtingGoat;
 import au.edu.unimelb.csse.trollsvsgoats.core.model.units.CheerleaderTroll;
@@ -35,7 +34,6 @@ import au.edu.unimelb.csse.trollsvsgoats.core.model.units.FastGoat;
 import au.edu.unimelb.csse.trollsvsgoats.core.model.units.FastTroll;
 import au.edu.unimelb.csse.trollsvsgoats.core.model.units.Goat;
 import au.edu.unimelb.csse.trollsvsgoats.core.model.units.HungryTroll;
-import au.edu.unimelb.csse.trollsvsgoats.core.model.units.JumpingGoat;
 import au.edu.unimelb.csse.trollsvsgoats.core.model.units.LittleGoat;
 import au.edu.unimelb.csse.trollsvsgoats.core.model.units.LittleTroll;
 import au.edu.unimelb.csse.trollsvsgoats.core.model.units.MegaTroll;
@@ -258,7 +256,6 @@ public class LevelScreenEx extends View {
 		this.json = json().parse(levelJson);
 		laneCount = json.getArray("tiles").length();
 
-		System.out.println(game.model().width);
 		if(this.width()==800){
 			if(laneCount<7){
 				BRIDGE = LRBRIDGEBG;
@@ -413,10 +410,9 @@ public class LevelScreenEx extends View {
 		//Add the latch and gate
 		middleDrawingPanel.add(AbsoluteLayout.at(new Label(getIcon(LATCH)),LATCHLOC,0));
 		middleDrawingPanel.add(AbsoluteLayout.at(new Label(getIcon(GATE)),GATELOC,GATESHIM));
-		System.out.println(laneCount);
 		if(laneCount>6){
 			//Draw bottom latch
-			middleDrawingPanel.add(AbsoluteLayout.at(new Label(getIcon(BOTTOMLATCH)),(segmentToX(bridgeLocation, getIcon(LATCH)))+(getImage(LATCH).width()/4),(getImage(BRIDGE).height()-getImage(BOTTOMLATCH).height()/2)));
+			middleDrawingPanel.add(AbsoluteLayout.at(new Label(getIcon(BOTTOMLATCH)),LATCHLOC,(getImage(BRIDGE).height()-getImage(BOTTOMLATCH).height()/2)));
 
 		}
 
@@ -448,7 +444,7 @@ public class LevelScreenEx extends View {
 			Button tile = new Button().addStyles(Style.BACKGROUND.is(Background.blank())).setConstraint(Constraints.fixedWidth(SQUARE_WIDTH));
 
 			//Find the segment locations x and y to add squares to
-			midPanelX = segmentToX(segment,icon);  
+			midPanelX = segmentToX(segment,null);  
 			midPanelY = laneToY(lane,image);
 			distance = Math.abs(bridgeLocation - segment);
 
@@ -525,10 +521,19 @@ public class LevelScreenEx extends View {
 
 
 			final Troll troll = newTroll(selTrollType);
+			
 			if ((troll instanceof DiggingTroll || troll instanceof SpittingTroll)
 					&& _distance > 4)
 				return;
+
+			if (( troll instanceof DiggingTroll || troll instanceof SpittingTroll)){
+				_x = this.segmentToX(_segment, troll.type());
+			}
+
+
+			//Handles limits on where hungry trolls can be placed
 			if ((troll instanceof HungryTroll && _distance >1)) return;
+
 			if (_isTrollSide ^ troll.isOnTrollSide())
 				return;
 
@@ -537,16 +542,34 @@ public class LevelScreenEx extends View {
 			.addStyles(
 					Style.BACKGROUND.is(Background.blank()));
 
-			//			Animation moveAnimation = new Animation(
-			//					getImage("animations/trolls_animations/walk/"+selTrollType+"_troll_walk"), 16, troll
-			//							.frameTime());
-
 			Animation moveAnimation = new Animation(
 					getImage("animations/trolls_animations/walk/"+selTrollType+"_troll_walk"), walkAnims.get(selTrollType), troll
 					.frameTime());
 
-			Animation pushAnimation = new Animation(getImage("animations/trolls_animations/push/" + selTrollType + "_troll_push"), 23, troll.frameTime());
-			troll.setPushAnimation(pushAnimation);
+			if(troll instanceof CheerleaderTroll){
+				Animation pushAnimation = new Animation(getImage("animations/trolls_animations/push/" + selTrollType + "_troll_push"), 1, troll.frameTime());
+				troll.setPushAnimation(pushAnimation);
+
+			} else {
+				Animation pushAnimation = new Animation(getImage("animations/trolls_animations/push/" + selTrollType + "_troll_push"), 23, troll.frameTime());
+				troll.setPushAnimation(pushAnimation);
+			}
+
+			if(troll instanceof DiggingTroll || troll instanceof SpittingTroll){
+				troll.setState(State.SPECIALABILITY);
+			}
+
+			if (troll instanceof DiggingTroll){
+				Animation specialAnimation = new Animation(getImage("animations/trolls_animations/special_animations/digging_troll_hiding"),18, troll.frameTime());
+				troll.setSpecialAnimation(specialAnimation);
+			} if(troll instanceof SpittingTroll){
+				Animation specialAnimation = new Animation(getImage("animations/trolls_animations/special_animations/spitting_troll"),15, troll.frameTime());
+				troll.setSpecialAnimation(specialAnimation);
+			} if (troll instanceof HungryTroll){
+				Animation specialAnimation = new Animation(getImage("animations/trolls_animations/special_animations/hungry_troll_eat"),30, troll.frameTime());
+				troll.setSpecialAnimation(specialAnimation);
+
+			}
 
 			troll.setSquare(square);
 			troll.setMoveAnimation(moveAnimation);
@@ -555,7 +578,7 @@ public class LevelScreenEx extends View {
 
 			if (_distance == 1 && troll.speed() != 0)
 				troll.setState(State.PUSHING);
-			else
+			else if(!(troll instanceof DiggingTroll))
 				troll.setState(State.MOVING);
 
 			unitsLocations.put(square, troll);
@@ -643,9 +666,6 @@ public class LevelScreenEx extends View {
 		square.setY(midPanelY);
 		goat.setSquare(square);
 		unitsLocations.put(square, goat);
-		System.out.println(tileSymbol);
-		System.out.println(getTileImages(
-				tileSymbol).get(1));
 		Animation moveAnimation = new Animation(getTileImages(
 				tileSymbol).get(1), 16, goat.frameTime());
 		goat.setMoveAnimation(moveAnimation);
@@ -827,8 +847,6 @@ public class LevelScreenEx extends View {
 		final Button trollIcon = new Button(getIcon(UNSELECTEDIMAGE)).addStyles(Style.HALIGN.center);
 		trollIcon.setStyles(selOff);
 		trollIcon.setConstraint(Constraints.fixedSize(68,68));
-
-		System.out.println(HEADPATH + troll.type() + "_troll");
 		Label icon = new Label(getIcon(HEADPATH + troll.type() + "_troll"));
 
 		trollIcons.put(troll.type(), trollIcon);
@@ -860,7 +878,6 @@ public class LevelScreenEx extends View {
 		goatGroup.add(AbsoluteLayout.at(trollIcon, 10,10));
 		goatGroup.add(AbsoluteLayout.at(new Label(getIcon(STRENGTHICON)),0.0f,88-(getIcon(STRENGTHICON).height())));
 		goatGroup.add(AbsoluteLayout.at(new Label(getIcon(SPEEDICON)),88-(getImage(SPEEDICON).width()),88-(getIcon(STRENGTHICON).height())));
-		System.out.println(troll.type());
 		goatGroup.add(AbsoluteLayout.at(icon, 44-(getIcon(HEADPATH + troll.type() + "_troll").width()/2), 44-(getIcon(HEADPATH + troll.type() + "_troll").height()/2)));
 
 		//Add stuff for the adding
@@ -951,12 +968,12 @@ public class LevelScreenEx extends View {
 	}
 
 	private void createGoatsInfoPanel(Set<String> types) {
-		
+
 		for (String symbol : types) {
 			final Goat goat = newGoat(symbol.charAt(0));
 			createGoatPanel(goat);
 		}
-		
+
 		Group scrollGroup = new Group(new AxisLayout.Horizontal());
 
 		if(this.goatHeads.size()>4){
@@ -1082,6 +1099,12 @@ public class LevelScreenEx extends View {
 		for (Square square : unitsLocations.keySet()) {
 			unit = unitsLocations.get(square);
 			unit.setSquare(square);
+
+			if(unit instanceof SpittingTroll || unit instanceof DiggingTroll){
+				unit.setTempNewX(this.segmentToX(unit.square().segment(), unit.type()));
+			}
+
+
 			if (square.distance() == 1 && unit.speed() != 0)
 				unit.setState(State.PUSHING);
 			else
@@ -1193,10 +1216,11 @@ public class LevelScreenEx extends View {
 		float moments = 0;
 		while (unit != null) {
 			boolean pushing = false;
-
+		
 			if (!unit.state().equals(State.PUSHING)
 					&& !unit.state().equals(State.BLOCKED) && unit.speed() != 0) {
 				hasMovingUnit = true;
+				
 
 				if (adjacent(unit, unit.front())) {
 					State state = unit.front().state();
@@ -1211,13 +1235,11 @@ public class LevelScreenEx extends View {
 						&& !unit.state().equals(State.BLOCKED)) {
 					// Handles collision.
 					if (adjacent(unit, unit.front())) {
+
 						unit.notifyColliedWithFront();
 						if (unit.front() != null)
 							unit.front().notifyColliedWithBack();
 						// Jumping goat becomes the head of a lane.
-						else if (unit instanceof JumpingGoat)
-							headGoats.put(unit.square().lane(), unit);
-
 						if (unit instanceof FastTroll) {
 							removeUnit(unit.front());
 							removeUnit(unit);
@@ -1225,13 +1247,13 @@ public class LevelScreenEx extends View {
 					}
 
 					if (!adjacent(unit, unit.front()) || unit.speed() == unit.front().speed()
-							|| unit.state().equals(State.JUMPING)) {
+							|| unit.state().equals(State.JUMPING) || unit.front() instanceof SpittingTroll) {
 						Square s1 = unit.square();
 						// Initialises the front square.
 						int moveDistance = unit.state().equals(State.JUMPING) ? 2 : 1;
 						Square s2 = new Square(s1.lane(),s1.segment() < bridgeLocation ? s1.segment() + moveDistance : s1.segment() - moveDistance);
 
-						s2.setX(segmentToX(s2.segment(),unit.widget().icon.get())+6);
+						s2.setX(segmentToX(s2.segment(),unit.type())+6);
 						s2.setY(s1.getY());
 
 						s2.setDistance(s1.distance() - moveDistance);
@@ -1245,17 +1267,21 @@ public class LevelScreenEx extends View {
 					}
 
 				}
-			} else if (unit.speed() != 0)
+			} else if (unit.speed() != 0){
 				pushing = true;
-
+				
+			}
+			
 			if (pushing) {
 				// Handles HungryTroll.
 				if (unit.square().distance() == 1
 						&& unit instanceof HungryTroll
 						&& !((HungryTroll) unit).hasEaten()) {
+
 					Unit head = headGoats.get(unit.square().lane());
 					if (head != null && head.square().distance() == 1
 							&& head instanceof Goat) {
+						unit.setState(State.SPECIALABILITY);
 						removeUnit(headGoats.get(unit.square().lane()));
 						((HungryTroll) unit).setEaten();
 						model.setGoatEaten();
@@ -1309,9 +1335,6 @@ public class LevelScreenEx extends View {
 		case 'T':
 			goat = new ButtingGoat();
 			break;
-		case 'J':
-			goat = new JumpingGoat();
-			break;
 		default:
 			goat = null;
 		}
@@ -1329,9 +1352,7 @@ public class LevelScreenEx extends View {
 			troll = new FastTroll();
 		else if (type.equals("digging"))
 			troll = new DiggingTroll();
-		else if (type.equals("barrow"))
-			troll = new BarrowTroll();
-		else if (type.equals("cheerLeader"))
+		else if (type.equals("cheerleader"))
 			troll = new CheerleaderTroll();
 		else if (type.equals("hungry"))
 			troll = new HungryTroll();
@@ -1408,6 +1429,7 @@ public class LevelScreenEx extends View {
 	// CALCULATION METHODS 										    ////
 	////////////////////////////////////////////////////////////////////
 
+	/////// Will need to cahnge this to account for middle pivot point ////
 	private float unitMoment(Unit unit) {
 		if (unit.square().lane() > pivotLocation)
 			return (unit.square().lane() - pivotLocation) * unit.force();
@@ -1421,19 +1443,25 @@ public class LevelScreenEx extends View {
 	// UTILITY METHODS 					       					    ////
 	////////////////////////////////////////////////////////////////////
 
-	private float segmentToX(float segment, Icon icon) {
+	private float segmentToX(float segment, String type) {
 		//We want our image centered, so we have to take away a third of the icon so it sits on the tile
-		if(segment>this.bridgeLocation){
-			//Do stuff here to fix things
+		float compensation=0;
+
+		if(type!=null && type.equals("spitting")){
+			compensation=30;
 		}
+		if(type!=null && type.equals("digging")){
+			compensation=-14;
+		} 
+
 		float tiledist = SQUARE_WIDTH * segment;
 		float tilespacing = INITIALEDGE + segment*TILEGAP;
-		return tiledist+tilespacing - (90/3);
+		return tiledist+tilespacing - (90/3) - compensation;
 	}
 
 	private float laneToY(float lane, Image img) {
 		//Start with square_height to push down, then calculat the negative offset from the height
-		float initOffset = 44;
+		float initOffset = 47;
 		float tiledist = (SQUARE_HEIGHT * (laneCount - lane));// - (img.height());
 		float tileSpacing = (laneCount-lane)*TILEGAP;
 		return initOffset + tiledist + tileSpacing;
@@ -1498,9 +1526,9 @@ public class LevelScreenEx extends View {
 		} else if(type.equals("digging")){
 			return this.diggingTrollLabel;
 		} else if(type.equals("spitting")){
-				return this.spittingTrollLabel;
+			return this.spittingTrollLabel;
 		}
-			
+
 		return new Label();
 	}
 
@@ -1636,7 +1664,10 @@ public class LevelScreenEx extends View {
 			}
 		}
 
-
+		//The special animations
+		names.add("animations/trolls_animations/special_animations/digging_troll_hiding");
+		names.add("animations/trolls_animations/special_animations/spitting_troll");
+		names.add("animations/trolls_animations/special_animations/hungry_troll");
 
 		//The UIBoards
 		names.add(MOMENTBOARD);
@@ -1689,7 +1720,7 @@ public class LevelScreenEx extends View {
 		walkAnims.put("normal", 16);
 		walkAnims.put("little", 16);
 		walkAnims.put("fast", 9);
-		walkAnims.put("cheerleader", 16);
+		walkAnims.put("cheerleader",14);
 		walkAnims.put("hungry", 1);
 		walkAnims.put("mega", 16);
 		walkAnims.put("spitting", 1);
