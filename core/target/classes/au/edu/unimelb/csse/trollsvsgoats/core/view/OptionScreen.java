@@ -20,7 +20,6 @@ import tripleplay.ui.layout.TableLayout;
 import tripleplay.util.Dragger;
 
 public class OptionScreen extends View {
-
 	private final int Y_START_POS = 0;
 	private static final int MAX_SPEED = 6;
 	private Label speedValue;
@@ -57,7 +56,7 @@ public class OptionScreen extends View {
 		Icon title = getIcon ("cut_screens/options/options_title");
 		top.add (AbsoluteLayout.at (new Label (titleBoard), title_board_x, title_board_y, titleBoard.width(), titleBoard.height()));
 		float title_x = title_board_x + titleBoard.width()/2 - title.width()/2;
-		float title_y = title_board_y + titleBoard.height()/2 - title.height()/2;
+		float title_y = title_board_y + titleBoard.height()/2 - title.height()/2 + 10;
 		top.add (AbsoluteLayout.at (new Label (title), title_x, title_y, title.width(), title.height()));
 		//Top ropes
 		Icon lRope = getIcon ("cut_screens/options/rope_title_l");
@@ -268,9 +267,6 @@ public class OptionScreen extends View {
 		names.add("cut_screens/options/screen_b_1024");
 		names.add("cut_screens/options/screen_b_1024_active");
 		names.add("cut_screens/options/screen_b_1024_inactive");
-
-		names.add("backgrounds/800_600/badges_back_800_600");
-		names.add("backgrounds/1024_720/badges_back_1024_720");
 
 		return names.toArray(new String[0]);
 	}

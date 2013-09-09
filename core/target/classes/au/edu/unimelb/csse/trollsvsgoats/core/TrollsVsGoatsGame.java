@@ -38,9 +38,10 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
     private MessageBox messageBox;
     private BadgesScreenEx badgesScreen;
     private OptionScreen optionScreen;
-    private HelpScreen helpScreen;
+    private HelpScreenEx helpScreen;
     private LevelWinScreen winScreen;
     private LevelLoseScreen loseScreen;
+    private LeaderBoard leaderboardScreen;
 
     //tripleplay 1.7.2
     private static final int UPDATE_RATE = 30; // FPS
@@ -61,9 +62,10 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
                 levelSelScreen = new LevelSelScreenEx(this),
                 new LevelScreenEx(this), badgesScreen = new BadgesScreenEx(this),
                 optionScreen = new OptionScreen(this),
-                helpScreen = new HelpScreen(this),
+                helpScreen = new HelpScreenEx(this),
                 winScreen = new LevelWinScreen(this),
-                loseScreen = new LevelLoseScreen(this)};
+                loseScreen = new LevelLoseScreen(this),
+                leaderboardScreen = new LeaderBoard(this, 1)};
     }
 
     @Override
@@ -234,6 +236,14 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
 				
 			}
         });
+    }
+    
+    public void loadLeaderboard(final int index, final boolean replace) {
+		LeaderBoard lb = new LeaderBoard(this, index);
+        if (replace)
+            stack.replace(lb, ScreenStack.NOOP);
+        else
+            stack.push(lb);
     }
 
     public void loadNextLevel() {

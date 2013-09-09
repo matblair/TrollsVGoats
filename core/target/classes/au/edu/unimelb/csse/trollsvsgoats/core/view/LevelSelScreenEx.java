@@ -51,6 +51,8 @@ public class LevelSelScreenEx extends View {
 			bg = getImage("backgrounds/1024_720/main_back_1024_720");
 		root.addStyles(Style.BACKGROUND.is(Background.image(bg)));
 		
+//		TopCroppedBackground tcb = new TopCroppedBackground(bg);
+//		topPanel.addStyles(Style.BACKGROUND.is(Background.instantiate(tcb, topPanel.size()).owner()));
 		//topPanel.addStyles(Style.BACKGROUND.is(Background.image(getImage("cut_screens/select_levels/title_board"))));
 
 		//topPanel.add(new Shim(0, 20));
@@ -59,6 +61,7 @@ public class LevelSelScreenEx extends View {
 		Group tiles = new Group(new AbsoluteLayout());
 		Group myroot = new Group(new AbsoluteLayout());
 		Group top = new Group(new AbsoluteLayout());
+		tiles.layer.setDepth(0);
 		
 		iconChildBoard = getIcon("cut_screens/select_levels/level_board");
 		Icon rope_l = getIcon("cut_screens/select_levels/rope");
@@ -86,7 +89,8 @@ public class LevelSelScreenEx extends View {
 
 
 		for (int i = 1; i <= tileCount; i++) {
-
+			final int _i = i;
+			
 			//add board
 			if(i==tileCount){
 				Icon board = getIcon("cut_screens/select_levels/level_board_ultra");
@@ -101,7 +105,22 @@ public class LevelSelScreenEx extends View {
 			//add level number button
 			Icon levelIcon = null;
 			
-			final int _i = i;
+			// Leaderboard link
+			int ldrBrdX = 233, ldrBrdY = y_pos+32;
+			if (i <= model.maxCompletedLevel() + 1) {
+				final Button leaderboardButton = createButton("score_b");
+				tiles.add (AbsoluteLayout.at (leaderboardButton, ldrBrdX, ldrBrdY));
+				leaderboardButton.clicked().connect(new UnitSlot() {
+					@Override
+					public void onEmit() {
+						game.loadLeaderboard(_i, false);
+					}
+				});
+			} else {
+				Icon leaderboardLocked = getIcon("cut_screens/select_levels/score_b_lock");
+				tiles.add (AbsoluteLayout.at (new Label (leaderboardLocked), ldrBrdX, ldrBrdY));
+			}
+			
 			if (i > model.maxCompletedLevel() + 1)
 			{
 				levelIcon = getIcon("cut_screens/select_levels/level_b_lock");
@@ -289,6 +308,7 @@ public class LevelSelScreenEx extends View {
 		names.add("cut_screens/select_levels/score_b_active");
 		names.add("cut_screens/select_levels/score_b_inactive");
 		names.add("cut_screens/select_levels/score_b_lock");
+		names.add("cut_screens/select_levels/score_b_select");
 		names.add("cut_screens/select_levels/scroll_arrow_down_active");
 		names.add("cut_screens/select_levels/scroll_arrow_down_inactive");
 		names.add("cut_screens/select_levels/scroll_arrow_down_select");
@@ -302,9 +322,6 @@ public class LevelSelScreenEx extends View {
 		names.add("cut_screens/select_levels/star");
 		names.add("cut_screens/select_levels/title_board");
 		names.add("cut_screens/select_levels/title_sl");
-
-		names.add("backgrounds/800_600/main_back_800_600");
-		names.add("backgrounds/1024_720/main_back_1024_720");
 
 		return names.toArray(new String[names.size()]);
 	}
