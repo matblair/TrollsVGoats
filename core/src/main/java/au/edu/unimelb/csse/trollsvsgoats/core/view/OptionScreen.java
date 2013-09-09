@@ -168,13 +168,11 @@ public class OptionScreen extends View {
 				
 				float targetSpeed = (MAX_SPEED - sliderPos) / 2;
 				game.setMovementTime(targetSpeed);
-				System.out.println(targetSpeed);
 			}
 		});
 		
 		tiles.add (AbsoluteLayout.at(speedSlider, 115, 107));
 		speedSlider.layer.setOrigin(-(MAX_SPEED - (int) (model.movementTime() * 2)) * 34, 0);
-		System.out.println(model.movementTime());
 		
 		// Screen size buttons
 		final Image screen800Sel = getImage("cut_screens/options/screen_b_800");
