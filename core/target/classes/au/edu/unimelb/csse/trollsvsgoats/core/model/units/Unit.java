@@ -11,7 +11,7 @@ import tripleplay.ui.layout.AbsoluteLayout;
 
 public abstract class Unit {
     public static enum State {
-        MOVING, PUSHING, REMOVED, BLOCKED, JUMPING
+        MOVING, PUSHING, REMOVED, BLOCKED, JUMPING, SPECIALABILITY
     };
 
     private float oldX = 0; //->
@@ -32,6 +32,8 @@ public abstract class Unit {
 
     Animation moveAnimation;
     Animation pushAnimation;
+    Animation specialAnimation;
+    
     private Image icon;
 
     private Button widget;
@@ -169,6 +171,10 @@ public abstract class Unit {
         this.pushAnimation = animaiton;
     }
 
+    public void setSpecialAnimation(Animation animaiton) {
+        this.specialAnimation = animaiton;
+    }
+    
     public Unit front() {
         return this.front;
     }

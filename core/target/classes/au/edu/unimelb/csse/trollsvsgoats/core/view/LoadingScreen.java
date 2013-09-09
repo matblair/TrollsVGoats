@@ -6,6 +6,7 @@ import playn.core.Font;
 import playn.core.Image;
 import playn.core.PlayN;
 import au.edu.unimelb.csse.trollsvsgoats.core.TrollsVsGoatsGame;
+import au.edu.unimelb.csse.trollsvsgoats.core.model.Animation;
 import tripleplay.ui.Background;
 import tripleplay.ui.Group;
 import tripleplay.ui.Label;
@@ -15,6 +16,8 @@ import java.net.URI;
 
 public class LoadingScreen extends View {
 
+	Animation loadingAnim;
+	
     public LoadingScreen(TrollsVsGoatsGame game) {
         super(game);
     }
@@ -36,5 +39,13 @@ public class LoadingScreen extends View {
     protected String title() {
         return null;
     }
+
+	@Override
+	public void update(int delta) {
+		super.update(delta);
+		if(this.loadingAnim!=null){
+			this.loadingAnim.nextFrame(delta);
+		}
+	}
 
 }

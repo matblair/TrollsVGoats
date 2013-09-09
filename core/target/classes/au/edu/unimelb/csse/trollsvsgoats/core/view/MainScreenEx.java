@@ -82,12 +82,14 @@ public class MainScreenEx extends View {
 		top.add(AbsoluteLayout.at (new Label (rRope), title_board_x+256, title_board_y-38, rRope.width(), rRope.height()));
 
 		Styles bigLabel = Styles.make(
-				Style.FONT.is(PlayN.graphics().createFont("Helvetica", Font.Style.BOLD, 20)),
-				Style.HALIGN.center, 
+				Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 20)),
+				Style.HALIGN.center,
+				Style.TEXT_EFFECT.shadow,
+				Style.TEXT_EFFECT.SHADOW.is(0xFF412C2C),
 				Style.COLOR.is(0xFFFFFFFF));
 		final Label labelUser = new Label(game.userName()).addStyles(bigLabel);
 		float labelWidth = 200;
-		top.add(AbsoluteLayout.at(labelUser, title_board_x + (titleBoard.width() - labelWidth)/2, title_board_y + 15 + titleBoard.height()/2, labelWidth, 0));
+		top.add(AbsoluteLayout.at(labelUser, title_board_x + (titleBoard.width() - labelWidth)/2, title_board_y + 5 + titleBoard.height()/2, labelWidth, 0));
 		
 		// Start button
 		final Button btnStart = createButton("button_b").setConstraint(Constraints.fixedSize(boardWidth, boardHeight));
@@ -137,21 +139,22 @@ public class MainScreenEx extends View {
 
 		y_pos += y_pos_offset;
 		
-		// Leaderboard button
-		final Button btnLeaderboards = createButton("button_b").setConstraint(Constraints.fixedSize(boardWidth, boardHeight));
-		tiles.add(AbsoluteLayout.at(btnLeaderboards, 0, y_pos, boardWidth, boardHeight));
-		tiles.add(AbsoluteLayout.at(new Label(rope_l), 12, y_pos-34, rope_l.width(), rope_l.height()));
-		tiles.add(AbsoluteLayout.at(new Label(rope_l), (boardWidth-45), y_pos-34, rope_l.width(), rope_l.height()));
-		btnLeaderboards.clicked().connect(new UnitSlot() {
-			@Override
-			public void onEmit() {
-				showTempMessageBox();
-			}
-		});
-		title = getIcon("cut_screens/home_page/t_liderboards");
-		tiles.add(AbsoluteLayout.at(new Label(title), (boardWidth - title.width())/2, y_pos + (boardHeight - title.height()) / 2, title.width(), title.height()));
+		//No longer neaded, being moved into level select
+//		// Leaderboard button
+//		final Button btnLeaderboards = createButton("button_b").setConstraint(Constraints.fixedSize(boardWidth, boardHeight));
+//		tiles.add(AbsoluteLayout.at(btnLeaderboards, 0, y_pos, boardWidth, boardHeight));
+//		tiles.add(AbsoluteLayout.at(new Label(rope_l), 12, y_pos-34, rope_l.width(), rope_l.height()));
+//		tiles.add(AbsoluteLayout.at(new Label(rope_l), (boardWidth-45), y_pos-34, rope_l.width(), rope_l.height()));
+//		btnLeaderboards.clicked().connect(new UnitSlot() {
+//			@Override
+//			public void onEmit() {
+//				showTempMessageBox();
+//			}
+//		});
+//		title = getIcon("cut_screens/home_page/t_liderboards");
+//		tiles.add(AbsoluteLayout.at(new Label(title), (boardWidth - title.width())/2, y_pos + (boardHeight - title.height()) / 2, title.width(), title.height()));
 
-		y_pos += y_pos_offset;
+		//y_pos += y_pos_offset;
 				
 		final Button btnHelp = createButton("button_u").setConstraint(Constraints.fixedSize(boardWidth, boardHeight));
 		tiles.add(AbsoluteLayout.at(btnHelp, 0, y_pos, boardWidth, boardHeight));

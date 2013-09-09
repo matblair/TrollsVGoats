@@ -369,13 +369,15 @@ public class LevelScreenEx extends View {
 		levelLabel.setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 26)),
 				Style.HALIGN.left, 
 				Style.COLOR.is(0xFFCCFF00),
-				Style.TEXT_EFFECT.shadow);
+				Style.TEXT_EFFECT.shadow,
+				Style.TEXT_EFFECT.SHADOW.is(0xFF412C2C));
 
 		topMomentPanel.add(AbsoluteLayout.at(levelLabel,this.width()/2 - 48,-45));
 
 		momentLabel = new Label();
 		momentLabel.setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 20)),
 				Style.TEXT_EFFECT.shadow,
+				Style.TEXT_EFFECT.SHADOW.is(0xFF412C2C),
 				Style.HALIGN.center, 
 				Style.COLOR.is(0xFFFFFFFF));
 		momentLabel.setConstraint(Constraints.fixedWidth(momentBoard.width()));
@@ -865,23 +867,28 @@ public class LevelScreenEx extends View {
 		Label speed = new Label(String.valueOf((int)troll.speed())).setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 10)),
 				Style.HALIGN.left, 
 				Style.COLOR.is(0xFFFFFFFF),
-				Style.TEXT_EFFECT.shadow);
+				Style.TEXT_EFFECT.shadow,
+				Style.TEXT_EFFECT.SHADOW.is(0xFF412C2C));
 		Label strength = new Label(Integer.toString((int)troll.speed())).setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 10)),
 				Style.HALIGN.left, 
 				Style.COLOR.is(0xFFFFFFFF),
-				Style.TEXT_EFFECT.shadow);
+				Style.TEXT_EFFECT.shadow,
+				Style.TEXT_EFFECT.SHADOW.is(0xFF412C2C));
 		Label name = new Label(troll.type().toUpperCase() + " TROLL").setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 12)),
 				Style.HALIGN.left, 
 				Style.COLOR.is(0xFFFFFFFF),
-				Style.TEXT_EFFECT.shadow);
+				Style.TEXT_EFFECT.shadow,
+				Style.TEXT_EFFECT.SHADOW.is(0xFF412C2C));
 		Label count = new Label("x" + (int) this.trollCounts.get(troll.type())).setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 16)),
 				Style.HALIGN.left, 
 				Style.COLOR.is(0xFF77FF00),
-				Style.TEXT_EFFECT.shadow);
+				Style.TEXT_EFFECT.shadow,
+				Style.TEXT_EFFECT.SHADOW.is(0xFF412C2C));
 		Label cost = new Label("$" + (int)troll.cost()).setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 16)),
 				Style.HALIGN.left, 
 				Style.COLOR.is(0xFFFFCC00),
-				Style.TEXT_EFFECT.shadow);
+				Style.TEXT_EFFECT.shadow,
+				Style.TEXT_EFFECT.SHADOW.is(0xFF412C2C));
 
 
 		//Position the labels
@@ -1031,15 +1038,18 @@ public class LevelScreenEx extends View {
 		Label speed = new Label(String.valueOf((int)goat.speed())).setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 10)),
 				Style.HALIGN.left, 
 				Style.COLOR.is(0xFFFFFFFF),
-				Style.TEXT_EFFECT.shadow);
+				Style.TEXT_EFFECT.shadow,
+				Style.TEXT_EFFECT.SHADOW.is(0xFF412C2C));
 		Label strength = new Label(String.valueOf((int)goat.speed())).setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 10)),
 				Style.HALIGN.left, 
 				Style.COLOR.is(0xFFFFFFFF),
-				Style.TEXT_EFFECT.shadow);
+				Style.TEXT_EFFECT.shadow,
+				Style.TEXT_EFFECT.SHADOW.is(0xFF412C2C));
 		Label name = new Label(goat.type().toUpperCase() + " GOAT").setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 12)),
 				Style.HALIGN.left, 
 				Style.COLOR.is(0xFFFFFFFF),
-				Style.TEXT_EFFECT.shadow);
+				Style.TEXT_EFFECT.shadow,
+				Style.TEXT_EFFECT.SHADOW.is(0xFF412C2C));
 
 		//Position the labels
 		goatGroup.add(AbsoluteLayout.at(name, 0,-10));
