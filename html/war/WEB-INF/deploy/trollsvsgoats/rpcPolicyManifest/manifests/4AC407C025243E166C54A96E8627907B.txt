@@ -1,0 +1,2 @@
+serviceClass: au.edu.unimelb.csse.mugle.client.api.HighscoreService
+path: F92343D00EC7A557945538DDB62F8E73.gwt.rpc

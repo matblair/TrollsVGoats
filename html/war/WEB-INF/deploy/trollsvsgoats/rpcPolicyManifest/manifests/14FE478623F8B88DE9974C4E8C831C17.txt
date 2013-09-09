@@ -1,0 +1,2 @@
+serviceClass: au.edu.unimelb.csse.mugle.client.api.BadgeService
+path: 9E5D87B2AFB9B628869ABB7EA5A28C93.gwt.rpc
