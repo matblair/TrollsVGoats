@@ -19,8 +19,10 @@ import tripleplay.ui.Constraints;
 import tripleplay.ui.Group;
 import tripleplay.ui.Icon;
 import tripleplay.ui.Label;
+import tripleplay.ui.Layout.Constraint;
 import tripleplay.ui.Style;
 import tripleplay.ui.Styles;
+import tripleplay.ui.bgs.Scale9Background;
 import tripleplay.ui.layout.AbsoluteLayout;
 import tripleplay.ui.layout.AxisLayout;
 
@@ -44,6 +46,7 @@ public class MainScreenEx extends View {
 		TOP_MARGIN = (int)LOCAL_TOP_MARGIN;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected Group createIface() {
 		Image bg;

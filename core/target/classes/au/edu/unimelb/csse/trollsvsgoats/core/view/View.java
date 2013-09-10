@@ -106,9 +106,12 @@ public abstract class View extends UIAnimScreen {
         });
         if (subtitle() != null)
             root.add(new Label(subtitle()));
+        
         Group iface = createIface();
-        if (iface != null)
+        if (iface != null) {
             root.add(iface.setConstraint(AxisLayout.stretched()));
+            iface.layer.setDepth(2);
+        }
 
         Group bottom = createButtomPanel();
         if (bottom != null)

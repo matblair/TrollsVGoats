@@ -167,6 +167,7 @@ public class LevelScreenEx extends View {
 
 	//Walk animations
 	private static Map<String, Integer> walkAnims = new HashMap<String, Integer>();
+	private static Map<String, Integer> pushAnims = new HashMap<String, Integer>();
 
 	//Our count labels to update
 	protected Label bigTrollLabel;
@@ -379,8 +380,9 @@ public class LevelScreenEx extends View {
 				Style.COLOR.is(0xFFFFFFFF));
 		momentLabel.setConstraint(Constraints.fixedWidth(momentBoard.width()));
 		momentLabel.text.update(String.valueOf("0 N/m"));
-		horizTitle.add(new Shim(365,0));
-		horizTitle.add(momentLabel);
+		horizTitle.add(new Shim(360,0));
+		//horizTitle.add(momentLabel);
+		topMomentPanel.add(AbsoluteLayout.at(momentLabel, this.width()/2-36, 15));
 		horizTitle.add(new Shim(290,0));
 
 	}
@@ -472,8 +474,61 @@ public class LevelScreenEx extends View {
 					// mouse clicks.
 					@Override
 					public void onMouseDown(ButtonEvent event) {
-						deployTroll(square, _distance, _segment, _lane, _isTrollSide, _x, _y);
+						if(!unitsLocations.containsKey(square)){
+							System.out.println("No a unit");
+							deployTroll(square, _distance, _segment, _lane, _isTrollSide, _x, _y);
+						} else {
+							Unit u = unitsLocations.get(square);
+							if(u instanceof Troll && !started && !paused){
+								Troll troll = (Troll) u;
+								troll.widget().layer.destroy();
+								unitsLocations.remove(square);
+								trollCounts.put(troll.type(),
+										trollCounts.get(troll
+												.type()) + 1);
+								//updateTrollCounter(troll.type());
+								updateCost(-troll.cost());
+								updateTrollInfo(troll.type());
+							}
+						}
 					}
+
+					@Override
+					public void onMouseOver(MotionEvent event) {
+						if(unitsLocations.containsKey(square)){
+							Unit u = unitsLocations.get(square);
+							if(u instanceof Troll){
+								Troll troll = (Troll) u;
+								if(!trollIcons.get(troll.type()).equals(selTrollType)){
+									trollIcons.get(troll.type()).setStyles(
+											selOn);
+								}
+								updateTrollInfo(troll.type());
+								if (showUnitMoment)
+								{
+									updateMomentLabel((int) unitMoment(troll));
+								}
+							}
+						}
+					}
+
+					@Override
+					public void onMouseOut(MotionEvent event) {
+						if(unitsLocations.containsKey(square)){
+							Unit u = unitsLocations.get(square);
+							if(u instanceof Troll){
+								Troll troll = (Troll) u;
+
+								if(!trollIcons.get(troll.type()).equals(selTrollType)){
+									trollIcons.get(troll.type()).setStyles(
+											selOff);
+								}
+
+								updateMomentLabel(moment);
+							}
+						}
+					}
+
 				});
 				break;  
 				// Gate.
@@ -521,7 +576,7 @@ public class LevelScreenEx extends View {
 
 
 			final Troll troll = newTroll(selTrollType);
-			
+
 			if ((troll instanceof DiggingTroll || troll instanceof SpittingTroll)
 					&& _distance > 4)
 				return;
@@ -546,14 +601,10 @@ public class LevelScreenEx extends View {
 					getImage("animations/trolls_animations/walk/"+selTrollType+"_troll_walk"), walkAnims.get(selTrollType), troll
 					.frameTime());
 
-			if(troll instanceof CheerleaderTroll){
-				Animation pushAnimation = new Animation(getImage("animations/trolls_animations/push/" + selTrollType + "_troll_push"), 1, troll.frameTime());
-				troll.setPushAnimation(pushAnimation);
 
-			} else {
-				Animation pushAnimation = new Animation(getImage("animations/trolls_animations/push/" + selTrollType + "_troll_push"), 23, troll.frameTime());
-				troll.setPushAnimation(pushAnimation);
-			}
+			Animation pushAnimation = new Animation(getImage("animations/trolls_animations/push/" + selTrollType + "_troll_push"), pushAnims.get(selTrollType), troll.frameTime());
+			troll.setPushAnimation(pushAnimation);
+
 
 			if(troll instanceof DiggingTroll || troll instanceof SpittingTroll){
 				troll.setState(State.SPECIALABILITY);
@@ -588,50 +639,11 @@ public class LevelScreenEx extends View {
 			layer.setOrigin(0, getImage("animations/trolls_animations/normal/"+selTrollType+"_troll_normal")
 					.height());
 			layer.setDepth(1);
+			layer.setInteractive(false);
 
 			middleDrawingPanel.add(AbsoluteLayout.at(troll.widget(), _x, _y));
 			troll.setParent(middleDrawingPanel);
 
-			layer.addListener(new Mouse.LayerAdapter() {
-				@Override
-				public void onMouseDown(ButtonEvent event) {
-					// Removed the troll if game is not yet
-					// started.
-					if (!started && !paused) {
-						troll.widget().layer.destroy();
-						unitsLocations.remove(square);
-						trollCounts.put(troll.type(),
-								trollCounts.get(troll
-										.type()) + 1);
-						//updateTrollCounter(troll.type());
-						updateCost(-troll.cost());
-						updateTrollInfo(troll.type());
-					}
-				}
-
-				@Override
-				public void onMouseOver(MotionEvent event) {
-					if(!trollIcons.get(troll.type()).equals(selTrollType)){
-						trollIcons.get(troll.type()).setStyles(
-								selOn);
-					}
-					updateTrollInfo(troll.type());
-					if (showUnitMoment)
-					{
-						updateMomentLabel((int) unitMoment(troll));
-					}
-				}
-
-				@Override
-				public void onMouseOut(MotionEvent event) {
-					if(!trollIcons.get(troll.type()).equals(selTrollType)){
-
-						trollIcons.get(troll.type()).setStyles(
-								selOff);
-					}
-					updateMomentLabel(moment);
-				}
-			});
 			updateCost(troll.cost());
 			updateTrollInfo(troll.type());
 			playSound("sound_unitDeployed");
@@ -1216,11 +1228,11 @@ public class LevelScreenEx extends View {
 		float moments = 0;
 		while (unit != null) {
 			boolean pushing = false;
-		
+
 			if (!unit.state().equals(State.PUSHING)
 					&& !unit.state().equals(State.BLOCKED) && unit.speed() != 0) {
 				hasMovingUnit = true;
-				
+
 
 				if (adjacent(unit, unit.front())) {
 					State state = unit.front().state();
@@ -1269,9 +1281,9 @@ public class LevelScreenEx extends View {
 				}
 			} else if (unit.speed() != 0){
 				pushing = true;
-				
+
 			}
-			
+
 			if (pushing) {
 				// Handles HungryTroll.
 				if (unit.square().distance() == 1
@@ -1725,6 +1737,16 @@ public class LevelScreenEx extends View {
 		walkAnims.put("mega", 16);
 		walkAnims.put("spitting", 1);
 		walkAnims.put("digging", 1);
+
+		//Initialise the hashmap
+		pushAnims.put("normal", 22);
+		pushAnims.put("little", 23);
+		pushAnims.put("fast", 23);
+		pushAnims.put("cheerleader",1);
+		pushAnims.put("hungry", 23);
+		pushAnims.put("mega", 23);
+		pushAnims.put("spitting", 1);
+		pushAnims.put("digging", 1);
 
 
 		//Add the label icons for the bottom
