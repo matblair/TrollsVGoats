@@ -1,0 +1,2 @@
+serviceClass: au.edu.unimelb.csse.mugle.client.multiplayer.api.MultiPlayerGameService
+path: 52E1F507824CDBCF09AA32E0206E9925.gwt.rpc
