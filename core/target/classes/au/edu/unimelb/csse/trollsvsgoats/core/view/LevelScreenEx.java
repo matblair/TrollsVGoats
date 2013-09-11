@@ -1303,7 +1303,7 @@ public class LevelScreenEx extends View {
 					if (head != null && head.square().distance() == 1
 							&& head instanceof Goat) {
 						//Play the eating troll animation
-						unit.setPrvState(unit.state())
+						unit.setPrvState(unit.state());
 						unit.setState(State.SPECIALABILITY);
 						head.setState(State.DYING);
 						((HungryTroll) unit).setEaten();
