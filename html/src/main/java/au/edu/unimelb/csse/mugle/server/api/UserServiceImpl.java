@@ -6,16 +6,16 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 @SuppressWarnings("serial")
 public class UserServiceImpl extends RemoteServiceServlet implements
-		UserService {
+        UserService {
 
-	@Override
-	public String getUserNickName() {
-		return "default nickname";
-	}
+    @Override
+    public String getUserNickName() {
+        return "default nickname";
+    }
 
-	@Override
-	public String getUserID() {
-		return "default_userid";
-	}
+    @Override
+    public String getUserID() {
+        return "default_userid";
+    }
 
 }

@@ -1,5 +1,7 @@
 package au.edu.unimelb.csse.trollsvsgoats.core.model.units;
 
+import java.util.Map;
+
 public class CheerleaderTroll extends Troll {
 
     @Override
@@ -10,7 +12,7 @@ public class CheerleaderTroll extends Troll {
     }
 
     @Override
-    public void notifyColliedWithFront() {
+    public void notifyColliedWithFront(Map<Integer, Unit> headTrolls, Map<Integer, Unit> headGoats) {
         Unit unit = this.front();
         if (unit.state().equals(State.PUSHING)) {
             while (unit != null) {

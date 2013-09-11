@@ -1,5 +1,7 @@
 package au.edu.unimelb.csse.trollsvsgoats.core.model.units;
 
+import java.util.Map;
+
 public class DiggingTroll extends Troll {
 
 	@Override
@@ -10,10 +12,18 @@ public class DiggingTroll extends Troll {
 	}
 
 	@Override
-	public void notifyColliedWithBack() {
-		this.back().widget().layer.setVisible(false);
-		this.back().setState(State.REMOVED);
-		removeBack();
+	public void notifyColliedWithBack(Map<Integer, Unit> headTrolls, Map<Integer, Unit> headGoats) {
+		if(this.back()!=null && (!(this.back() instanceof ButtingGoat))){
+			this.back().widget().layer.setVisible(false);
+			this.back().setState(State.REMOVED);
+			
+			//Update the lists
+			if(this.back().back()!=null){
+				headGoats.put(this.back().back().square().lane(), (this.back().back()));
+			}
+			
+			removeBack();
+		}
 	}
 
 	@Override

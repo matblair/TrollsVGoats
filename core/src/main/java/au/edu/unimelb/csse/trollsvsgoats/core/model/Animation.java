@@ -61,4 +61,8 @@ public class Animation {
         }
         return frame(frameIndex);
     }
+    
+    public boolean isFinished(){
+    	return frameIndex>=(frameCount-1);
+    }
 }

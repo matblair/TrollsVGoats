@@ -15,15 +15,16 @@ import au.edu.unimelb.csse.mugle.shared.multiplayer.api.GameState;
 import au.edu.unimelb.csse.trollsvsgoats.core.model.Badge;
 import au.edu.unimelb.csse.trollsvsgoats.core.model.GameModel;
 import au.edu.unimelb.csse.trollsvsgoats.core.model.PersistenceClient;
-import au.edu.unimelb.csse.trollsvsgoats.core.model.PersistenceClient.Callback;
 
 public class MuglePersistenceClient implements PersistenceClient {
 
     //mugle-new
 	//private static final String gameToken = "aecc949c-ab95-4ade-93cf-ebb414a84ff4";
 	//mugle-test
-    //private static final String gameToken = "d63700f5-f095-49a4-8e39-41555ee3d0ec";
+//    private static final String gameToken = "d63700f5-f095-49a4-8e39-41555ee3d0ec";
+	
 	private static final String gameToken = "aa1505e5-8f50-4059-a9e5-2ac9b7cb2f41";
+	
     private String instanceToken;
     private boolean isSoundEnabled = true;
     private int screenWidth;
@@ -348,7 +349,8 @@ public class MuglePersistenceClient implements PersistenceClient {
 	@Override
 	public void getRankedHighScoresFor(
 			Callback<LinkedHashMap<String, Integer>> callBack) {
+		// TODO Auto-generated method stub
+		
 	}
-    
 
 }

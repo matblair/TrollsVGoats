@@ -16,19 +16,19 @@ public class BadgeServiceImpl extends RemoteServiceServlet implements
         BadgeService {
     /** Test implementation: Hard-code some badges for the test game. */
     private static Map<String, Badge> static_badge_map;
-    /**
-     * Test implementation: Store the state in memory. Maps game tokens onto a
-     * map from badge names to user-badges.
+    /** Test implementation: Store the state in memory.
+     * Maps game tokens onto a map from badge names to user-badges.
      */
-    private static Map<String, Map<String, UserBadge>> game_badge_map = new HashMap<String, Map<String, UserBadge>>();
+    private static Map<String, Map<String, UserBadge>> game_badge_map =
+            new HashMap<String, Map<String, UserBadge>>();
 
-    static {
+    static
+    {
         static_badge_map = new HashMap<String, Badge>();
-
-        static_badge_map.put("firstBlood", new Badge("firstBlood",
-                "First Blood", "First Goat eaten", 0));
-        static_badge_map.put("momentExpert", new Badge("momentExpert",
-                "Moment Expert", "First level that doesn't leave 0 N/m", 0));
+        static_badge_map.put("rescueSnow",
+            new Badge("rescueSnow", "Mirror, mirror", "Rescue Snow White", 0));
+        static_badge_map.put("rescueDwarves",
+                new Badge("rescueDwarves", "Hi ho", "Rescue the seven dwarves", 7));
     }
 
     @Override
@@ -53,16 +53,18 @@ public class BadgeServiceImpl extends RemoteServiceServlet implements
     }
 
     private UserBadge get_userbadge(String gameToken, String name)
-            throws GameTokenError, BadgeError {
+        throws GameTokenError, BadgeError {
         GameToken.validate_format(gameToken);
-        this.get_badge(name); // Check that this is really a badge
+        this.get_badge(name);   // Check that this is really a badge
         Map<String, UserBadge> badge_map = game_badge_map.get(gameToken);
-        if (badge_map == null) {
+        if (badge_map == null)
+        {
             badge_map = new HashMap<String, UserBadge>();
             game_badge_map.put(gameToken, badge_map);
         }
         UserBadge badge = badge_map.get(name);
-        if (badge == null) {
+        if (badge == null)
+        {
             badge = new UserBadge();
             badge_map.put(name, badge);
         }
@@ -81,21 +83,21 @@ public class BadgeServiceImpl extends RemoteServiceServlet implements
         UserBadge ub = this.get_userbadge(gameToken, name);
         Badge b = this.get_badge(name);
         if (amount < 0)
-            throw new BadgeError(
-                    "incrementProgress called with negative amount");
+            throw new BadgeError("incrementProgress called with negative amount");
         int maxProgress = b.getMaxProgress();
         if (maxProgress == 0)
-            throw new BadgeError(
-                    "incrementProgress called on non-progress badge "
-                            + b.getName());
+            throw new BadgeError("incrementProgress called on non-progress badge "
+                    + b.getName());
         int new_progress = ub.progress + amount;
         if (new_progress > maxProgress)
             new_progress = maxProgress;
         ub.progress = new_progress;
-        if (new_progress == maxProgress) {
+        if (new_progress == maxProgress)
+        {
             ub.achieved = true;
             return true;
-        } else
+        }
+        else
             return false;
     }
 

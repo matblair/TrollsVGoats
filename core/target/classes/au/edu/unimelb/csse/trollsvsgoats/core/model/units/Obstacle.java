@@ -1,5 +1,7 @@
 package au.edu.unimelb.csse.trollsvsgoats.core.model.units;
 
+import java.util.Map;
+
 public class Obstacle extends Unit {
 
     @Override
@@ -9,7 +11,7 @@ public class Obstacle extends Unit {
     }
 
     @Override
-    public void notifyColliedWithBack() {
+    public void notifyColliedWithBack(Map<Integer, Unit> headTrolls, Map<Integer, Unit> headGoats) {
         this.back().setState(State.BLOCKED);
     }
 
