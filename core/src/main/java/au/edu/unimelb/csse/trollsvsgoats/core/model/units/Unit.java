@@ -49,7 +49,7 @@ public abstract class Unit {
 	protected Group parent;
 	protected boolean canMove = false;
 	protected float moveDelta = -1;
-	
+
 	private boolean dead=false;
 
 
@@ -297,9 +297,11 @@ public abstract class Unit {
 				widget().icon.update(Icons.image(dyingAnimation.nextFrame(delta)));
 				if(dyingAnimation.isFinished()){
 					dead=true;
-					state = State.REMOVED;
+					if(!(this instanceof Troll)){
+						state = State.REMOVED;
+					}
 				}      	
-			} else {
+			} else if(!dead) {
 				state = State.REMOVED;
 			}
 		}

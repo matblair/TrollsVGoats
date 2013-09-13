@@ -381,10 +381,9 @@ public class LevelScreenEx extends View {
 				Style.COLOR.is(0xFFFFFFFF));
 		momentLabel.setConstraint(Constraints.fixedWidth(momentBoard.width()));
 		momentLabel.text.update(String.valueOf("0 N/m"));
-		horizTitle.add(new Shim(360,0));
+		horizTitle.add(new Shim(760,0));
 		//horizTitle.add(momentLabel);
 		topMomentPanel.add(AbsoluteLayout.at(momentLabel, this.width()/2-36, 15));
-		horizTitle.add(new Shim(290,0));
 
 	}
 
@@ -485,7 +484,6 @@ public class LevelScreenEx extends View {
 								trollCounts.put(troll.type(),
 										trollCounts.get(troll
 												.type()) + 1);
-								//updateTrollCounter(troll.type());
 								updateCost(-troll.cost());
 								updateTrollInfo(troll.type());
 							}
@@ -506,16 +504,6 @@ public class LevelScreenEx extends View {
 								if (showUnitMoment)
 								{
 									updateMomentLabel((int) unitMoment(troll));
-								}
-							} else if(u instanceof Goat){
-								Goat goat = (Goat) u;
-								if (preSelGoat != null)
-									preSelGoat.setStyles(selOff);
-								preSelGoat = goatIcons.get(goat.type()).setStyles(
-										selOn);
-								if (showUnitMoment)
-								{
-									updateMomentLabel((int) unitMoment(goat));
 								}
 							}
 						}
@@ -656,7 +644,7 @@ public class LevelScreenEx extends View {
 		}
 	}
 
-	public void deployGoat(final GroupLayer squareLayer, int segment, char tileSymbol, int lane, Button tile, int distance, Image image){
+	public void deployGoat(final GroupLayer squareLayer, final int segment, char tileSymbol, final int lane, Button tile, final int distance, Image image){
 
 		Label goatTile = new Label().addStyles(Style.BACKGROUND
 				.is(Background.blank())).setConstraint(Constraints.fixedWidth(SQUARE_WIDTH));
@@ -672,7 +660,9 @@ public class LevelScreenEx extends View {
 		goat.setParent(middleDrawingPanel);
 		goatTypes.add(String.valueOf(tileSymbol));
 		goat.setLayer(tile);
-		Square square = new Square(lane, segment);
+		tile.setConstraint(Constraints.fixedHeight(SQUARE_HEIGHT));
+		
+		final Square square = new Square(lane, segment);
 		square.setDistance(distance);
 		if (distance == 1)
 			goat.setState(State.PUSHING);
@@ -683,7 +673,6 @@ public class LevelScreenEx extends View {
 		square.setX(midPanelX);
 		square.setY(midPanelY);
 		goat.setSquare(square);
-		unitsLocations.put(square, goat);
 		Animation moveAnimation = new Animation(getTileImages(
 				tileSymbol).get(1), 16, goat.frameTime());
 		goat.setMoveAnimation(moveAnimation);
@@ -693,12 +682,53 @@ public class LevelScreenEx extends View {
 		
 		Animation dyingAnimation = new Animation(getImage("animations/goats_animations/dying/" + goat.type() + "_goat_eaten"),24,0.01f);
 		goat.setDyingAnimation(dyingAnimation);
-
+		unitsLocations.put(square, goat);
 
 		goat.setDefaultImage(image);
 		squareLayer.setOrigin(0, image.height());
 		squareLayer.setDepth(1);
 		squareLayer.setInteractive(false);
+		squareLayer.addListener(new Mouse.LayerAdapter(){
+			// Deploy a troll at the square where the
+			// mouse clicks.
+			@Override
+			public void onMouseDown(ButtonEvent event) {
+				System.out.println("HELLO");
+				if(!unitsLocations.containsKey(square)){
+					final float _x = midPanelX;
+					final float _y = midPanelY + SQUARE_HEIGHT;
+					deployTroll(square, distance, segment, lane, false, _x, _y);
+				} else {
+					Unit u = unitsLocations.get(square);
+					if(u instanceof Troll && !started && !paused){
+						Troll troll = (Troll) u;
+						troll.widget().layer.destroy();
+						unitsLocations.remove(square);
+						trollCounts.put(troll.type(),
+								trollCounts.get(troll
+										.type()) + 1);
+						updateCost(-troll.cost());
+						updateTrollInfo(troll.type());
+					}
+				}
+			}
+			
+			@Override
+			public void onMouseOver(MotionEvent event) {
+				if(unitsLocations.containsKey(square)){ 							
+					Unit u = unitsLocations.get(square);
+					updateMomentLabel((int) unitMoment(u));
+				}
+			}
+
+			@Override
+			public void onMouseOut(MotionEvent event) {
+				if(unitsLocations.containsKey(square)){
+					updateMomentLabel(moment);
+				}
+			}
+			
+		});
 	}
 
 	public void createGateTile(int lane, GroupLayer squareLayer){
@@ -895,8 +925,20 @@ public class LevelScreenEx extends View {
 				Style.COLOR.is(0xFFFFFFFF),
 				Style.TEXT_EFFECT.shadow,
 				Style.SHADOW.is(0xFF412C2C));
-		Label name = new Label(troll.type().toUpperCase() + " TROLL").setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 12)),
-				Style.HALIGN.left, 
+		
+		String strName;
+		float strX = 0;
+		if(troll.type().length()>6){
+			strX = -22;
+			strName = troll.type().toUpperCase() + "\n";
+		} else {
+			strX = -10;
+			strName = troll.type().toUpperCase();
+		}
+		Label name = new Label(strName + " TROLL").setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 12)),
+				Style.HALIGN.center,
+				Style.VALIGN.bottom,
+				Style.TEXT_WRAP.on,
 				Style.COLOR.is(0xFFFFFFFF),
 				Style.TEXT_EFFECT.shadow,
 				Style.SHADOW.is(0xFF412C2C));
@@ -913,7 +955,7 @@ public class LevelScreenEx extends View {
 
 
 		//Position the labels
-		goatGroup.add(AbsoluteLayout.at(name, 0,-10));
+		goatGroup.add(AbsoluteLayout.at(name, 0, strX));
 		goatGroup.add(AbsoluteLayout.at(count, 56,5));
 		goatGroup.add(AbsoluteLayout.at(cost, 6, 5));
 
@@ -1299,7 +1341,6 @@ public class LevelScreenEx extends View {
 						&& !((HungryTroll) unit).hasEaten()) {
 
 					Unit head = headGoats.get(unit.square().lane());
-					System.out.println(head.type());
 					if (head != null && head.square().distance() == 1
 							&& head instanceof Goat) {
 						//Play the eating troll animation
@@ -1309,6 +1350,17 @@ public class LevelScreenEx extends View {
 						((HungryTroll) unit).setEaten();
 						model.setGoatEaten();
 						moments += unitMoment(head);
+					} else if (head!=null && head instanceof Troll && head.back()!=null){
+						Unit headGoat = head.back();
+						if(headGoat.square().distance()==1){
+							//Play the eating troll animation
+							unit.setPrvState(unit.state());
+							unit.setState(State.SPECIALABILITY);
+							headGoat.setState(State.DYING);
+							((HungryTroll) unit).setEaten();
+							model.setGoatEaten();
+							moments += unitMoment(headGoat);
+						}
 					}
 				}
 				if (unit.square().distance() <= PUSHING_DISTANCE && !unit.state().equals(State.SPECIALABILITY)) {
