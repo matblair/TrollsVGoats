@@ -63,7 +63,7 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
                 new LevelScreenEx(this), badgesScreen = new BadgesScreenEx(this),
                 optionScreen = new OptionScreen(this),
                 helpScreen = new HelpScreenEx(this),
-                winScreen = new LevelWinScreen(this),
+                winScreen = new LevelWinScreen(null,this),
                 loseScreen = new LevelLoseScreen(this),
                 leaderboardScreen = new LeaderBoard(this, 1)};
     }
@@ -164,8 +164,9 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
         stack.push(themeSelScreen);
     }
     
-    public void showWinnerScreen() {
-    	stack.replace(winScreen);
+    public void showWinnerScreen(Json.Object scores) {
+    	LevelWinScreen screen = new LevelWinScreen(scores,this);
+    	stack.replace(screen);
     }
     
     public void showLoserScreen() {
@@ -250,7 +251,8 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
         loadLevel(model.nextLevelIndex(), true);
     }
 
-    /** Called when completed the current level, persists the level index. */
+    /** Called when completed the current level, persists the level index. 
+     * @param cost */
     public void levelCompleted(int score) {
         model.levelCompleted(score);
         persistence.persist(model);

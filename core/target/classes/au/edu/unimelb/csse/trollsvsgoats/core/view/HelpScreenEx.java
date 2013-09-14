@@ -1,5 +1,8 @@
 package au.edu.unimelb.csse.trollsvsgoats.core.view;
 
+import static playn.core.PlayN.assets;
+import static playn.core.PlayN.log;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -10,10 +13,12 @@ import playn.core.Mouse;
 import playn.core.PlayN;
 import playn.core.Mouse.ButtonEvent;
 import playn.core.Mouse.MotionEvent;
+import playn.core.util.Callback;
 import au.edu.unimelb.csse.trollsvsgoats.core.TrollsVsGoatsGame;
 import au.edu.unimelb.csse.trollsvsgoats.core.model.Badge;
 import react.Function;
 import react.UnitSlot;
+import tripleplay.game.ScreenStack;
 import tripleplay.ui.Background;
 import tripleplay.ui.Button;
 import tripleplay.ui.ClickableTextWidget;
@@ -32,6 +37,23 @@ import tripleplay.ui.layout.AxisLayout;
 public class HelpScreenEx extends View {
 	private final int Y_START_POS = 0;
 	
+	private Styles bigLabel = Styles.make(
+			Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 15)),
+			Style.HALIGN.center,
+			Style.TEXT_EFFECT.shadow,
+			Style.TEXT_EFFECT.SHADOW.is(0xFF412C2C),
+			Style.COLOR.is(0xFFFFFFFF));
+	
+	private Styles helpStyle = Styles.make(
+			//Style.BACKGROUND.is(Background.solid(bgColor)),
+			Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.PLAIN, 10)),
+			Style.TEXT_WRAP.on,
+			Style.HALIGN.left,
+			Style.TEXT_EFFECT.shadow,
+			Style.TEXT_EFFECT.SHADOW.is(0xFF412C2C),
+			Style.COLOR.is(0xFFFFFFFF));
+	private Label helpText;
+	
 	public HelpScreenEx(TrollsVsGoatsGame game) {
 		super(game);
 	}
@@ -40,9 +62,9 @@ public class HelpScreenEx extends View {
 	protected Group createIface() {
 		Image bg;
 		if (this.width() == 800)
-			bg = getImage("backgrounds/800_600/main_back_800_600");
+			bg = getImage("backgrounds/800_600/help_back_800_600");
 		else
-			bg = getImage("backgrounds/1024_720/main_back_1024_720");
+			bg = getImage("backgrounds/1024_720/help_back_1024_720");
 		root.addStyles(Style.BACKGROUND.is(Background.image(bg)));
 		
 		topPanel.addStyles(Style.BACKGROUND.is(Background.blank()));
@@ -78,22 +100,18 @@ public class HelpScreenEx extends View {
 		tiles.add(AbsoluteLayout.at (new Label(board), 0, 0));
 		tiles.add(AbsoluteLayout.at(new Label(rope_l), 12, -34, rope_l.width(), rope_l.height()));
 		tiles.add(AbsoluteLayout.at(new Label(rope_l), (boardWidth-46), -34, rope_l.width(), rope_l.height()));
+		helpText = new Label().setStyles(helpStyle);
+		tiles.add(AbsoluteLayout.at(helpText, 20, 30, 300, 150));
 		
 		// Left boards
 		int leftXPos = (int) (title_board_x - getIcon("cut_screens/help/tab_button_active").width() - 60);
 		int leftYPos = 45;
 		int leftYIncr = (int) (getIcon("cut_screens/help/tab_button_active").height() + 4);
-		Styles bigLabel = Styles.make(
-				Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 15)),
-				Style.HALIGN.center,
-				Style.TEXT_EFFECT.shadow,
-				Style.TEXT_EFFECT.SHADOW.is(0xFF412C2C),
-				Style.COLOR.is(0xFFFFFFFF));
 		float labelWidth = 150;
 		float labelXPos = leftXPos + getIcon("cut_screens/help/tab_button_active").width()/2 - labelWidth/2;
 		
 		// introduction
-		final Button introButton = createButton("tab_button");
+		final Button introButton = createButton("tab_button", "introduction");
 		left.add(AbsoluteLayout.at(introButton, leftXPos, leftYPos));
 		final Label labelIntro = new Label("Introduction").setStyles(bigLabel);
 		left.add(AbsoluteLayout.at (labelIntro, labelXPos, leftYPos+20, labelWidth, 20));
@@ -105,7 +123,7 @@ public class HelpScreenEx extends View {
 		leftYPos += leftYIncr;
 		
 		// deployment
-		final Button deployButton = createButton("tab_button");
+		final Button deployButton = createButton("tab_button", "deployment");
 		left.add(AbsoluteLayout.at(deployButton, leftXPos, leftYPos));
 		final Label labelDeploy = new Label("Deployment").setStyles(bigLabel);
 		left.add(AbsoluteLayout.at (labelDeploy, labelXPos, leftYPos+20, labelWidth, 20));
@@ -116,7 +134,7 @@ public class HelpScreenEx extends View {
 		leftYPos += leftYIncr;
 		
 		// running
-		final Button runButton = createButton("tab_button");
+		final Button runButton = createButton("tab_button", "running");
 		left.add(AbsoluteLayout.at(runButton, leftXPos, leftYPos));
 		final Label labelRun = new Label("Running").setStyles(bigLabel);
 		left.add(AbsoluteLayout.at (labelRun, labelXPos, leftYPos+20, labelWidth, 20));
@@ -127,7 +145,7 @@ public class HelpScreenEx extends View {
 		leftYPos += leftYIncr;
 		
 		// principles
-		final Button principlesButton = createButton("tab_button_u");
+		final Button principlesButton = createButton("tab_button_u", "principles");
 		left.add(AbsoluteLayout.at(principlesButton, leftXPos, leftYPos));
 		final Label labelPrinciples = new Label("Principles").setStyles(bigLabel);
 		left.add(AbsoluteLayout.at (labelPrinciples, labelXPos, leftYPos+20, labelWidth, 20));
@@ -140,17 +158,22 @@ public class HelpScreenEx extends View {
 		myroot.add(AbsoluteLayout.at(tiles, title_board_x + 10, 39, boardWidth, boardHeight));
 		myroot.add(AbsoluteLayout.at(left, 0, 0));
 
+		//Make sure we are loaded with intro.
+		this.loadText("introduction");
+		
 		return myroot;
 	}
 	
-	private Button createButton(final String btnName) {
+	private Button createButton(final String btnName, final String helpPage) {
 		Icon icon = getIcon("cut_screens/help/" + btnName + "_inactive");
 		final Button btn = new Button(icon).setStyles(Style.VALIGN.center, Style.HALIGN.center, Style.BACKGROUND.is(Background.blank()));
+		final HelpScreenEx hs = this;
 		
 		btn.layer.addListener(new Mouse.LayerAdapter() {
 			@Override
 			public void onMouseDown(ButtonEvent event) {
 				Icon selectIcon = getIcon("cut_screens/help/" + btnName + "_select");
+				hs.loadText(helpPage);
 				btn.icon.update(selectIcon);
 				super.onMouseUp(event);
 			}
@@ -205,6 +228,26 @@ public class HelpScreenEx extends View {
 		names.add("backgrounds/1024_720/help_back_1024_720"); // loading this causes out of memory exceptions
 
 		return names.toArray(new String[names.size()]);
+	}
+	
+	private void loadText(String helpPage) {
+		String path = "helpinfo/" + helpPage + ".txt";
+		final HelpScreenEx hs = this;
+		assets().getText(path, new Callback<String>() {
+			@Override
+			public void onSuccess(String result) {
+				hs.setHelpText(result);
+			}
+
+			@Override
+			public void onFailure(Throwable cause) {
+				log().error(cause.toString());
+			}
+        });
+	}
+	
+	protected void setHelpText(String lines) {
+		helpText.text.update(lines);
 	}
 	
 	protected Group sliderAndLabel (Slider slider, String minText) {

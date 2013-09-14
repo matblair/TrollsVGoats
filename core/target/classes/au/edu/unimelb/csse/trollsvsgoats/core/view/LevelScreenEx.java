@@ -107,7 +107,7 @@ public class LevelScreenEx extends View {
 	//For positioning of UI Groups
 
 	private static final float BIGTOPBOARDY = -70;
-	private static final float BIGGAMEBOARDY = -55;
+	private static final float BIGGAMEBOARDY = -50;
 	private static final float BIGBOTTOMPANELY = 457;
 	private static final float BIGGATEINSIDE = 488;
 	private static final float SMALLTOPBOARDY = -70;
@@ -492,9 +492,13 @@ public class LevelScreenEx extends View {
 
 					@Override
 					public void onMouseOver(MotionEvent event) {
+
+
 						if(unitsLocations.containsKey(square)){
 							Unit u = unitsLocations.get(square);
 							if(u instanceof Troll){
+								System.out.println("HELLO");
+
 								Troll troll = (Troll) u;
 								if(!trollIcons.get(troll.type()).equals(selTrollType)){
 									trollIcons.get(troll.type()).setStyles(
@@ -661,7 +665,7 @@ public class LevelScreenEx extends View {
 		goatTypes.add(String.valueOf(tileSymbol));
 		goat.setLayer(tile);
 		tile.setConstraint(Constraints.fixedHeight(SQUARE_HEIGHT));
-		
+
 		final Square square = new Square(lane, segment);
 		square.setDistance(distance);
 		if (distance == 1)
@@ -679,7 +683,7 @@ public class LevelScreenEx extends View {
 
 		Animation pushAnimation = new Animation(getImage("animations/goats_animations/push/" +goat.type() + "_goat_push"), 23, goat.frameTime());
 		goat.setPushAnimation(pushAnimation);
-		
+
 		Animation dyingAnimation = new Animation(getImage("animations/goats_animations/dying/" + goat.type() + "_goat_eaten"),24,0.01f);
 		goat.setDyingAnimation(dyingAnimation);
 		unitsLocations.put(square, goat);
@@ -693,7 +697,6 @@ public class LevelScreenEx extends View {
 			// mouse clicks.
 			@Override
 			public void onMouseDown(ButtonEvent event) {
-				System.out.println("HELLO");
 				if(!unitsLocations.containsKey(square)){
 					final float _x = midPanelX;
 					final float _y = midPanelY + SQUARE_HEIGHT;
@@ -712,12 +715,16 @@ public class LevelScreenEx extends View {
 					}
 				}
 			}
-			
+
 			@Override
 			public void onMouseOver(MotionEvent event) {
-				if(unitsLocations.containsKey(square)){ 							
+				if(unitsLocations.containsKey(square)){ 
+
 					Unit u = unitsLocations.get(square);
-					updateMomentLabel((int) unitMoment(u));
+					if (showUnitMoment)
+					{
+						updateMomentLabel((int) unitMoment(u));
+					}
 				}
 			}
 
@@ -727,7 +734,7 @@ public class LevelScreenEx extends View {
 					updateMomentLabel(moment);
 				}
 			}
-			
+
 		});
 	}
 
@@ -925,17 +932,20 @@ public class LevelScreenEx extends View {
 				Style.COLOR.is(0xFFFFFFFF),
 				Style.TEXT_EFFECT.shadow,
 				Style.SHADOW.is(0xFF412C2C));
-		
+
 		String strName;
 		float strX = 0;
-		if(troll.type().length()>6){
-			strX = -22;
-			strName = troll.type().toUpperCase() + "\n";
+		float strY = 0;
+		if(troll.type().length()>10){
+			strY = -10;
+			strX = 0;
+			strName = troll.type().toUpperCase();
 		} else {
-			strX = -10;
+			strX = 15;
+			strY = -10;
 			strName = troll.type().toUpperCase();
 		}
-		Label name = new Label(strName + " TROLL").setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 12)),
+		Label name = new Label(strName).setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 12)),
 				Style.HALIGN.center,
 				Style.VALIGN.bottom,
 				Style.TEXT_WRAP.on,
@@ -955,7 +965,7 @@ public class LevelScreenEx extends View {
 
 
 		//Position the labels
-		goatGroup.add(AbsoluteLayout.at(name, 0, strX));
+		goatGroup.add(AbsoluteLayout.at(name, strX, strY));
 		goatGroup.add(AbsoluteLayout.at(count, 56,5));
 		goatGroup.add(AbsoluteLayout.at(cost, 6, 5));
 
@@ -1529,12 +1539,16 @@ public class LevelScreenEx extends View {
 
 	/////// Will need to cahnge this to account for middle pivot point ////
 	private float unitMoment(Unit unit) {
-		if (unit.square().lane() > pivotLocation)
-			return (unit.square().lane() - pivotLocation) * unit.force();
-		else if (unit.square().lane() < pivotLocation)
-			return -(pivotLocation - unit.square().lane()) * unit.force();
-		else
-			return 0;
+		if(this.laneCount==6){
+			return (unit.square().lane()) * unit.force();
+		} else {
+			//Then we have a bigger lane, check if greater than 5 or not
+			if(unit.square().lane() >= 6){
+				return (unit.square().lane()-5)  * unit.force();
+			} else {
+				return (unit.square().lane()-6)  * unit.force();
+			}
+		}
 	}
 
 	////////////////////////////////////////////////////////////////////
@@ -1733,14 +1747,14 @@ public class LevelScreenEx extends View {
 		//The dying animations
 		names.add("animations/trolls_animations/dying/spitting_troll_dying");
 		names.add("animations/trolls_animations/dying/digging_troll_dying");
-		
+
 		names.add("animations/goats_animations/dying/big_goat_eaten");
 		names.add("animations/goats_animations/dying/butting_goat_eaten");
 		names.add("animations/goats_animations/dying/fast_goat_eaten");
 		names.add("animations/goats_animations/dying/little_goat_eaten");
 		names.add("animations/goats_animations/dying/normal_goat_eaten");
 
-		
+
 
 		//The UIBoards
 		names.add(MOMENTBOARD);
@@ -1840,7 +1854,7 @@ public class LevelScreenEx extends View {
 		game.levelCompleted(score);
 		// Log trolls deployment when complete the level.
 		game.logTrollsDeployment(trollsDeployment());
-		game.showWinnerScreen();
+		game.showWinnerScreen(scores);
 	}
 
 	private void showLevelFailed(){

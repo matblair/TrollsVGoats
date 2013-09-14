@@ -3,7 +3,10 @@ package au.edu.unimelb.csse.trollsvsgoats.core.view;
 import java.util.ArrayList;
 import java.util.List;
 
+import playn.core.Font;
 import playn.core.Json;
+import playn.core.PlayN;
+import playn.core.Json.Object;
 import playn.core.Mouse;
 import playn.core.Mouse.ButtonEvent;
 import playn.core.Mouse.MotionEvent;
@@ -41,10 +44,14 @@ public class LevelWinScreen extends View {
 	private Group starBoard;
 	private Group nextButtonPanel;
 	private Group retryButtonPanel;
+	
+	//Json object for scores
+	private Json.Object scores;
 
 
-	public LevelWinScreen(TrollsVsGoatsGame game) {
+	public LevelWinScreen(Json.Object scores, TrollsVsGoatsGame game) {
 		super(game);
+		this.scores = scores;
 	}
 
 	@Override
@@ -134,9 +141,33 @@ public class LevelWinScreen extends View {
 		}
 		
 //		//Now check if we have to add text
-//		if(score<3){
-//			//Then we will
-//		}
+		if(score==3){
+			//Then we will present a congrats string.
+			Label strLabel = new Label("Congratulations! Perfect Balance!").setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 14)),
+					Style.TEXT_EFFECT.shadow,
+					Style.SHADOW.is(0xFF412C2C),
+					Style.HALIGN.center, 
+					Style.COLOR.is(0xFFFFFFFF));
+			starBoard.add(AbsoluteLayout.at(strLabel,35,110));
+		} else {
+			//Need to get the score to remove it too.
+			String nextLevel = null;
+			
+			for (String cost : scores.keys()) {
+				if (score == (scores.getInt(cost)-1)) {
+					nextLevel = cost;
+				}
+			}
+			
+			
+			Label strLabel = new Label("Reduce score to " + nextLevel + " for the next star!").setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 14)),
+					Style.TEXT_EFFECT.shadow,
+					Style.SHADOW.is(0xFF412C2C),
+					Style.HALIGN.center, 
+					Style.COLOR.is(0xFFFFFFFF));
+			starBoard.add(AbsoluteLayout.at(strLabel,20,110));
+
+		}
 		
 		//Get the badge and add it
 		final List<Badge> badges = model.newAchievedBadges();
@@ -147,9 +178,8 @@ public class LevelWinScreen extends View {
 		}
 		
 		//Now get the first item and then use it to display
-		if(badges!=null && badges.size()!=0){
-			Badge newBadge = badges.get(0);
-			starBoard.add(AbsoluteLayout.at(new Label(newBadge.iconName()),200,40));
+		if(!model.momentOverZero()){
+			starBoard.add(AbsoluteLayout.at(new Label(getIcon("badges/atlas_reborn")),getIcon(IMAGEPATH+"star_board").width()/2-getIcon("badges/atlas_reborn").width()/2,149));
 		}
 		
 		//Add the starboard
@@ -215,6 +245,9 @@ public class LevelWinScreen extends View {
 		//aDD THE BACKGROUND
 		names.add("backgrounds/1024_720/winner_back_1024_720");
 
+		//Add the rock solid badge
+		names.add("badges/atlas_reborn");
+		
 		//Add the buttons
 		names.add(BUTTONB+"_active");
 		names.add(BUTTONB+"_inactive");
