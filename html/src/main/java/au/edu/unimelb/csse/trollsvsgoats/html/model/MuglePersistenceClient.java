@@ -23,7 +23,7 @@ public class MuglePersistenceClient implements PersistenceClient {
 	//mugle-test
 //    private static final String gameToken = "d63700f5-f095-49a4-8e39-41555ee3d0ec";
 	
-	private static final String gameToken = "aa1505e5-8f50-4059-a9e5-2ac9b7cb2f41";
+	private static final String gameToken = "328c1d18-632c-410d-b779-9f7dae70c4a1";
 	
     private String instanceToken;
     private boolean isSoundEnabled = true;
@@ -49,7 +49,6 @@ public class MuglePersistenceClient implements PersistenceClient {
 
             Services.keyvalue.put(gameToken, "levelScores", model.scores(),
                     new AsyncCallback<Void>() {
-
                         @Override
                         public void onFailure(Throwable caught) {
                             Window.alert("Error while persisting game: "

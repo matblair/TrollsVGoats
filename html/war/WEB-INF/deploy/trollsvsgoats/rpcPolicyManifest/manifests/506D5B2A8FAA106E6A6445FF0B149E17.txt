@@ -1,2 +1,0 @@
-serviceClass: au.edu.unimelb.csse.mugle.client.api.KeyValueService
-path: 91A92D59547610F6BD44323E56C1B8BF.gwt.rpc

@@ -2,20 +2,18 @@ package au.edu.unimelb.csse.trollsvsgoats.core.model;
 
 public class ALevelBadge extends Badge {
 
-			
     @Override
     public boolean achieved(GameModel game) {
         boolean achieved;
         if (achieved = game.isLevelCompleted() && !game.momentOverZero())
-            setAchieved();
-        
-        
-        return achieved;
+            return true;
+        else
+            return false;
     }
 
     @Override
     public String name() {
-        return "bring_it_on";
+        return "a_level";
     }
 
     @Override
@@ -25,7 +23,7 @@ public class ALevelBadge extends Badge {
 
     @Override
     public String description() {
-        return "First level that doesn't leave 0 N/m";
+        return "Complete a level without the gate leaving 0 Nm";
     }
 
 }

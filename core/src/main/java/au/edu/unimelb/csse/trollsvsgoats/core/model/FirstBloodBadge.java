@@ -4,8 +4,6 @@ public class FirstBloodBadge extends Badge {
 
     @Override
     public boolean achieved(GameModel game) {
-        if (game.goatEaten())
-            setAchieved();
         return game.goatEaten();
     }
 
@@ -21,6 +19,6 @@ public class FirstBloodBadge extends Badge {
 
     @Override
     public String description() {
-        return "First Goat eaten";
+        return "Eaten a goat";
     }
 }

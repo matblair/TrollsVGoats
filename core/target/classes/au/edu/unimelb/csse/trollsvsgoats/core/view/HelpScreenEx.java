@@ -53,6 +53,7 @@ public class HelpScreenEx extends View {
 			Style.TEXT_EFFECT.SHADOW.is(0xFF412C2C),
 			Style.COLOR.is(0xFFFFFFFF));
 	private Label helpText;
+	private Label helpImage;
 	
 	public HelpScreenEx(TrollsVsGoatsGame game) {
 		super(game);
@@ -102,6 +103,12 @@ public class HelpScreenEx extends View {
 		tiles.add(AbsoluteLayout.at(new Label(rope_l), (boardWidth-46), -34, rope_l.width(), rope_l.height()));
 		helpText = new Label().setStyles(helpStyle);
 		tiles.add(AbsoluteLayout.at(helpText, 20, 30, 300, 150));
+		
+		// Load content for the main board
+		loadText("introduction");
+		helpImage = new Label("");
+		setHelpImage("introduction");
+		tiles.add(AbsoluteLayout.at(helpImage, 23, 188, 304, 228));
 		
 		// Left boards
 		int leftXPos = (int) (title_board_x - getIcon("cut_screens/help/tab_button_active").width() - 60);
@@ -158,9 +165,6 @@ public class HelpScreenEx extends View {
 		myroot.add(AbsoluteLayout.at(tiles, title_board_x + 10, 39, boardWidth, boardHeight));
 		myroot.add(AbsoluteLayout.at(left, 0, 0));
 
-		//Make sure we are loaded with intro.
-		this.loadText("introduction");
-		
 		return myroot;
 	}
 	
@@ -174,6 +178,7 @@ public class HelpScreenEx extends View {
 			public void onMouseDown(ButtonEvent event) {
 				Icon selectIcon = getIcon("cut_screens/help/" + btnName + "_select");
 				hs.loadText(helpPage);
+				hs.setHelpImage(helpPage);
 				btn.icon.update(selectIcon);
 				super.onMouseUp(event);
 			}
@@ -217,6 +222,11 @@ public class HelpScreenEx extends View {
 		names.add("cut_screens/help/rope_title_r");
 		names.add("cut_screens/help/rope");
 		
+		names.add("cut_screens/help/i_introduction");
+		names.add("cut_screens/help/i_deployment");
+		names.add("cut_screens/help/i_running");
+		names.add("cut_screens/help/i_principles");
+		
 		names.add("cut_screens/help/tab_button_active");
 		names.add("cut_screens/help/tab_button_inactive");
 		names.add("cut_screens/help/tab_button_select");
@@ -246,8 +256,12 @@ public class HelpScreenEx extends View {
         });
 	}
 	
-	protected void setHelpText(String lines) {
+	private void setHelpText(String lines) {
 		helpText.text.update(lines);
+	}
+	
+	private void setHelpImage(String toLoad) {
+		helpImage.setStyles(Style.BACKGROUND.is(Background.image(getImage("cut_screens/help/i_" + toLoad))));
 	}
 	
 	protected Group sliderAndLabel (Slider slider, String minText) {

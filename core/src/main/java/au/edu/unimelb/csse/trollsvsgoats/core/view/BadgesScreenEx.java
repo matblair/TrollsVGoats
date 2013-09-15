@@ -41,9 +41,24 @@ public class BadgesScreenEx extends View {
 
 	Icon iconChildBoard = null;
 	private final int Y_START_POS = 0;
-	Styles bigLabel = Styles.make(
-			Style.FONT.is(PlayN.graphics().createFont("Helvetica", Font.Style.BOLD, 15)),
-			Style.HALIGN.center, 
+	
+	private Styles nameStyle = Styles.make(
+			//Style.BACKGROUND.is(Background.solid(bgColor)),
+			Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.PLAIN, 15)),
+			Style.TEXT_WRAP.on,
+			Style.HALIGN.left,
+			Style.TEXT_EFFECT.shadow,
+			Style.TEXT_EFFECT.SHADOW.is(0xFF412C2C),
+			Style.COLOR.is(0xFFAFFF13));
+	
+	private Styles descriptionStyle = Styles.make(
+			//Style.BACKGROUND.is(Background.solid(bgColor)),
+			Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.PLAIN, 10)),
+			Style.TEXT_WRAP.on,
+			Style.HALIGN.left,
+			Style.VALIGN.top,
+			Style.TEXT_EFFECT.shadow,
+			Style.TEXT_EFFECT.SHADOW.is(0xFF412C2C),
 			Style.COLOR.is(0xFFFFFFFF));
 
 
@@ -112,7 +127,7 @@ public class BadgesScreenEx extends View {
 
 
 		Badge[] badges = model.badges();
-		Icon badgeIcon = null;
+		Image badgeImage = null;
 
 		for (int i = 0; i < badges.length; i++) {
 
@@ -129,24 +144,26 @@ public class BadgesScreenEx extends View {
 			tiles.add(AbsoluteLayout.at(new Label(rope_l), 12, y_pos-34, rope_l.width(), rope_l.height()));
 			tiles.add(AbsoluteLayout.at(new Label(rope_l), (iconChildBoard.width()-45), y_pos-34, rope_l.width(), rope_l.height()));
 			
-			float xy = 60;
+			float xy = 58;
 			
 			if (!badge.isAchieved())
 			{
-				badgeIcon = getIcon("badge_lock");
-				Label badgeLockButton = new Label(badgeIcon).setConstraint(Constraints.fixedSize(badgeIcon.width(), badgeIcon.height()));
-				tiles.add(AbsoluteLayout.at(badgeLockButton, 45, y_pos+25, xy, xy));
+				badgeImage = getImage("badges/badge_lock");
+				Label badgeLockButton = new Label("").setConstraint(Constraints.fixedSize(xy, xy));
+				badgeLockButton.setStyles(Style.BACKGROUND.is(Background.image(badgeImage)));
+				tiles.add(AbsoluteLayout.at(badgeLockButton, 45, y_pos+20, xy, xy));
 			}
 			else
 			{
-				badgeIcon = getIcon("badges/" + badge.iconName());
-				final Label badgeLockButton = new Label(badgeIcon).setConstraint(Constraints.fixedSize(badgeIcon.width(), badgeIcon.height()));
-				tiles.add(AbsoluteLayout.at(badgeLockButton, 45, y_pos+25, xy, xy));
+				badgeImage = getImage("badges/" + badge.iconName());
+				final Label badgeButton = new Label("").setConstraint(Constraints.fixedSize(xy, xy));
+				badgeButton.setStyles(Style.BACKGROUND.is(Background.image(badgeImage)));
+				tiles.add(AbsoluteLayout.at(badgeButton, 45, y_pos+20, xy, xy));
 			}
 
-			final Label l = new Label(badge.description());
-			tiles.add(AbsoluteLayout.at((new Label(badge.displayName()).addStyles(bigLabel)), 117, y_pos + 20 , 150, 26));
-			tiles.add(AbsoluteLayout.at(l, 117, y_pos + 20 + 26, 150, 26));
+			final Label l = new Label(badge.description()).setStyles(descriptionStyle);
+			tiles.add(AbsoluteLayout.at((new Label(badge.displayName()).addStyles(nameStyle)), 117, y_pos + 10 , 150, 26));
+			tiles.add(AbsoluteLayout.at(l, 117, y_pos + 10 + 26, 130, 50));
 
 			y_pos += iconChildBoard.height() + (rope_l.height()-55 );
 		}
@@ -234,27 +251,6 @@ public class BadgesScreenEx extends View {
 		names.add("cut_screens/badges/board_ultra");
 		names.add("cut_screens/badges/board");
 
-		//Text
-		names.add("cut_screens/badges/t_a_level");
-		names.add("cut_screens/badges/t_boosted_3_t");
-		names.add("cut_screens/badges/t_boosted_3t_simult");
-		names.add("cut_screens/badges/t_bring_it_on");
-		names.add("cut_screens/badges/t_comp_1-5_l");
-		names.add("cut_screens/badges/t_comp_lv_1-9");
-		names.add("cut_screens/badges/t_comp_lv_1-9_5star");
-		names.add("cut_screens/badges/t_comp_lv_5star");
-		names.add("cut_screens/badges/t_compl_a_l");
-		names.add("cut_screens/badges/t_compl_all_levels");
-		names.add("cut_screens/badges/t_eaten_g");
-		names.add("cut_screens/badges/t_first_blood");
-		names.add("cut_screens/badges/t_graduate");
-		names.add("cut_screens/badges/t_honors_list");
-		names.add("cut_screens/badges/t_man_down");
-		names.add("cut_screens/badges/t_ocd");
-		names.add("cut_screens/badges/t_post_graduate");
-		names.add("cut_screens/badges/t_rock_solid");
-
-
 		names.add("cut_screens/badges/rope_title_l");
 		names.add("cut_screens/badges/rope_title_r");
 		names.add("cut_screens/badges/rope");
@@ -270,6 +266,8 @@ public class BadgesScreenEx extends View {
 		names.add("cut_screens/badges/scroll_bar");
 		names.add("cut_screens/badges/title_board");
 		names.add("cut_screens/badges/badges_title");
+
+		names.add("badges/badge_lock");
 		
 		names.add("backgrounds/800_600/badges_back_800_600");
 		names.add("backgrounds/1024_720/badges_back_1024_720");

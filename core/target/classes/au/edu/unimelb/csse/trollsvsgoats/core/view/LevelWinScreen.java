@@ -44,7 +44,7 @@ public class LevelWinScreen extends View {
 	private Group starBoard;
 	private Group nextButtonPanel;
 	private Group retryButtonPanel;
-	
+
 	//Json object for scores
 	private Json.Object scores;
 
@@ -121,7 +121,7 @@ public class LevelWinScreen extends View {
 		Group stars = new Group(new AbsoluteLayout());
 		//Work out our score
 		int score = model.levelScore(model.levelIndex());
-		
+
 		//Add starts
 		for(int i=0; i<3; i++){
 			Label star = null;
@@ -139,8 +139,8 @@ public class LevelWinScreen extends View {
 				break;
 			}
 		}
-		
-//		//Now check if we have to add text
+
+		//		//Now check if we have to add text
 		if(score==3){
 			//Then we will present a congrats string.
 			Label strLabel = new Label("Congratulations! Perfect Balance!").setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 14)),
@@ -152,14 +152,14 @@ public class LevelWinScreen extends View {
 		} else {
 			//Need to get the score to remove it too.
 			String nextLevel = null;
-			
+
 			for (String cost : scores.keys()) {
 				if (score == (scores.getInt(cost)-1)) {
 					nextLevel = cost;
 				}
 			}
-			
-			
+
+
 			Label strLabel = new Label("Reduce score to " + nextLevel + " for the next star!").setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 14)),
 					Style.TEXT_EFFECT.shadow,
 					Style.SHADOW.is(0xFF412C2C),
@@ -168,20 +168,22 @@ public class LevelWinScreen extends View {
 			starBoard.add(AbsoluteLayout.at(strLabel,20,110));
 
 		}
-		
+
 		//Get the badge and add it
 		final List<Badge> badges = model.newAchievedBadges();
 		//Set the badge to be achieved
 		for (Badge badge : badges) {
 			if (!badge.isAchieved())
 				game.setBadgeAchieve(badge);
+				model.setBadgeAchieved(badge.name());
+
 		}
-		
+
 		//Now get the first item and then use it to display
 		if(!model.momentOverZero()){
 			starBoard.add(AbsoluteLayout.at(new Label(getIcon("badges/atlas_reborn")),getIcon(IMAGEPATH+"star_board").width()/2-getIcon("badges/atlas_reborn").width()/2,149));
 		}
-		
+
 		//Add the starboard
 		starBoard.add(AbsoluteLayout.at(stars,63,44));
 
@@ -247,7 +249,7 @@ public class LevelWinScreen extends View {
 
 		//Add the rock solid badge
 		names.add("badges/atlas_reborn");
-		
+
 		//Add the buttons
 		names.add(BUTTONB+"_active");
 		names.add(BUTTONB+"_inactive");

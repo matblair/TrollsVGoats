@@ -1,8 +1,0 @@
-# Module trollsvsgoats
-# RPC service class, partial path of RPC policy file
-au.edu.unimelb.csse.mugle.client.api.BadgeService, 9E5D87B2AFB9B628869ABB7EA5A28C93.gwt.rpc
-au.edu.unimelb.csse.mugle.client.multiplayer.api.LoggingService, BF823695257033E62BB0112B2A67FAAD.gwt.rpc
-au.edu.unimelb.csse.mugle.client.api.KeyValueService, 91A92D59547610F6BD44323E56C1B8BF.gwt.rpc
-au.edu.unimelb.csse.mugle.client.api.UserService, 2053D41EAC6EE49426EF680D6729B4FB.gwt.rpc
-au.edu.unimelb.csse.mugle.client.api.HighscoreService, B1D36E304CE3FB9A3562F68A941BD50E.gwt.rpc
-au.edu.unimelb.csse.mugle.client.multiplayer.api.MultiPlayerGameService, 52E1F507824CDBCF09AA32E0206E9925.gwt.rpc

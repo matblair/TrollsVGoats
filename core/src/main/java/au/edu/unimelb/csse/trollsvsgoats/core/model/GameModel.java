@@ -25,10 +25,21 @@ public class GameModel {
     // Badges related fields.
     private boolean momentOverZero;
     private boolean goatEaten;
+    private boolean threeCheerleadersBoost;
+    private boolean manDown;
 
     public GameModel() {
-        badges = new Badge[] { new ALevelBadge(), new FirstBloodBadge(),
-                new BeginnerGraduateBadge(), new TrollSaverBadge(), new ALevelBadge(), new ALevelBadge(), new ALevelBadge() };
+        badges = new Badge[] {
+        		new FirstBloodBadge(),
+        		new BringItOnBadge(),
+                new ManDownBadge(),
+                new ALevelBadge(),
+                new AtlasRebornBadge(),
+                new GraduateBadge(),
+                new HonoursListBadge(),
+                new PostGraduateBadge(),
+                new OCDBadge()
+        		};
         themes = new String[] { "BRIDGE", "COMING SOON", "COMING SOON" };
     }
 
@@ -125,13 +136,29 @@ public class GameModel {
     public boolean goatEaten() {
         return this.goatEaten;
     }
+    
+    public boolean threeCheerleadersBoost() {
+        return this.threeCheerleadersBoost;
+    }
 
+    public boolean manDown() {
+        return this.manDown;
+    }
+    
     public void setMomentOverZero() {
         this.momentOverZero = true;
     }
 
     public void setGoatEaten() {
         this.goatEaten = true;
+    }
+    
+    public void setThreeCheerleadersBoost() {
+        this.threeCheerleadersBoost = true;
+    }
+    
+    public void setManDown() {
+        this.manDown = true;
     }
 
     public HashMap<Integer, Integer> scores() {
@@ -160,6 +187,8 @@ public class GameModel {
         levelCompleted = false;
         momentOverZero = false;
         goatEaten = false;
+        threeCheerleadersBoost = false;
+        manDown = false;
     }
 
     public void levelRestart() {
