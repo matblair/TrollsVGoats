@@ -1,6 +1,9 @@
 package au.edu.unimelb.csse.trollsvsgoats.core.view;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 import playn.core.Font;
 import playn.core.Image;
@@ -126,8 +129,13 @@ public class BadgesScreenEx extends View {
 		top.add(AbsoluteLayout.at (new Label (rope_l), title_board_x+22, bottomRopeY, rope_l.width(), rope_l.height()));
 		top.add(AbsoluteLayout.at (new Label (rope_l), title_board_x+253, bottomRopeY, rope_l.width(), rope_l.height()));
 
-
-		Badge[] badges = model.badges();
+		Badge[] allBadges = model.badges();
+		ArrayList<Badge> keepBadges = new ArrayList<Badge>(allBadges.length);
+		for (Badge b : allBadges)
+			if (!b.name().startsWith("rock_solid"))
+				keepBadges.add(b);
+		
+		Badge[] badges = keepBadges.toArray(new Badge[0]);
 		Image badgeImage = null;
 
 		for (int i = 0; i < badges.length; i++) {
@@ -238,7 +246,8 @@ public class BadgesScreenEx extends View {
 	public String[] images() {
 		ArrayList<String> names = new ArrayList<String>();
 		for (Badge badge : model.badges()) {
-			names.add("badges/" + badge.name());
+			if (!badge.name().startsWith("rock_solid"))
+				names.add("badges/" + badge.name());
 		}
 
 		names.add("cut_screens/badges/back_active");

@@ -219,7 +219,7 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
     public void loadLevelLoad(int index, boolean replace) {
     	LevelLoadScreen lls = new LevelLoadScreen(this, index);
     	if (replace)
-    		stack.replace(lls, ScreenStack.NOOP);
+    		stack.replace(lls);
     	else
     		stack.push(lls);
     }
@@ -235,7 +235,7 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
                 //-> LevelScreen level = new LevelScreen(game, result);
 				LevelScreenEx level = new LevelScreenEx(game, result);
                 if (replace)
-                    stack.replace(level, ScreenStack.NOOP);
+                    stack.replace(level);
                 else
                     stack.push(level);
 			}

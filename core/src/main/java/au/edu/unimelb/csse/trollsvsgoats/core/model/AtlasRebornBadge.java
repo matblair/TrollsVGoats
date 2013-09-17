@@ -4,8 +4,10 @@ public class AtlasRebornBadge extends Badge {
 
 	@Override
 	public boolean achieved(GameModel game) {
-		// TODO Auto-generated method stub
-		return false;
+		for (int i=1; i<=7; i++)
+			if (!game.rockSolidCompletedForLevel(i))
+				return false;
+		return true;
 	}
 
 	@Override

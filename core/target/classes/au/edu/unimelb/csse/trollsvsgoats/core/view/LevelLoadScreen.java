@@ -137,7 +137,7 @@ public class LevelLoadScreen extends View {
 		playButton.clicked().connect(new UnitSlot() {
 			@Override
 			public void onEmit() {
-				game.loadLevel(levelID, false);
+				game.loadLevel(levelID, true);
 			}
 		});
 		
