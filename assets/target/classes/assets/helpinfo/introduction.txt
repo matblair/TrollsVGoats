@@ -1,5 +1,1 @@
-Each level has a gate in the middle which can be rotated around the pivot.
-
-Trolls push from the left while goats push from the right.
-
-The goal is to maintain the equilibrium of the moments caused by both sides so as to stop an army of goats from crossing the bridge.
+Welcome to Trolls Vs. Goats. Place your trolls to stop the insidious goats from pushing through your gate. Finish with a completely balanced gate (0 Nm) to win. Let the moment go over 20 Nm and the goats will get through. Each lane is an extra meter from the pivot and your standard troll pushes with a force of 2 N.

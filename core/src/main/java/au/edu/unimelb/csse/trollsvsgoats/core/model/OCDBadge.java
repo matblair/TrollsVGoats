@@ -4,12 +4,15 @@ public class OCDBadge extends Badge {
 
 	@Override
 	public boolean achieved(GameModel game) {
-		if (game.maxCompletedLevel() >= 9)
+		if (game.maxCompletedLevel() >= 9) {
 			for (int i = 0; i <= 9; i++)
 				if (game.scores().get(i) != 3)
 					return false;
+			
+			return true;
+		}
 				
-		return true;
+		return false;
 	}
 
 	@Override

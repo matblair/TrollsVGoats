@@ -120,6 +120,14 @@ public class LevelSelScreenEx extends View {
 				tiles.add (AbsoluteLayout.at (new Label (leaderboardLocked), ldrBrdX, ldrBrdY));
 			}
 			
+			// Rock solid
+			if (model.rockSolidCompletedForLevel(i)) {
+				int rockSolidX = 151, rockSolidY = y_pos+52;
+				Icon rockSolid = getIcon ("cut_screens/select_levels/rock_solid");
+				tiles.add(AbsoluteLayout.at(new Label (rockSolid), rockSolidX, rockSolidY));
+			}
+			
+			// level button
 			if (i > model.maxCompletedLevel() + 1)
 			{
 				levelIcon = getIcon("cut_screens/select_levels/level_b_lock");
@@ -273,9 +281,8 @@ public class LevelSelScreenEx extends View {
 	@Override
 	public String[] images() {
 		ArrayList<String> names = new ArrayList<String>();
-		for (Badge badge : model.badges()) {
-			names.add("badges/" + badge.name());
-		}
+		
+		names.add("cut_screens/select_levels/rock_solid");
 
 		names.add("cut_screens/select_levels/back_active");
 		names.add("cut_screens/select_levels/back_inactive");

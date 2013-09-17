@@ -38,7 +38,14 @@ public class GameModel {
                 new GraduateBadge(),
                 new HonoursListBadge(),
                 new PostGraduateBadge(),
-                new OCDBadge()
+                new OCDBadge(),
+                new RockSolidBadge(1),
+                new RockSolidBadge(2),
+                new RockSolidBadge(3),
+                new RockSolidBadge(4),
+                new RockSolidBadge(5),
+                new RockSolidBadge(6),
+                new RockSolidBadge(7)
         		};
         themes = new String[] { "BRIDGE", "COMING SOON", "COMING SOON" };
     }
@@ -49,6 +56,14 @@ public class GameModel {
 
     public Badge[] badges() {
         return this.badges;
+    }
+    
+    public boolean rockSolidCompletedForLevel (int level) {
+    	for (Badge b : badges)
+    		if (b.name().equals("rock_solid_" + level) && b.isAchieved())
+    			return true;
+    	
+    	return false;
     }
 
     public List<Badge> newAchievedBadges() {

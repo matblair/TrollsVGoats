@@ -1,6 +1,1 @@
-Hey there,
-
-These are some instructions about how to run the game.
-
-GLHF.
-
+During  play the moment can go up to 20 Nm (too many trolls) or down to -20 Nm (too many goats) but any more and the goats will win. At end of the level, the moment MUST be 0 Nm to win.

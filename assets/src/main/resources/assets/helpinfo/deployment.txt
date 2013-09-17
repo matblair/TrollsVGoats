@@ -1,6 +1,1 @@
-Hey there,
-
-These are some instructions about how to deploy the trolls in the game.
-
-GLHF.
-
+Place your trolls so that they counteract the moment (force x distance) created by the goats. The force of each unit is shown with their head next to the dumbbell. The distance is the number of rows from the pivot.
