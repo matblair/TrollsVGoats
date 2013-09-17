@@ -40,8 +40,9 @@ public class HelpScreenEx extends View {
 	private Styles bigLabel = Styles.make(
 			Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 15)),
 			Style.HALIGN.center,
-			Style.TEXT_EFFECT.shadow,
-			Style.TEXT_EFFECT.SHADOW.is(0xFF412C2C),
+			Style.TEXT_EFFECT.vectorOutline,
+			Style.OUTLINE_WIDTH.is(3.0f),
+			Style.HIGHLIGHT.is(0xFF412C2C),
 			Style.COLOR.is(0xFFFFFFFF));
 	
 	private Styles helpStyle = Styles.make(
@@ -132,7 +133,7 @@ public class HelpScreenEx extends View {
 		// deployment
 		final Button deployButton = createButton("tab_button", "deployment");
 		left.add(AbsoluteLayout.at(deployButton, leftXPos, leftYPos));
-		final Label labelDeploy = new Label("Deployment").setStyles(bigLabel);
+		final Label labelDeploy = new Label("Setup").setStyles(bigLabel);
 		left.add(AbsoluteLayout.at (labelDeploy, labelXPos, leftYPos+20, labelWidth, 20));
 		
 		left.add(AbsoluteLayout.at(new Label(rope_l), leftXPos+12, leftYPos-34));
@@ -143,7 +144,7 @@ public class HelpScreenEx extends View {
 		// running
 		final Button runButton = createButton("tab_button", "running");
 		left.add(AbsoluteLayout.at(runButton, leftXPos, leftYPos));
-		final Label labelRun = new Label("Running").setStyles(bigLabel);
+		final Label labelRun = new Label("Play").setStyles(bigLabel);
 		left.add(AbsoluteLayout.at (labelRun, labelXPos, leftYPos+20, labelWidth, 20));
 		
 		left.add(AbsoluteLayout.at(new Label(rope_l), leftXPos+12, leftYPos-34));

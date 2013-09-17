@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import playn.core.*;
+import playn.core.Json.Object;
 import playn.core.util.Callback;
 import playn.core.util.Clock;
 import tripleplay.game.ScreenStack;
@@ -41,7 +42,7 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
     private HelpScreenEx helpScreen;
     private LevelWinScreen winScreen;
     private LevelLoseScreen loseScreen;
-    private LeaderBoard leaderboardScreen;
+    private LevelLoadScreen levelLoadScreen;
 
     //tripleplay 1.7.2
     private static final int UPDATE_RATE = 30; // FPS
@@ -63,9 +64,9 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
                 new LevelScreenEx(this), badgesScreen = new BadgesScreenEx(this),
                 optionScreen = new OptionScreen(this),
                 helpScreen = new HelpScreenEx(this),
-                winScreen = new LevelWinScreen(null,this),
+                winScreen = new LevelWinScreen(null, this),
                 loseScreen = new LevelLoseScreen(this),
-                leaderboardScreen = new LeaderBoard(this, 1)};
+                levelLoadScreen = new LevelLoadScreen(this, 1)};
     }
 
     @Override
@@ -165,8 +166,8 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
     }
     
     public void showWinnerScreen(Json.Object scores) {
-    	LevelWinScreen screen = new LevelWinScreen(scores,this);
-    	stack.replace(screen);
+    	LevelWinScreen newScreen = new LevelWinScreen(scores,this);
+    	stack.replace(newScreen);
     }
     
     public void showLoserScreen() {
@@ -214,6 +215,14 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
     public GameModel model() {
         return this.model;
     }
+    
+    public void loadLevelLoad(int index, boolean replace) {
+    	LevelLoadScreen lls = new LevelLoadScreen(this, index);
+    	if (replace)
+    		stack.replace(lls, ScreenStack.NOOP);
+    	else
+    		stack.push(lls);
+    }
 
     public void loadLevel(final int index, final boolean replace) {
         String levelPath = "levels/" + model.currentTheme() + "_level_"
@@ -251,8 +260,7 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
         loadLevel(model.nextLevelIndex(), true);
     }
 
-    /** Called when completed the current level, persists the level index. 
-     * @param cost */
+    /** Called when completed the current level, persists the level index. */
     public void levelCompleted(int score) {
         model.levelCompleted(score);
         persistence.persist(model);
@@ -289,6 +297,11 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
             model.setLevelDataDirty();
             persistence.persist(model);
         }
+    }
+    
+    // TODO make this actually work
+    public int getNumLevels() {
+    	return 7;
     }
 
     /**

@@ -20,7 +20,6 @@ import tripleplay.ui.Constraints;
 import tripleplay.ui.Group;
 import tripleplay.ui.Icon;
 import tripleplay.ui.Label;
-import tripleplay.ui.Shim;
 import tripleplay.ui.Style;
 import tripleplay.ui.Styles;
 import tripleplay.ui.Style.Binding;
@@ -47,8 +46,9 @@ public class BadgesScreenEx extends View {
 			Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.PLAIN, 15)),
 			Style.TEXT_WRAP.on,
 			Style.HALIGN.left,
-			Style.TEXT_EFFECT.shadow,
-			Style.TEXT_EFFECT.SHADOW.is(0xFF412C2C),
+			Style.TEXT_EFFECT.vectorOutline,
+			Style.OUTLINE_WIDTH.is(3.0f),
+			Style.HIGHLIGHT.is(0xFF412C2C),
 			Style.COLOR.is(0xFFAFFF13));
 	
 	private Styles descriptionStyle = Styles.make(
@@ -57,8 +57,9 @@ public class BadgesScreenEx extends View {
 			Style.TEXT_WRAP.on,
 			Style.HALIGN.left,
 			Style.VALIGN.top,
-			Style.TEXT_EFFECT.shadow,
-			Style.TEXT_EFFECT.SHADOW.is(0xFF412C2C),
+			Style.TEXT_EFFECT.vectorOutline,
+			Style.OUTLINE_WIDTH.is(2.0f),
+			Style.HIGHLIGHT.is(0xFF412C2C),
 			Style.COLOR.is(0xFFFFFFFF));
 
 
@@ -163,19 +164,14 @@ public class BadgesScreenEx extends View {
 
 			final Label l = new Label(badge.description()).setStyles(descriptionStyle);
 			tiles.add(AbsoluteLayout.at((new Label(badge.displayName()).addStyles(nameStyle)), 117, y_pos + 10 , 150, 26));
-			tiles.add(AbsoluteLayout.at(l, 117, y_pos + 10 + 26, 130, 50));
+			tiles.add(AbsoluteLayout.at(l, 117, y_pos + 10 + 24, 130, 60));
 
 			y_pos += iconChildBoard.height() + (rope_l.height()-55 );
 		}
 
 		myroot.add(AbsoluteLayout.at(tiles, title_board_x+10, 10, iconChildBoard.width(), iconChildBoard.height() * badges.length));
 
-		int pageHeight = (int)(iconChildBoard.height() + (rope_l.height()-55 ));
-		int scrollRange = badges.length * pageHeight;
-		float PAGE_SIZE = ((height() - 400) / pageHeight) + 1;
-		float PAGE_RANGE = PAGE_SIZE * pageHeight;
-
-		scroll = new ScrollBar(tiles, scrollRange, PAGE_RANGE);
+		scroll = new ScrollBar(tiles, (int)(iconChildBoard.height() + (rope_l.height()-55 )), badges.length - 4);
 		
 		final Button upBtn = createButton ("scroll_arrow_up");
 		final Button downBtn = createButton ("scroll_arrow_down");
@@ -188,7 +184,7 @@ public class BadgesScreenEx extends View {
 		Image scrollBG = getImage("cut_screens/badges/scroll_bar");
 		scroll.setBarBackgroundImage(scrollBG);
 		
-		if (scrollRange > PAGE_RANGE)
+		if (badges.length > 4)
 		{
 			top.add(AbsoluteLayout.at (new Label (rope_l), title_board_x+319, bottomRopeY, rope_l.width(), rope_l.height()));
 			myroot.add(AbsoluteLayout.at(scroll, title_board_x+304, 38, scrollBG.width(), scrollBG.height()));

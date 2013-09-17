@@ -109,23 +109,6 @@ public class OptionScreen extends View {
 
 		// Speed slider
 		
-		/*
-	       
-        int currentSpeed = (int) (MAX_SPEED + 1 - (int) (model.movementTime() * 2));
-        Slider speed = new Slider(currentSpeed, 1, MAX_SPEED).setIncrement(1);
-        speedValue = new Label(String.valueOf(currentSpeed)).setConstraint(
-                Constraints.minSize("0")).setStyles(Style.HALIGN.right);
-        speed.value.map(new Function<Float, String>() {
-
-            @Override
-            public String apply(Float value) {
-                return String.valueOf(value.intValue());
-            }
-        }).connect(speedValue.text.slot());
-        iface.add(new Label("Speed").addStyles(Style.FONT.is(SUBTITLE_FONT)))
-                .add(new Group(AxisLayout.vertical()).add(speed)
-                        .add(speedValue));
-*/
 		int currentSpeed = MAX_SPEED + 1 - (int)(model.movementTime() * 2);
 		final Button speedSlider = createButton("slider");
 		speedSlider.layer.addListener(new Mouse.LayerAdapter() {
@@ -187,7 +170,7 @@ public class OptionScreen extends View {
 		else
 			screen800Btn.setStyles(Style.BACKGROUND.is(Background.image(screen800Sel)));
 
-		screen800Btn.layer.addListener(new Mouse.LayerAdapter() {
+		/*screen800Btn.layer.addListener(new Mouse.LayerAdapter() {
 			@Override
 			public void onMouseUp(ButtonEvent event) {
 				soundOffButton.setStyles(Style.BACKGROUND.is(Background.blank()));
@@ -211,7 +194,7 @@ public class OptionScreen extends View {
 				wasAdded();
 				super.onMouseUp(event);
 			}
-		});
+		});*/
 
 		myroot.add(AbsoluteLayout.at(top, 0, 0));
 		myroot.add(AbsoluteLayout.at(tiles, title_board_x + 10, 39, boardWidth, boardHeight));

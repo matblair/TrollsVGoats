@@ -32,8 +32,8 @@ public class ScrollBar extends Elements<ScrollBar> {
 	protected int draggerColor = DEFAULT_DRAGGER_COLOT;
 	protected int wheelDistance = DEFAULT_WHEEL_DISTANCE;
 	protected int buttonDistance = DEFAULT_BUTTON__DISTANCE;
-	protected float pageRange;
-	protected float scrollRange;
+	protected int jumps;
+	protected int jumpDist;
 	protected float draggerHeight;
 	protected boolean upButDown;
 	protected boolean downButDown;
@@ -47,11 +47,11 @@ public class ScrollBar extends Elements<ScrollBar> {
 	 * @param pageRange
 	 *            The range/height of one page.
 	 */
-	public ScrollBar(Elements<?> view, float scrollRange, float pageRange) {
+	public ScrollBar(Elements<?> view, int jumpDist, int jumps) {
 		super(AxisLayout.vertical());
 		this.view = view;
-		this.scrollRange = scrollRange;
-		this.pageRange = pageRange;
+		this.jumpDist = jumpDist;
+		this.jumps = jumps;
 		setBarSize(58, 423);
 		addStyles(Style.VALIGN.top);
 	}
@@ -98,19 +98,11 @@ public class ScrollBar extends Elements<ScrollBar> {
 		// Handles mouse wheel.
 		mouse().setListener(new Mouse.Adapter() {
 			public void onMouseWheelScroll(playn.core.Mouse.WheelEvent event) {
-				if (scrollRange <= pageRange)
-					return;
-				boolean predi;
-				if (PlayN.platformType().equals(Platform.Type.JAVA))
-					predi = event.velocity() < 0;
+				if (event.velocity() > 0)
+					scrollDown(wheelDistance);
+				// Scroll up.
 				else
-					predi = event.velocity() > 0;
-					// Scroll down.
-					if (predi)
-						scrollDown(wheelDistance);
-					// Scroll up.
-					else
-						scrollUp(wheelDistance);
+					scrollUp(wheelDistance);
 
 			};
 		});
@@ -134,9 +126,10 @@ public class ScrollBar extends Elements<ScrollBar> {
 					targetOffset = scrollDist;
 
 				dragger.layer.setOrigin(0, -targetOffset);
-				float scrollDistance = (scrollRange - pageRange)
-						/ ((scrollDist - draggerHeight) / targetOffset);
+				float scrollDistance = jumpDist * (int)(jumps * targetOffset / scrollDist);
 				view.layer.setOrigin(0, scrollDistance);
+
+				showHideElements();
 			}
 		});
 	}
@@ -176,29 +169,37 @@ public class ScrollBar extends Elements<ScrollBar> {
 	}
 
 	protected void scrollUp(int distance) {
-		if (scrollRange <= pageRange)
-			return;
-		float y = view.layer.originY();
+		float y = -dragger.layer.originY();
 		float dragDistance = (scrollDist - draggerHeight)
-				/ ((scrollRange - pageRange) / distance);
-		if (y > 0) {
-			view.layer.setOrigin(0, Math.max(0, y - distance));
-			dragger.layer.setOrigin(0,
-					Math.min(dragger.layer.originY() + dragDistance, 0));
+				/ (jumpDist * jumps / distance);
+		float target = y - dragDistance;
+
+		if (target < 0)
+			target = 0;
+		else if (target > scrollDist)
+			target = scrollDist;
+
+		view.layer.setOrigin(0, Math.max(0, jumpDist * (int)(jumps * target / scrollDist)));
+		dragger.layer.setOrigin(0, -target);
+
+		showHideElements();
+	}
+
+	private void showHideElements() {
+		Element<?> el;
+		float viewPos = view.layer.originY();
+
+		for (int i=0; i<view.childCount(); i++) {
+			el = view.childAt(i);
+			if (el.y() < viewPos - 30)
+				el.setVisible(false);
+			else
+				el.setVisible(true);
 		}
 	}
 
 	protected void scrollDown(int distance) {
-		if (scrollRange <= pageRange)
-			return;
-		float y = view.layer.originY();
-		float dragDistance = (scrollDist - draggerHeight)
-				/ ((scrollRange - pageRange) / distance);
-		if (y < (scrollRange - pageRange)) {
-			view.layer.setOrigin(0, Math.min(scrollRange - pageRange, y + distance));
-			dragger.layer.setOrigin(0, Math.max(dragger.layer.originY()
-					- dragDistance, draggerHeight - scrollDist));
-		}
+		scrollUp(-distance);
 	}
 
 	public Button upButton() {

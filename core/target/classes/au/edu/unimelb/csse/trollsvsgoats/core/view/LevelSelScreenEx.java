@@ -35,14 +35,12 @@ public class LevelSelScreenEx extends View {
 	final Binding<Background> selOff = Style.BACKGROUND.is(Background.blank()
 			.inset(1, 2, -2, 2));
 
-	private int tileCount = 7;
 	private ScrollBar scroll;
 
 	public LevelSelScreenEx(TrollsVsGoatsGame game) {
 		super(game);
 	}
 
-	@SuppressWarnings("unused")
 	@Override
 	protected Group createIface() {
 		Image bg;
@@ -88,7 +86,7 @@ public class LevelSelScreenEx extends View {
 		top.add(AbsoluteLayout.at (new Label (rope_l), title_board_x+22, bottomRopeY, rope_l.width(), rope_l.height()));
 		top.add(AbsoluteLayout.at (new Label (rope_l), title_board_x+253, bottomRopeY, rope_l.width(), rope_l.height()));
 
-
+		int tileCount = game.getNumLevels();
 		for (int i = 1; i <= tileCount; i++) {
 			final int _i = i;
 			
@@ -108,7 +106,7 @@ public class LevelSelScreenEx extends View {
 			
 			// Leaderboard link
 			int ldrBrdX = 233, ldrBrdY = y_pos+32;
-			if (false /* ||i <= model.maxCompletedLevel() + 1*/) {
+			if (i <= model.maxCompletedLevel() + 1 - 1000) { // Remove -1000 to re-enable
 				final Button leaderboardButton = createButton("score_b");
 				tiles.add (AbsoluteLayout.at (leaderboardButton, ldrBrdX, ldrBrdY));
 				leaderboardButton.clicked().connect(new UnitSlot() {
@@ -139,7 +137,7 @@ public class LevelSelScreenEx extends View {
 
 					@Override
 					public void onEmit() {
-						game.loadLevel(_i, false);
+						game.loadLevelLoad(_i, false);
 					}
 				});
 
@@ -196,8 +194,7 @@ public class LevelSelScreenEx extends View {
 		float PAGE_SIZE = ((height() - 400) / pageHeight) + 1;
 		float PAGE_RANGE = PAGE_SIZE * pageHeight;
 
-		Icon dragerIcon = getIcon("cut_screens/select_levels/scroll_b_inactive");
-		scroll = new ScrollBar(tiles, scrollRange, PAGE_RANGE);
+		scroll = new ScrollBar(tiles, (int)(iconChildBoard.height() + (rope_l.height()-55 )), tileCount - 4);
 		
 		final Button upBtn = createButton ("scroll_arrow_up");
 		final Button downBtn = createButton ("scroll_arrow_down");

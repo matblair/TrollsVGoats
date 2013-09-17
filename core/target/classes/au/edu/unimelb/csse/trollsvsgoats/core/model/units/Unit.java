@@ -49,7 +49,7 @@ public abstract class Unit {
 	protected Group parent;
 	protected boolean canMove = false;
 	protected float moveDelta = -1;
-
+	private boolean movedAnimation = false;
 	private boolean dead=false;
 
 
@@ -118,7 +118,6 @@ public abstract class Unit {
 	}
 
 	public void move(Square square) {
-		//--> this.moved = true;
 		setSquare(square);
 	}
 
@@ -147,6 +146,7 @@ public abstract class Unit {
 		this.front = null;
 		this.back = null;
 		this.dead=false;
+		this.movedAnimation=false;
 		widget.layer.setVisible(true);
 		widget.icon.update(icon != null ? Icons.image(icon) : Icons.image(moveAnimation.frame(0)));
 		parent.add(AbsoluteLayout.at(widget(), tempNewX, square().getY()));
@@ -295,6 +295,10 @@ public abstract class Unit {
 		}else if (state().equals(State.DYING)){ 
 			if (dyingAnimation != null && !dead){
 				widget().icon.update(Icons.image(dyingAnimation.nextFrame(delta)));
+				if(!movedAnimation){
+					movedAnimation=true;
+					this.moveSquares(2);
+				}
 				if(dyingAnimation.isFinished()){
 					dead=true;
 					if(!(this instanceof Troll)){
@@ -315,6 +319,12 @@ public abstract class Unit {
 
 	public void setOldX(float oldX) {
 		this.oldX = oldX;
+	}
+	
+	public void moveSquares(int squares){
+		System.out.println(tempNewX);
+		System.out.println( tempNewX - squares*48 +22);
+		parent.add(AbsoluteLayout.at(widget(), tempNewX - squares*48 +23, square.getY()-1));
 	}
 
 

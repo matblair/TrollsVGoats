@@ -1,0 +1,5 @@
+Each level has a gate in the middle which can be rotated around the pivot.
+
+Trolls push from the left while goats push from the right.
+
+The goal is to maintain the equilibrium of the moments caused by both sides so as to stop an army of goats from crossing the bridge.

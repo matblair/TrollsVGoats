@@ -1,6 +1,5 @@
 package au.edu.unimelb.csse.trollsvsgoats.core.view;
 
-import java.awt.Cursor;
 import java.util.ArrayList;
 
 import playn.core.Font;
@@ -10,7 +9,6 @@ import playn.core.Mouse.ButtonEvent;
 import playn.core.Mouse.MotionEvent;
 import playn.core.PlayN;
 import au.edu.unimelb.csse.trollsvsgoats.core.TrollsVsGoatsGame;
-import au.edu.unimelb.csse.trollsvsgoats.core.model.Badge;
 import au.edu.unimelb.csse.trollsvsgoats.core.view.MessageBox.SimpleCallBack;
 import react.UnitSlot;
 import tripleplay.ui.Background;
@@ -19,26 +17,15 @@ import tripleplay.ui.Constraints;
 import tripleplay.ui.Group;
 import tripleplay.ui.Icon;
 import tripleplay.ui.Label;
-import tripleplay.ui.Layout.Constraint;
 import tripleplay.ui.Style;
 import tripleplay.ui.Styles;
-import tripleplay.ui.bgs.Scale9Background;
 import tripleplay.ui.layout.AbsoluteLayout;
-import tripleplay.ui.layout.AxisLayout;
 
 public class MainScreenEx extends View {
 
 	//these values are for the 1024x720 resolution.
 	//you have to calculate these for the 800x600 resolution
 	private final float LOCAL_TOP_MARGIN = 70;
-	private final float X_POS = 610;
-	private final float Y_POS_LABEL = 8;
-	private final float Y_POS_BUTTON = 72;
-	private final float Y_BUTTON_OFFSET = 80;
-	private final float BUTTON_WIDTH = 275;
-	private final float BUTTON_HEIGHT = 60;
-	private final float LABEL_HEIGHT = 30;
-
 	private final int Y_START_POS = 0;
 
 	public MainScreenEx(TrollsVsGoatsGame game) {
@@ -46,7 +33,6 @@ public class MainScreenEx extends View {
 		TOP_MARGIN = (int)LOCAL_TOP_MARGIN;
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	protected Group createIface() {
 		Image bg;
@@ -87,12 +73,13 @@ public class MainScreenEx extends View {
 		Styles bigLabel = Styles.make(
 				Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 20)),
 				Style.HALIGN.center,
-				Style.TEXT_EFFECT.shadow,
-				Style.TEXT_EFFECT.SHADOW.is(0xFF412C2C),
-				Style.COLOR.is(0xFFFFFFFF));
+				Style.TEXT_EFFECT.vectorOutline,
+				Style.OUTLINE_WIDTH.is(4.0f),
+				Style.HIGHLIGHT.is(0xFF412C2C),
+				Style.COLOR.is(0xFFF7F9FA));
 		final Label labelUser = new Label(game.userName()).addStyles(bigLabel);
 		float labelWidth = 200;
-		top.add(AbsoluteLayout.at(labelUser, title_board_x + (titleBoard.width() - labelWidth)/2, title_board_y + 5 + titleBoard.height()/2, labelWidth, 0));
+		top.add(AbsoluteLayout.at(labelUser, title_board_x + (titleBoard.width() - labelWidth)/2, title_board_y + titleBoard.height()/2, labelWidth, 0));
 		
 		// Start button
 		final Button btnStart = createButton("button_b").setConstraint(Constraints.fixedSize(boardWidth, boardHeight));
@@ -234,6 +221,7 @@ public class MainScreenEx extends View {
 		names.add("back_select");
 		names.add("back_active");
 		names.add("back_inactive");
+		names.add("main_screen");
 
 		// Boards
 		names.add("cut_screens/home_page/button_b_active");

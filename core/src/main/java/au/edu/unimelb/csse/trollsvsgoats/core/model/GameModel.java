@@ -10,7 +10,7 @@ import playn.core.PlayN;
 public class GameModel {
     public int width = 1024, height = 720;
     public final static int levelsPerTheme = 9;
-    private float movementTime = 2;
+    private float movementTime = 1;
 
     private int levelIndex;
     private int themeIndex;
