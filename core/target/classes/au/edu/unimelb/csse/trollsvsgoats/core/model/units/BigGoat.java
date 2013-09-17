@@ -4,7 +4,7 @@ public class BigGoat extends Goat {
 
     @Override
     void init() {
-        setSpeed(0.5f);
+        setSpeed(1);
         setForce(8);
     }
 

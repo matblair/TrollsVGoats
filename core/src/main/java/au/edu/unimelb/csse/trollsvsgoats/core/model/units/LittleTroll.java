@@ -4,7 +4,7 @@ public class LittleTroll extends Troll {
 
     @Override
     void init() {
-        setSpeed(1);
+        setSpeed(2);
         setForce(1);
         setCost(5);
     }

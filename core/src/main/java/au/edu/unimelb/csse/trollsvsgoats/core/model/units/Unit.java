@@ -159,7 +159,7 @@ public abstract class Unit {
 
 	public boolean updatePosition(float timeDelta) { 
 
-		if (this.state().equals(State.BEINGEATEN) || state().equals(State.DYING)){
+		if (this.state().equals(State.BEINGEATEN) || state().equals(State.DYING) || state().equals(State.REMOVED)){
 			canMove = false;
 			return false;
 		}
@@ -222,7 +222,11 @@ public abstract class Unit {
 	}
 
 	public void removeBack() {
+		if(this.back!=null){
 		this.setBack(this.back.back);
+		} else {
+			this.setBack(null);
+		}
 	}
 
 	public State state() {
@@ -295,7 +299,7 @@ public abstract class Unit {
 		}else if (state().equals(State.DYING)){ 
 			if (dyingAnimation != null && !dead){
 				widget().icon.update(Icons.image(dyingAnimation.nextFrame(delta)));
-				if(!movedAnimation){
+				if(!movedAnimation && this instanceof Goat){
 					movedAnimation=true;
 					this.moveSquares(2);
 				}

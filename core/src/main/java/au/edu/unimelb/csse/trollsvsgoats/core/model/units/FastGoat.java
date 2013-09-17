@@ -4,8 +4,8 @@ public class FastGoat extends Goat {
 
     @Override
     void init() {
-        setSpeed(2);
-        setForce(2);
+        setSpeed(4);
+        setForce(4);
     }
     
     @Override

@@ -4,9 +4,9 @@ public class FastTroll extends Troll {
 
     @Override
     void init() {
-        setSpeed(2);
-        setForce(1);
-        setCost(15);
+        setSpeed(4);
+        setForce(2);
+        setCost(5);
     }
     
     @Override

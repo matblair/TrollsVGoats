@@ -6,8 +6,8 @@ public class ButtingGoat extends Goat {
 
 	@Override
 	void init() {
-		setSpeed(1);
-		setForce(2);
+		setSpeed(2);
+		setForce(4);
 	}
 
 	@Override

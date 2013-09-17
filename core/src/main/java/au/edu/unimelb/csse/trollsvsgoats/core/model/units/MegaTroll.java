@@ -4,9 +4,9 @@ public class MegaTroll extends Troll {
 
     @Override
     void init() {
-        setSpeed(0.5f);
-        setForce(8);
-        setCost(25);
+        setSpeed(1);
+        setForce(4);
+        setCost(20);
     }
 
     @Override

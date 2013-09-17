@@ -6,9 +6,9 @@ public class HungryTroll extends Troll {
 
     @Override
     void init() {
-        setSpeed(1);
+        setSpeed(2);
         setForce(2);
-        setCost(15);
+        setCost(20);
     }
 
     public void setEaten() {

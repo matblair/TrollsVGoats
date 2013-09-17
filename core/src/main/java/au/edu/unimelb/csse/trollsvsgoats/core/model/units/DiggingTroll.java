@@ -8,7 +8,7 @@ public class DiggingTroll extends Troll {
 	void init() {
 		setSpeed(0);
 		setForce(0);
-		setCost(20);
+		setCost(25);
 	}
 
 	@Override

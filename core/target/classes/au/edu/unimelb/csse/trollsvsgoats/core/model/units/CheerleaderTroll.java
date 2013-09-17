@@ -6,9 +6,9 @@ public class CheerleaderTroll extends Troll {
 
     @Override
     void init() {
-        setSpeed(1);
+        setSpeed(2);
         setForce(2);
-        setCost(20);
+        setCost(25);
     }
 
     @Override

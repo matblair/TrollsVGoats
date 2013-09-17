@@ -39,6 +39,7 @@ import au.edu.unimelb.csse.trollsvsgoats.core.model.units.LittleTroll;
 import au.edu.unimelb.csse.trollsvsgoats.core.model.units.MegaTroll;
 import au.edu.unimelb.csse.trollsvsgoats.core.model.units.NormalGoat;
 import au.edu.unimelb.csse.trollsvsgoats.core.model.units.NormalTroll;
+import au.edu.unimelb.csse.trollsvsgoats.core.model.units.Obstacle;
 import au.edu.unimelb.csse.trollsvsgoats.core.model.units.SpittingTroll;
 import au.edu.unimelb.csse.trollsvsgoats.core.model.units.Troll;
 import au.edu.unimelb.csse.trollsvsgoats.core.model.units.Unit;
@@ -140,6 +141,8 @@ public class LevelScreenEx extends View {
 	private static final String UNITSLOCKED = "_locked";
 	private static final String STRENGTHICON = "cut_screens/gameplay/strength";
 	private static final String SPEEDICON = "cut_screens/gameplay/speed";
+	private static final String PLANKIMG = "cut_screens/gameplay/plank";
+
 
 	//The interface margins
 	private static final float LEFTMARGIN = 15;
@@ -148,6 +151,7 @@ public class LevelScreenEx extends View {
 	private static final float BOTTOMBRIDGEOFFSET = -20;
 	private static final int INITIALEDGE = 29;
 	private static final int TILEGAP = 4;
+
 
 
 	//Dynamic user interface information
@@ -490,45 +494,45 @@ public class LevelScreenEx extends View {
 						}
 					}
 
-//					@Override
-//					public void onMouseOver(MotionEvent event) {
-//
-//
-//						if(unitsLocations.containsKey(square)){
-//							Unit u = unitsLocations.get(square);
-//							if(u instanceof Troll){
-//								System.out.println("HELLO");
-//
-//								Troll troll = (Troll) u;
-//								if(!trollIcons.get(troll.type()).equals(selTrollType)){
-//									trollIcons.get(troll.type()).setStyles(
-//											selOn);
-//								}
-//								updateTrollInfo(troll.type());
-//								if (showUnitMoment)
-//								{
-//									updateMomentLabel((int) unitMoment(troll));
-//								}
-//							}
-//						}
-//					}
-//
-//					@Override
-//					public void onMouseOut(MotionEvent event) {
-//						if(unitsLocations.containsKey(square)){
-//							Unit u = unitsLocations.get(square);
-//							if(u instanceof Troll){
-//								Troll troll = (Troll) u;
-//
-//								if(!trollIcons.get(troll.type()).equals(selTrollType)){
-//									trollIcons.get(troll.type()).setStyles(
-//											selOff);
-//								}
-//
-//								updateMomentLabel(moment);
-//							}
-//						}
-//					}
+					//					@Override
+					//					public void onMouseOver(MotionEvent event) {
+					//
+					//
+					//						if(unitsLocations.containsKey(square)){
+					//							Unit u = unitsLocations.get(square);
+					//							if(u instanceof Troll){
+					//								System.out.println("HELLO");
+					//
+					//								Troll troll = (Troll) u;
+					//								if(!trollIcons.get(troll.type()).equals(selTrollType)){
+					//									trollIcons.get(troll.type()).setStyles(
+					//											selOn);
+					//								}
+					//								updateTrollInfo(troll.type());
+					//								if (showUnitMoment)
+					//								{
+					//									updateMomentLabel((int) unitMoment(troll));
+					//								}
+					//							}
+					//						}
+					//					}
+					//
+					//					@Override
+					//					public void onMouseOut(MotionEvent event) {
+					//						if(unitsLocations.containsKey(square)){
+					//							Unit u = unitsLocations.get(square);
+					//							if(u instanceof Troll){
+					//								Troll troll = (Troll) u;
+					//
+					//								if(!trollIcons.get(troll.type()).equals(selTrollType)){
+					//									trollIcons.get(troll.type()).setStyles(
+					//											selOff);
+					//								}
+					//
+					//								updateMomentLabel(moment);
+					//							}
+					//						}
+					//					}
 
 				});
 				break;  
@@ -543,6 +547,12 @@ public class LevelScreenEx extends View {
 				hasPivot = true;
 				pivotLocation = lane;
 				squareLayer.setDepth(2);
+				break;
+			case 'x':
+				final float x = midPanelX+36;
+				final float y = midPanelY + SQUARE_HEIGHT;
+				Square square = new Square(lane, segment);
+				createObstacle(square, distance, segment, lane, isTrollSide, x, y);
 				break;
 				//Goat tiles
 			case 'g':// Little goat.
@@ -562,6 +572,35 @@ public class LevelScreenEx extends View {
 				middleDrawingPanel.add(AbsoluteLayout.at(tile, midPanelX, midPanelY));
 			}
 		}
+	}
+
+
+	private void createObstacle(Square square, int _distance, int _segment,
+			int _lane, boolean _isTrollSide, float _x, float _y) {
+
+		final Troll troll = new Obstacle();
+		square.setDistance(_distance);
+		square.setX(_x);
+		square.setY(_y);
+
+		GroupLayer layer = troll.widget().layer;
+		troll.widget()
+		.addStyles(
+				Style.BACKGROUND.is(Background.blank()));
+		troll.setSquare(square);
+		troll.setDefaultImage(getImage(PLANKIMG));
+
+		troll.setState(State.REMOVED);
+
+		unitsLocations.put(square, troll);
+
+		layer.setOrigin(0, getImage(PLANKIMG)
+				.height());
+		layer.setDepth(1);
+		layer.setInteractive(false);
+
+		middleDrawingPanel.add(AbsoluteLayout.at(troll.widget(), _x, _y));
+		troll.setParent(middleDrawingPanel);
 	}
 
 	public void deployTroll(final Square square,int _distance, int _segment, int _lane, boolean _isTrollSide, float _x, float _y){
@@ -706,6 +745,7 @@ public class LevelScreenEx extends View {
 		}
 
 	}
+
 
 	////////////////////////////////////////////////////////////////////
 	// CREATING BOTTOM UI PANEL									    ////
@@ -1124,6 +1164,7 @@ public class LevelScreenEx extends View {
 			unit.update(0);
 			unit.reset();
 		}
+		this.updateMomentLabel(0);
 	}
 
 	public void resetBoard(){
@@ -1142,7 +1183,7 @@ public class LevelScreenEx extends View {
 			unit = unitsLocations.get(square);
 			unit.reset();
 			//Check if not goat and remove.
-			if(unit instanceof Troll){
+			if(unit instanceof Troll && !(unit instanceof Obstacle)){
 				int count = this.trollCounts.get(unit.type())+1;
 				this.trollCounts.put(unit.type(), count);
 				removeUnit(unit);
@@ -1152,6 +1193,8 @@ public class LevelScreenEx extends View {
 
 		this.cost=0;
 		this.updateCost(0);
+		this.updateMomentLabel(0);
+
 	}
 
 	private void proceed() {
@@ -1228,7 +1271,22 @@ public class LevelScreenEx extends View {
 
 	private void updateMomentLabel(int moment)
 	{
-		momentLabel.text.update(String.valueOf(moment)+" Nm");
+		if(moment!=0){
+			momentLabel.setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 20)),
+					Style.TEXT_EFFECT.shadow,
+					Style.SHADOW.is(0xFF412C2C),
+					Style.HALIGN.center, 
+					Style.FONT.COLOR.is(0xFFCC0000));
+			momentLabel.text.update(String.valueOf(moment)+" Nm");
+		} else {
+			momentLabel.setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 20)),
+					Style.TEXT_EFFECT.shadow,
+					Style.SHADOW.is(0xFF412C2C),
+					Style.HALIGN.center, 
+					Style.FONT.COLOR.is(0xFFFFFFFF));
+			momentLabel.text.update(String.valueOf(moment)+" Nm");
+
+		}
 	}
 
 	/**
@@ -1243,7 +1301,7 @@ public class LevelScreenEx extends View {
 
 
 			//Remove any dead units
-			if(unit.state().equals(State.REMOVED)){
+			if(unit.state().equals(State.REMOVED) && !(unit instanceof Obstacle)){
 				this.toRemove.add(unit);			
 			}
 
@@ -1417,21 +1475,22 @@ public class LevelScreenEx extends View {
 			return;
 		if (unit.front() != null)
 			unit.front().removeBack();
-		else {
-			if (unit.back() != null) {
-				unit.back().removeFront();
-				if (unit instanceof Troll && !(unit instanceof DiggingTroll) && !(unit instanceof SpittingTroll) )
-					headTrolls.put(unit.square().lane(), unit.back());
-				else
-					headGoats.put(unit.square().lane(), unit.back());
-			} else {
-				if (unit instanceof Troll)
-					headTrolls.remove(unit.square().lane());
-				else {
-					headGoats.remove(unit.square().lane());
-				}
+
+		if (unit.back() != null) {
+			unit.back().removeFront();
+			if (unit instanceof Troll && !(unit instanceof DiggingTroll) && !(unit instanceof SpittingTroll) )
+				headTrolls.put(unit.square().lane(), unit.back());
+			else
+				headGoats.put(unit.square().lane(), unit.back());
+		} else {
+			if (unit instanceof Troll)
+				headTrolls.remove(unit.square().lane());
+			else {
+				headGoats.remove(unit.square().lane());
 			}
 		}
+
+
 		unit.widget().layer.setVisible(false);
 	}
 
@@ -1501,7 +1560,7 @@ public class LevelScreenEx extends View {
 			compensation=10;
 		}
 		if(type!=null && type.equals("digging")){
-			compensation=10;
+			compensation=13;
 		} 
 
 		float tiledist = SQUARE_WIDTH * segment;
@@ -1627,6 +1686,9 @@ public class LevelScreenEx extends View {
 			names.add("animations/goats_animations/normal/"+newGoat(symbol).type()+"_goat_normal");
 			names.add("animations/goats_animations/walk/"+newGoat(symbol).type()+"_goat_walk");
 			break;
+		case 'x':
+			names.add("cut_screens/gameplay/gap");
+			break;
 		default:
 			log().error("Unsupported square type character '" + symbol + "'");
 			return null;
@@ -1693,6 +1755,7 @@ public class LevelScreenEx extends View {
 		names.add("animations/goats_animations/dying/normal_goat_eaten");
 
 
+		names.add(PLANKIMG);
 
 		//The UIBoards
 		names.add(MOMENTBOARD);

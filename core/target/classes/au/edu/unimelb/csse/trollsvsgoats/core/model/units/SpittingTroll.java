@@ -10,7 +10,7 @@ public class SpittingTroll extends Troll {
 	void init() {
 		setSpeed(0);
 		setForce(0);
-		setCost(15);
+		setCost(5);
 	}
 
 	@Override

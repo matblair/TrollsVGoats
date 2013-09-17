@@ -4,7 +4,7 @@ public class NormalGoat extends Goat {
 
     @Override
     void init() {
-        setSpeed(1);
+        setSpeed(2);
         setForce(4);
     }
     
