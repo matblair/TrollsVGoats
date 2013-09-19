@@ -24,14 +24,10 @@ public class LoadingScreen extends View {
 
     @Override
     protected Group createIface() {
-    	
     	Image loading_bg = PlayN.assets().getImage("images/loading.png");
-
     	root.addStyles(Style.BACKGROUND.is(Background.image(loading_bg)));
     	topPanel.addStyles(Style.BACKGROUND.is(Background.blank()));
-    	
     	root.add(new Label("LOADING ...").addStyles(Style.FONT.is(font(Font.Style.BOLD, 40))));
-    	
         return null;
     }
 

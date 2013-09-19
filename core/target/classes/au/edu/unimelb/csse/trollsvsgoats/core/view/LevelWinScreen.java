@@ -47,11 +47,14 @@ public class LevelWinScreen extends View {
 
 	//Json object for scores
 	private Json.Object scores;
+	
+	//lAST SCORE FOR levels
+	private int lastScore;
 
-
-	public LevelWinScreen(Json.Object scores, TrollsVsGoatsGame game) {
+	public LevelWinScreen(Json.Object scores, TrollsVsGoatsGame game, int lastScore) {
 		super(game);
 		this.scores = scores;
+		this.lastScore = lastScore;
 	}
 
 	@Override
@@ -125,7 +128,7 @@ public class LevelWinScreen extends View {
 		//Add starts
 		for(int i=0; i<3; i++){
 			Label star = null;
-			if(i<score){
+			if(i<lastScore || i==0){
 				star = new Label(getIcon(IMAGEPATH+"star"));
 			}
 			if(star!=null){
@@ -181,7 +184,7 @@ public class LevelWinScreen extends View {
 
 		//Now get the first item and then use it to display
 		if(!model.momentOverZero()){
-			starBoard.add(AbsoluteLayout.at(new Label(getIcon("badges/atlas_reborn")),getIcon(IMAGEPATH+"star_board").width()/2-getIcon("badges/atlas_reborn").width()/2,149));
+			starBoard.add(AbsoluteLayout.at(new Label(getIcon("cut_screens/select_levels/rock_solid")),getIcon(IMAGEPATH+"star_board").width()/2-getIcon("badges/atlas_reborn").width()/2,149));
 		}
 
 		//Add the starboard
@@ -248,7 +251,7 @@ public class LevelWinScreen extends View {
 		names.add("backgrounds/1024_720/winner_back_1024_720");
 
 		//Add the rock solid badge
-		names.add("badges/atlas_reborn");
+		names.add("cut_screens/select_levels/rock_solid");
 
 		//Add the buttons
 		names.add(BUTTONB+"_active");

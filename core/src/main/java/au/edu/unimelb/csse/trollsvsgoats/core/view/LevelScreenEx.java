@@ -1852,16 +1852,10 @@ public class LevelScreenEx extends View {
 					score = scores.getInt(cost);
 			}
 		}
-		//Pause for two seconds
-		try {
-			Thread.sleep(4000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 		game.levelCompleted(score);
 		// Log trolls deployment when complete the level.
 		game.logTrollsDeployment(trollsDeployment());
-		game.showWinnerScreen(scores);
+		game.showWinnerScreen(scores,score);
 	}
 
 	private void showLevelFailed(){

@@ -56,6 +56,8 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
     	super(UPDATE_PERIOD); // call update every 33ms (30 times per second)
         this.persistence = persistence;
         this.handler = handler;
+		handler.setSize(1024, 720);
+
         this.model = new GameModel();
         screens = new View[] { mainScreen = new MainScreenEx(this),
                 loadScreen = new LoadingScreen(this),
@@ -64,7 +66,7 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
                 new LevelScreenEx(this), badgesScreen = new BadgesScreenEx(this),
                 optionScreen = new OptionScreen(this),
                 helpScreen = new HelpScreenEx(this),
-                winScreen = new LevelWinScreen(null, this),
+                winScreen = new LevelWinScreen(null, this, 0),
                 loseScreen = new LevelLoseScreen(this),
                 levelLoadScreen = new LevelLoadScreen(this, 1)};
     }
@@ -165,8 +167,8 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
         stack.push(themeSelScreen);
     }
     
-    public void showWinnerScreen(Json.Object scores) {
-    	LevelWinScreen newScreen = new LevelWinScreen(scores,this);
+    public void showWinnerScreen(Json.Object scores, int score) {
+    	LevelWinScreen newScreen = new LevelWinScreen(scores,this, score);
     	stack.replace(newScreen);
     }
     
@@ -257,7 +259,7 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
     }
 
     public void loadNextLevel() {
-        loadLevel(model.nextLevelIndex(), true);
+    	loadLevelLoad(model.nextLevelIndex(), true);
     }
 
     /** Called when completed the current level, persists the level index. */
