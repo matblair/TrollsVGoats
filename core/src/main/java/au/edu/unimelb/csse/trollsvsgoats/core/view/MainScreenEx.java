@@ -221,7 +221,6 @@ public class MainScreenEx extends View {
 		names.add("back_select");
 		names.add("back_active");
 		names.add("back_inactive");
-		names.add("main_screen");
 
 		// Boards
 		names.add("cut_screens/home_page/button_b_active");

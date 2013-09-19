@@ -185,8 +185,8 @@ public class LevelScreenEx extends View {
 
 
 	//ArrayLists for accesing the 
-	private ArrayList<Group> trollHeads = new ArrayList<Group>();
-	private ArrayList<Group> goatHeads = new ArrayList<Group>();
+	private static ArrayList<Group> trollHeads = new ArrayList<Group>();
+	private static ArrayList<Group> goatHeads = new ArrayList<Group>();
 
 	private int goatIndex=0;
 	private int trollIndex=0;
@@ -196,21 +196,21 @@ public class LevelScreenEx extends View {
 
 	// The first unit in a lane.
 	// A lane of units is represented as a linked list.
-	private Map<Integer, Unit> headTrolls = new HashMap<Integer, Unit>();
-	private Map<Integer, Unit> headGoats = new HashMap<Integer, Unit>();
-	private ArrayList<Unit> toRemove = new ArrayList<Unit>();
+	private static Map<Integer, Unit> headTrolls = new HashMap<Integer, Unit>();
+	private static Map<Integer, Unit> headGoats = new HashMap<Integer, Unit>();
+	private static ArrayList<Unit> toRemove = new ArrayList<Unit>();
 
 
 	//A count of each troll used in the game (for limits)
-	private Map<String, Integer> trollCounts = new HashMap<String, Integer>();
-	private HashSet<String> goatTypes = new HashSet<String>();
+	private static Map<String, Integer> trollCounts = new HashMap<String, Integer>();
+	private static HashSet<String> goatTypes = new HashSet<String>();
 
 	//A collection of all icons created thusfar.
-	private Map<String, Button> trollIcons = new HashMap<String, Button>();
-	private Map<String, Button> goatIcons = new HashMap<String, Button>();
+	private static Map<String, Button> trollIcons = new HashMap<String, Button>();
+	private static Map<String, Button> goatIcons = new HashMap<String, Button>();
 
 	// The unit locations before the game starts.
-	private Map<Square, Unit> unitsLocations = new HashMap<Square, Unit>();
+	private static Map<Square, Unit> unitsLocations = new HashMap<Square, Unit>();
 
 	// Level specific stats
 	private int laneCount;
@@ -256,7 +256,7 @@ public class LevelScreenEx extends View {
 	 * @param game
 	 * @param levelJson the information for our particular level
 	 */
-	public LevelScreenEx(TrollsVsGoatsGame game, String levelJson) {
+	public LevelScreenEx(TrollsVsGoatsGame game, String levelJson, boolean refresh) {
 		super(game);
 
 		this.json = json().parse(levelJson);
@@ -307,8 +307,18 @@ public class LevelScreenEx extends View {
 
 			}
 		}
-
-
+		
+		if(refresh){
+			this.headTrolls.clear();
+			this.headGoats.clear();
+			this.toRemove.clear();
+			this.goatTypes.clear();
+			this.trollCounts.clear();
+			this.trollIcons.clear();
+			this.goatIcons.clear();
+			this.unitsLocations.clear();
+		}
+		
 		//Check if we should be showing moments
 		if (model.levelIndex() <= 1){
 			showUnitMoment = true;
@@ -1855,6 +1865,10 @@ public class LevelScreenEx extends View {
 		game.levelCompleted(score);
 		// Log trolls deployment when complete the level.
 		game.logTrollsDeployment(trollsDeployment());
+		
+		//Reset the level
+		this.restart();
+		
 		game.showWinnerScreen(scores,score);
 	}
 

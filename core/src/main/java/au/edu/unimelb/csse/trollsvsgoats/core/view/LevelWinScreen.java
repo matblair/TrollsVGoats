@@ -86,8 +86,6 @@ public class LevelWinScreen extends View {
 		panel.add(AbsoluteLayout.at(nextButtonPanel,40,355));
 		createRetryButton();
 		panel.add(AbsoluteLayout.at(retryButtonPanel,40,428));
-
-
 	}
 
 	private void createTitleBoard(){
@@ -110,7 +108,6 @@ public class LevelWinScreen extends View {
 
 		//Add the title text 
 		titleBoard.add(AbsoluteLayout.at(new Label(getIcon(IMAGEPATH+"level_completed_title")), 100,20));
-
 	}
 
 	private void createStarBoard(){
@@ -179,12 +176,11 @@ public class LevelWinScreen extends View {
 			if (!badge.isAchieved())
 				game.setBadgeAchieve(badge);
 				model.setBadgeAchieved(badge.name());
-
 		}
 
 		//Now get the first item and then use it to display
 		if(!model.momentOverZero()){
-			starBoard.add(AbsoluteLayout.at(new Label(getIcon("cut_screens/select_levels/rock_solid")),getIcon(IMAGEPATH+"star_board").width()/2-getIcon("badges/atlas_reborn").width()/2,149));
+			starBoard.add(AbsoluteLayout.at(new Label(getIcon("badges/a_level")),getIcon(IMAGEPATH+"star_board").width()/2-getIcon("badges/atlas_reborn").width()/2,149));
 		}
 
 		//Add the starboard
@@ -203,7 +199,7 @@ public class LevelWinScreen extends View {
 		next.clicked().connect(new UnitSlot(){
 			@Override
 			public void onEmit() {
-				game.loadNextLevel();				
+				game.loadNextLevel(true);				
 			}
 		});;
 
@@ -227,7 +223,7 @@ public class LevelWinScreen extends View {
 			@Override
 			public void onEmit() {
 				//Swap back to the game view and update
-				game.loadLevel(model.levelIndex(), true);
+				game.loadLevel(model.levelIndex(), true, false);
 			}
 
 		});
@@ -251,7 +247,7 @@ public class LevelWinScreen extends View {
 		names.add("backgrounds/1024_720/winner_back_1024_720");
 
 		//Add the rock solid badge
-		names.add("cut_screens/select_levels/rock_solid");
+		names.add("badges/a_level");
 
 		//Add the buttons
 		names.add(BUTTONB+"_active");
@@ -278,9 +274,6 @@ public class LevelWinScreen extends View {
 
 		//Add the titleboard
 		names.add(IMAGEPATH+"title_board");
-
-
-
 		return names.toArray(new String[names.size()]);
 	}
 
