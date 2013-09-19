@@ -115,14 +115,14 @@ public class HelpScreenEx extends View {
 		int leftXPos = (int) (title_board_x - getIcon("cut_screens/help/tab_button_active").width() - 60);
 		int leftYPos = 45;
 		int leftYIncr = (int) (getIcon("cut_screens/help/tab_button_active").height() + 4);
-		float labelWidth = 150;
+		float labelWidth = 150, labelHeight = getIcon("cut_screens/help/tab_button_active").height();
 		float labelXPos = leftXPos + getIcon("cut_screens/help/tab_button_active").width()/2 - labelWidth/2;
 		
 		// introduction
 		final Button introButton = createButton("tab_button", "introduction");
 		left.add(AbsoluteLayout.at(introButton, leftXPos, leftYPos));
 		final Label labelIntro = new Label("Introduction").setStyles(bigLabel);
-		left.add(AbsoluteLayout.at (labelIntro, labelXPos, leftYPos+20, labelWidth, 20));
+		left.add(AbsoluteLayout.at (labelIntro, labelXPos, leftYPos, labelWidth, labelHeight));
 		
 		Icon longRope = getIcon("cut_screens/help/rope_title_long");
 		left.add(AbsoluteLayout.at(new Label(longRope), leftXPos+12, title_board_y-37));
@@ -134,7 +134,7 @@ public class HelpScreenEx extends View {
 		final Button deployButton = createButton("tab_button", "deployment");
 		left.add(AbsoluteLayout.at(deployButton, leftXPos, leftYPos));
 		final Label labelDeploy = new Label("Setup").setStyles(bigLabel);
-		left.add(AbsoluteLayout.at (labelDeploy, labelXPos, leftYPos+20, labelWidth, 20));
+		left.add(AbsoluteLayout.at (labelDeploy, labelXPos, leftYPos, labelWidth, labelHeight));
 		
 		left.add(AbsoluteLayout.at(new Label(rope_l), leftXPos+12, leftYPos-34));
 		left.add(AbsoluteLayout.at(new Label(rope_l), leftXPos+173, leftYPos-34));
@@ -145,7 +145,7 @@ public class HelpScreenEx extends View {
 		final Button runButton = createButton("tab_button", "running");
 		left.add(AbsoluteLayout.at(runButton, leftXPos, leftYPos));
 		final Label labelRun = new Label("Play").setStyles(bigLabel);
-		left.add(AbsoluteLayout.at (labelRun, labelXPos, leftYPos+20, labelWidth, 20));
+		left.add(AbsoluteLayout.at (labelRun, labelXPos, leftYPos, labelWidth, labelHeight));
 		
 		left.add(AbsoluteLayout.at(new Label(rope_l), leftXPos+12, leftYPos-34));
 		left.add(AbsoluteLayout.at(new Label(rope_l), leftXPos+173, leftYPos-34));
@@ -156,7 +156,7 @@ public class HelpScreenEx extends View {
 		final Button principlesButton = createButton("tab_button_u", "principles");
 		left.add(AbsoluteLayout.at(principlesButton, leftXPos, leftYPos));
 		final Label labelPrinciples = new Label("Principles").setStyles(bigLabel);
-		left.add(AbsoluteLayout.at (labelPrinciples, labelXPos, leftYPos+20, labelWidth, 20));
+		left.add(AbsoluteLayout.at (labelPrinciples, labelXPos, leftYPos, labelWidth, labelHeight));
 		
 		left.add(AbsoluteLayout.at(new Label(rope_l), leftXPos+12, leftYPos-34));
 		left.add(AbsoluteLayout.at(new Label(rope_l), leftXPos+173, leftYPos-34));
@@ -241,24 +241,18 @@ public class HelpScreenEx extends View {
 		return names.toArray(new String[names.size()]);
 	}
 	
-	private void loadText(String helpPage) {
-		String path = "helpinfo/" + helpPage + ".txt";
-		final HelpScreenEx hs = this;
-		assets().getText(path, new Callback<String>() {
-			@Override
-			public void onSuccess(String result) {
-				hs.setHelpText(result);
-			}
-
-			@Override
-			public void onFailure(Throwable cause) {
-				log().error(cause.toString());
-			}
-        });
+	public String[] helpFiles() {
+		String[] files = new String[] {
+			"helpinfo/introduction",
+			"helpinfo/running",
+			"helpinfo/deployment",
+			"helpinfo/principles"
+		};
+		return files;
 	}
 	
-	private void setHelpText(String lines) {
-		helpText.text.update(lines);
+	private void loadText(String helpPage) {
+		helpText.text.update(game.getHelpText("helpinfo/" + helpPage));
 	}
 	
 	private void setHelpImage(String toLoad) {

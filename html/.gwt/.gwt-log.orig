@@ -1108,34 +1108,6 @@ Compiling...
 Removing invalidated units
 Finding entry point classes
 Public resources found in...
-<<<<<<< HEAD
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/html/src/test/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/main/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/test/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/core/src/test/java is neither a directory nor an archive (.jar or .zip)
-Translatable source found in...
-Found 0 cached/archived units.  Used 0 / 2719 units from cache.
-Compiling...
-   20% complete (ETR: 12 seconds)
-   20% complete (ETR: 12 seconds)
-   20% complete (ETR: 12 seconds)
-   30% complete (ETR: 12 seconds)
-   40% complete (ETR: 9 seconds)
-   50% complete (ETR: 7 seconds)
-   60% complete (ETR: 5 seconds)
-   70% complete (ETR: 3 seconds)
-   80% complete (ETR: 2 seconds)
-   90% complete (ETR: 1 seconds)
-   100% complete (ETR: 0 seconds)
-   Compilation completed in 12.99 seconds
-Removing invalidated units
-Finding entry point classes
-Public resources found in...
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/html/src/test/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/main/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/test/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/core/src/test/java is neither a directory nor an archive (.jar or .zip)
-=======
    Unexpected entry in classpath; /Users/eclipse/Documents/workspace/TrollsVGoats/html/src/test/java is neither a directory nor an archive (.jar or .zip)
    Unexpected entry in classpath; /Users/eclipse/Documents/workspace/TrollsVGoats/assets/src/main/java is neither a directory nor an archive (.jar or .zip)
    Unexpected entry in classpath; /Users/eclipse/Documents/workspace/TrollsVGoats/assets/src/test/java is neither a directory nor an archive (.jar or .zip)
@@ -1168,7 +1140,6 @@ Public resources found in...
    Unexpected entry in classpath; /trollsvsgoats-html/target/test-classes is neither a directory nor an archive (.jar or .zip)
    Unexpected entry in classpath; /trollsvsgoats-core/target/test-classes is neither a directory nor an archive (.jar or .zip)
    Unexpected entry in classpath; /trollsvsgoats-assets/target/test-classes is neither a directory nor an archive (.jar or .zip)
->>>>>>> 08ab59e1fa6bacf8eb29de8f9603d02df050fae0
 Translatable source found in...
 Found 2719 cached/archived units.  Used 2719 / 2719 units from cache.
 Compiling...
@@ -1176,12 +1147,6 @@ Compiling...
 Removing invalidated units
 Finding entry point classes
 Public resources found in...
-<<<<<<< HEAD
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/html/src/test/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/main/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/test/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/core/src/test/java is neither a directory nor an archive (.jar or .zip)
-=======
    Unexpected entry in classpath; /Users/eclipse/Documents/workspace/TrollsVGoats/html/src/test/java is neither a directory nor an archive (.jar or .zip)
    Unexpected entry in classpath; /Users/eclipse/Documents/workspace/TrollsVGoats/assets/src/main/java is neither a directory nor an archive (.jar or .zip)
    Unexpected entry in classpath; /Users/eclipse/Documents/workspace/TrollsVGoats/assets/src/test/java is neither a directory nor an archive (.jar or .zip)
@@ -1189,7 +1154,6 @@ Public resources found in...
    Unexpected entry in classpath; /trollsvsgoats-html/target/test-classes is neither a directory nor an archive (.jar or .zip)
    Unexpected entry in classpath; /trollsvsgoats-core/target/test-classes is neither a directory nor an archive (.jar or .zip)
    Unexpected entry in classpath; /trollsvsgoats-assets/target/test-classes is neither a directory nor an archive (.jar or .zip)
->>>>>>> 08ab59e1fa6bacf8eb29de8f9603d02df050fae0
 Translatable source found in...
 Found 2719 cached/archived units.  Used 2719 / 2719 units from cache.
 Compiling...
@@ -1197,19 +1161,6 @@ Compiling...
 Removing invalidated units
 Finding entry point classes
 Public resources found in...
-<<<<<<< HEAD
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/html/src/test/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/main/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/test/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/core/src/test/java is neither a directory nor an archive (.jar or .zip)
-Translatable source found in...
-Found 0 cached/archived units.  Used 0 / 2719 units from cache.
-Compiling...
-   30% complete (ETR: 8 seconds)
-   30% complete (ETR: 8 seconds)
-   30% complete (ETR: 8 seconds)
-   30% complete (ETR: 8 seconds)
-=======
    Unexpected entry in classpath; /Users/eclipse/Documents/workspace/TrollsVGoats/html/src/test/java is neither a directory nor an archive (.jar or .zip)
    Unexpected entry in classpath; /Users/eclipse/Documents/workspace/TrollsVGoats/assets/src/main/java is neither a directory nor an archive (.jar or .zip)
    Unexpected entry in classpath; /Users/eclipse/Documents/workspace/TrollsVGoats/assets/src/test/java is neither a directory nor an archive (.jar or .zip)
@@ -1224,7 +1175,6 @@ Compiling...
    30% complete (ETR: 10 seconds)
    30% complete (ETR: 9 seconds)
    30% complete (ETR: 9 seconds)
->>>>>>> 08ab59e1fa6bacf8eb29de8f9603d02df050fae0
    40% complete (ETR: 8 seconds)
    50% complete (ETR: 6 seconds)
    60% complete (ETR: 4 seconds)
@@ -1232,16 +1182,6 @@ Compiling...
    80% complete (ETR: 2 seconds)
    90% complete (ETR: 1 seconds)
    100% complete (ETR: 0 seconds)
-<<<<<<< HEAD
-   Compilation completed in 12.23 seconds
-Removing invalidated units
-Finding entry point classes
-Public resources found in...
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/html/src/test/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/main/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/test/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/core/src/test/java is neither a directory nor an archive (.jar or .zip)
-=======
    Compilation completed in 12.66 seconds
 Removing invalidated units
 Finding entry point classes
@@ -1253,7 +1193,6 @@ Public resources found in...
    Unexpected entry in classpath; /trollsvsgoats-html/target/test-classes is neither a directory nor an archive (.jar or .zip)
    Unexpected entry in classpath; /trollsvsgoats-core/target/test-classes is neither a directory nor an archive (.jar or .zip)
    Unexpected entry in classpath; /trollsvsgoats-assets/target/test-classes is neither a directory nor an archive (.jar or .zip)
->>>>>>> 08ab59e1fa6bacf8eb29de8f9603d02df050fae0
 Translatable source found in...
 Found 2719 cached/archived units.  Used 2719 / 2719 units from cache.
 Compiling...
@@ -1261,12 +1200,6 @@ Compiling...
 Removing invalidated units
 Finding entry point classes
 Public resources found in...
-<<<<<<< HEAD
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/html/src/test/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/main/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/test/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/core/src/test/java is neither a directory nor an archive (.jar or .zip)
-=======
    Unexpected entry in classpath; /Users/eclipse/Documents/workspace/TrollsVGoats/html/src/test/java is neither a directory nor an archive (.jar or .zip)
    Unexpected entry in classpath; /Users/eclipse/Documents/workspace/TrollsVGoats/assets/src/main/java is neither a directory nor an archive (.jar or .zip)
    Unexpected entry in classpath; /Users/eclipse/Documents/workspace/TrollsVGoats/assets/src/test/java is neither a directory nor an archive (.jar or .zip)
@@ -1274,7 +1207,6 @@ Public resources found in...
    Unexpected entry in classpath; /trollsvsgoats-html/target/test-classes is neither a directory nor an archive (.jar or .zip)
    Unexpected entry in classpath; /trollsvsgoats-core/target/test-classes is neither a directory nor an archive (.jar or .zip)
    Unexpected entry in classpath; /trollsvsgoats-assets/target/test-classes is neither a directory nor an archive (.jar or .zip)
->>>>>>> 08ab59e1fa6bacf8eb29de8f9603d02df050fae0
 Translatable source found in...
 Found 2719 cached/archived units.  Used 2719 / 2719 units from cache.
 Compiling...
@@ -1282,122 +1214,6 @@ Compiling...
 Removing invalidated units
 Finding entry point classes
 Public resources found in...
-<<<<<<< HEAD
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/html/src/test/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/main/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/test/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/core/src/test/java is neither a directory nor an archive (.jar or .zip)
-Translatable source found in...
-Found 0 cached/archived units.  Used 0 / 2719 units from cache.
-Compiling...
-   40% complete (ETR: 7 seconds)
-   40% complete (ETR: 7 seconds)
-   40% complete (ETR: 7 seconds)
-   40% complete (ETR: 7 seconds)
-   40% complete (ETR: 7 seconds)
-   50% complete (ETR: 5 seconds)
-   60% complete (ETR: 4 seconds)
-   70% complete (ETR: 3 seconds)
-   80% complete (ETR: 2 seconds)
-   90% complete (ETR: 1 seconds)
-   100% complete (ETR: 0 seconds)
-   Compilation completed in 11.29 seconds
-Removing invalidated units
-Finding entry point classes
-Public resources found in...
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/html/src/test/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/main/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/test/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/core/src/test/java is neither a directory nor an archive (.jar or .zip)
-Translatable source found in...
-Found 2719 cached/archived units.  Used 2719 / 2719 units from cache.
-Compiling...
-   Compilation completed in 0.00 seconds
-Removing invalidated units
-Finding entry point classes
-Public resources found in...
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/html/src/test/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/main/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/test/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/core/src/test/java is neither a directory nor an archive (.jar or .zip)
-Translatable source found in...
-Found 2719 cached/archived units.  Used 2719 / 2719 units from cache.
-Compiling...
-   Compilation completed in 0.00 seconds
-Removing invalidated units
-Finding entry point classes
-Public resources found in...
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/html/src/test/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/main/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/test/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/core/src/test/java is neither a directory nor an archive (.jar or .zip)
-Translatable source found in...
-Found 0 cached/archived units.  Used 0 / 2719 units from cache.
-Compiling...
-   50% complete (ETR: 5 seconds)
-   50% complete (ETR: 5 seconds)
-   50% complete (ETR: 5 seconds)
-   50% complete (ETR: 5 seconds)
-   50% complete (ETR: 5 seconds)
-   50% complete (ETR: 5 seconds)
-   60% complete (ETR: 4 seconds)
-   70% complete (ETR: 3 seconds)
-   80% complete (ETR: 2 seconds)
-   90% complete (ETR: 1 seconds)
-   100% complete (ETR: 0 seconds)
-   Compilation completed in 11.36 seconds
-Removing invalidated units
-Finding entry point classes
-Public resources found in...
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/html/src/test/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/main/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/test/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/core/src/test/java is neither a directory nor an archive (.jar or .zip)
-Translatable source found in...
-Found 2719 cached/archived units.  Used 2719 / 2719 units from cache.
-Compiling...
-   Compilation completed in 0.00 seconds
-Removing invalidated units
-Finding entry point classes
-Public resources found in...
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/html/src/test/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/main/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/test/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/core/src/test/java is neither a directory nor an archive (.jar or .zip)
-Translatable source found in...
-Found 2719 cached/archived units.  Used 2719 / 2719 units from cache.
-Compiling...
-   Compilation completed in 0.00 seconds
-Removing invalidated units
-Finding entry point classes
-Public resources found in...
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/html/src/test/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/main/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/test/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/core/src/test/java is neither a directory nor an archive (.jar or .zip)
-Translatable source found in...
-Found 0 cached/archived units.  Used 0 / 2719 units from cache.
-Compiling...
-   0% complete (ETR: 51 seconds)
-   10% complete (ETR: 47 seconds)
-   20% complete (ETR: 31 seconds)
-   30% complete (ETR: 22 seconds)
-   40% complete (ETR: 16 seconds)
-   50% complete (ETR: 12 seconds)
-   60% complete (ETR: 8 seconds)
-   70% complete (ETR: 6 seconds)
-   80% complete (ETR: 3 seconds)
-   90% complete (ETR: 2 seconds)
-   100% complete (ETR: 0 seconds)
-   Compilation completed in 22.19 seconds
-Removing invalidated units
-Finding entry point classes
-Public resources found in...
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/html/src/test/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/main/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/test/java is neither a directory nor an archive (.jar or .zip)
-   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/core/src/test/java is neither a directory nor an archive (.jar or .zip)
-=======
    Unexpected entry in classpath; /Users/eclipse/Documents/workspace/TrollsVGoats/html/src/test/java is neither a directory nor an archive (.jar or .zip)
    Unexpected entry in classpath; /Users/eclipse/Documents/workspace/TrollsVGoats/assets/src/main/java is neither a directory nor an archive (.jar or .zip)
    Unexpected entry in classpath; /Users/eclipse/Documents/workspace/TrollsVGoats/assets/src/test/java is neither a directory nor an archive (.jar or .zip)
@@ -1430,7 +1246,20 @@ Public resources found in...
    Unexpected entry in classpath; /trollsvsgoats-html/target/test-classes is neither a directory nor an archive (.jar or .zip)
    Unexpected entry in classpath; /trollsvsgoats-core/target/test-classes is neither a directory nor an archive (.jar or .zip)
    Unexpected entry in classpath; /trollsvsgoats-assets/target/test-classes is neither a directory nor an archive (.jar or .zip)
->>>>>>> 08ab59e1fa6bacf8eb29de8f9603d02df050fae0
+Translatable source found in...
+Found 2719 cached/archived units.  Used 2719 / 2719 units from cache.
+Compiling...
+   Compilation completed in 0.00 seconds
+Removing invalidated units
+Finding entry point classes
+Public resources found in...
+   Unexpected entry in classpath; /Users/eclipse/Documents/workspace/TrollsVGoats/html/src/test/java is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /Users/eclipse/Documents/workspace/TrollsVGoats/assets/src/main/java is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /Users/eclipse/Documents/workspace/TrollsVGoats/assets/src/test/java is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /Users/eclipse/Documents/workspace/TrollsVGoats/core/src/test/java is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /trollsvsgoats-html/target/test-classes is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /trollsvsgoats-core/target/test-classes is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /trollsvsgoats-assets/target/test-classes is neither a directory nor an archive (.jar or .zip)
 Translatable source found in...
 Found 2719 cached/archived units.  Used 2719 / 2719 units from cache.
 Compiling...
@@ -1443,6 +1272,28 @@ Public resources found in...
    Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/main/java is neither a directory nor an archive (.jar or .zip)
    Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/test/java is neither a directory nor an archive (.jar or .zip)
    Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/core/src/test/java is neither a directory nor an archive (.jar or .zip)
+Translatable source found in...
+Found 0 cached/archived units.  Used 0 / 2719 units from cache.
+Compiling...
+   40% complete (ETR: 6 seconds)
+   40% complete (ETR: 6 seconds)
+   40% complete (ETR: 6 seconds)
+   40% complete (ETR: 6 seconds)
+   40% complete (ETR: 6 seconds)
+   50% complete (ETR: 5 seconds)
+   60% complete (ETR: 4 seconds)
+   70% complete (ETR: 3 seconds)
+   80% complete (ETR: 2 seconds)
+   90% complete (ETR: 1 seconds)
+   100% complete (ETR: 0 seconds)
+   Compilation completed in 12.02 seconds
+Removing invalidated units
+Finding entry point classes
+Public resources found in...
+   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/html/src/test/java is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/main/java is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/test/java is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/core/src/test/java is neither a directory nor an archive (.jar or .zip)
 =======
    Unexpected entry in classpath; /Users/eclipse/Documents/workspace/TrollsVGoats/html/src/test/java is neither a directory nor an archive (.jar or .zip)
    Unexpected entry in classpath; /Users/eclipse/Documents/workspace/TrollsVGoats/assets/src/main/java is neither a directory nor an archive (.jar or .zip)
@@ -1451,7 +1302,141 @@ Public resources found in...
    Unexpected entry in classpath; /trollsvsgoats-html/target/test-classes is neither a directory nor an archive (.jar or .zip)
    Unexpected entry in classpath; /trollsvsgoats-core/target/test-classes is neither a directory nor an archive (.jar or .zip)
    Unexpected entry in classpath; /trollsvsgoats-assets/target/test-classes is neither a directory nor an archive (.jar or .zip)
->>>>>>> 08ab59e1fa6bacf8eb29de8f9603d02df050fae0
+Translatable source found in...
+Found 0 cached/archived units.  Used 0 / 2719 units from cache.
+Compiling...
+   30% complete (ETR: 9 seconds)
+   30% complete (ETR: 9 seconds)
+   30% complete (ETR: 9 seconds)
+   30% complete (ETR: 9 seconds)
+   40% complete (ETR: 9 seconds)
+   50% complete (ETR: 7 seconds)
+   60% complete (ETR: 5 seconds)
+   70% complete (ETR: 4 seconds)
+   80% complete (ETR: 2 seconds)
+   90% complete (ETR: 1 seconds)
+   100% complete (ETR: 0 seconds)
+   Compilation completed in 13.17 seconds
+Removing invalidated units
+Finding entry point classes
+Public resources found in...
+   Unexpected entry in classpath; /Users/eclipse/Documents/workspace/TrollsVGoats/html/src/test/java is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /Users/eclipse/Documents/workspace/TrollsVGoats/assets/src/main/java is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /Users/eclipse/Documents/workspace/TrollsVGoats/assets/src/test/java is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /Users/eclipse/Documents/workspace/TrollsVGoats/core/src/test/java is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /trollsvsgoats-html/target/test-classes is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /trollsvsgoats-core/target/test-classes is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /trollsvsgoats-assets/target/test-classes is neither a directory nor an archive (.jar or .zip)
+>>>>>>> 3a05554af576a0b50183e17cf0fb11fa4657398a
+Translatable source found in...
+Found 2719 cached/archived units.  Used 2719 / 2719 units from cache.
+Compiling...
+   Compilation completed in 0.00 seconds
+Removing invalidated units
+Finding entry point classes
+Public resources found in...
+<<<<<<< HEAD
+   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/html/src/test/java is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/main/java is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/test/java is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/core/src/test/java is neither a directory nor an archive (.jar or .zip)
+Translatable source found in...
+Found 2719 cached/archived units.  Used 2719 / 2719 units from cache.
+Compiling...
+   Compilation completed in 0.00 seconds
+Removing invalidated units
+Finding entry point classes
+Public resources found in...
+   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/html/src/test/java is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/main/java is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/test/java is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/core/src/test/java is neither a directory nor an archive (.jar or .zip)
+Translatable source found in...
+Found 0 cached/archived units.  Used 0 / 2719 units from cache.
+Compiling...
+   30% complete (ETR: 11 seconds)
+   30% complete (ETR: 11 seconds)
+   30% complete (ETR: 11 seconds)
+   30% complete (ETR: 11 seconds)
+   40% complete (ETR: 8 seconds)
+   50% complete (ETR: 6 seconds)
+   60% complete (ETR: 4 seconds)
+   70% complete (ETR: 3 seconds)
+   80% complete (ETR: 2 seconds)
+   90% complete (ETR: 1 seconds)
+   100% complete (ETR: 0 seconds)
+   Compilation completed in 12.71 seconds
+Removing invalidated units
+Finding entry point classes
+Public resources found in...
+   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/html/src/test/java is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/main/java is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/test/java is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/core/src/test/java is neither a directory nor an archive (.jar or .zip)
+Translatable source found in...
+Found 2719 cached/archived units.  Used 2719 / 2719 units from cache.
+Compiling...
+   Compilation completed in 0.00 seconds
+Removing invalidated units
+Finding entry point classes
+Public resources found in...
+   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/html/src/test/java is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/main/java is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/test/java is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/core/src/test/java is neither a directory nor an archive (.jar or .zip)
+Translatable source found in...
+Found 2719 cached/archived units.  Used 2719 / 2719 units from cache.
+Compiling...
+   Compilation completed in 0.00 seconds
+Removing invalidated units
+Finding entry point classes
+Public resources found in...
+   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/html/src/test/java is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/main/java is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/test/java is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/core/src/test/java is neither a directory nor an archive (.jar or .zip)
+Translatable source found in...
+Found 0 cached/archived units.  Used 0 / 2719 units from cache.
+Compiling...
+   50% complete (ETR: 4 seconds)
+   50% complete (ETR: 4 seconds)
+   50% complete (ETR: 4 seconds)
+   50% complete (ETR: 4 seconds)
+   50% complete (ETR: 4 seconds)
+   50% complete (ETR: 4 seconds)
+   60% complete (ETR: 4 seconds)
+   70% complete (ETR: 2 seconds)
+   80% complete (ETR: 2 seconds)
+   90% complete (ETR: 1 seconds)
+   100% complete (ETR: 0 seconds)
+   Compilation completed in 10.12 seconds
+Removing invalidated units
+Finding entry point classes
+Public resources found in...
+   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/html/src/test/java is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/main/java is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/test/java is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/core/src/test/java is neither a directory nor an archive (.jar or .zip)
+Translatable source found in...
+Found 2719 cached/archived units.  Used 2719 / 2719 units from cache.
+Compiling...
+   Compilation completed in 0.00 seconds
+Removing invalidated units
+Finding entry point classes
+Public resources found in...
+   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/html/src/test/java is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/main/java is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/assets/src/test/java is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /Users/mat/Dropbox/University/Dev Work For Shanika/TrollsVGoats/core/src/test/java is neither a directory nor an archive (.jar or .zip)
+=======
+   Unexpected entry in classpath; /Users/eclipse/Documents/workspace/TrollsVGoats/html/src/test/java is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /Users/eclipse/Documents/workspace/TrollsVGoats/assets/src/main/java is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /Users/eclipse/Documents/workspace/TrollsVGoats/assets/src/test/java is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /Users/eclipse/Documents/workspace/TrollsVGoats/core/src/test/java is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /trollsvsgoats-html/target/test-classes is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /trollsvsgoats-core/target/test-classes is neither a directory nor an archive (.jar or .zip)
+   Unexpected entry in classpath; /trollsvsgoats-assets/target/test-classes is neither a directory nor an archive (.jar or .zip)
+>>>>>>> 3a05554af576a0b50183e17cf0fb11fa4657398a
 Translatable source found in...
 Found 2719 cached/archived units.  Used 2719 / 2719 units from cache.
 Compiling...

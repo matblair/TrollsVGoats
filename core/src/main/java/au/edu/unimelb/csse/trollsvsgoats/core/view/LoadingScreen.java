@@ -1,7 +1,5 @@
 package au.edu.unimelb.csse.trollsvsgoats.core.view;
 
-import static playn.core.PlayN.assets;
-import playn.core.AssetWatcher;
 import playn.core.Font;
 import playn.core.Image;
 import playn.core.PlayN;
@@ -11,8 +9,6 @@ import tripleplay.ui.Background;
 import tripleplay.ui.Group;
 import tripleplay.ui.Label;
 import tripleplay.ui.Style;
-import java.io.File;
-import java.net.URI;
 
 public class LoadingScreen extends View {
 

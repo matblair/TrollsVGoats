@@ -27,9 +27,10 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
 	private GameModel model;
 	private String userName;
 
-	private Map<String, Image> images = new HashMap<String, Image>();
-	private Map<String, Sound> sounds = new HashMap<String, Sound>();
-	private Map<String, Icon>  icons = new HashMap<String, Icon>();
+    private Map<String, Image> images = new HashMap<String, Image>();
+    private Map<String, Sound> sounds = new HashMap<String, Sound>();
+    private Map<String, Icon>  icons = new HashMap<String, Icon>();
+    private Map<String, String> helptext = new HashMap<String, String>();
 
 	// Views
 	private MainScreenEx mainScreen;
@@ -73,13 +74,13 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
 				levelLoadScreen = new LevelLoadScreen(this, 1, true)};
 	}
 
-	@Override
-	public void init() {
-		userName = "LocalTest";
-		populate();
-		stack.push(loadScreen);
-		loadResources();
-	}
+    @Override
+    public void init() {
+        userName = "LocalTest@student.unimelb.edu.au";
+        populate();
+        stack.push(loadScreen);
+        loadResources();
+    }
 
 	/** Load all the images and sounds. */
 	private void loadResources() {
@@ -90,13 +91,49 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
 				log().error("Error loading asset: " + e.getMessage());
 			}
 
-			@Override
-			public void done() {
-				//http://code.google.com/p/playn/source/detail?spec=svn02ad17652134fc1a47d647a9fec2e72bd7a2134b&r=2ee14ffb17a4935e3db3079fd1bcab45831d9105
-				if(handler != null)
-				{
-					handler.setSize(model.width, model.height);
-				}
+            @Override
+            public void done() {
+            	//http://code.google.com/p/playn/source/detail?spec=svn02ad17652134fc1a47d647a9fec2e72bd7a2134b&r=2ee14ffb17a4935e3db3079fd1bcab45831d9105
+            	if(handler != null)
+            	{
+            		handler.setSize(model.width, model.height);
+            	}
+            	
+                stack.replace(mainScreen, ScreenStack.NOOP);
+            }
+        });
+        for (View screen : screens) {
+            if (screen.images() != null) {
+                for (String path : screen.images()) {
+                	System.out.println("images/" + path + ".png");
+                    Image image = assets().getImage("images/" + path + ".png");
+                    asset.add(image);
+                    images.put(path, image);
+                    
+                    Icon icon = Icons.image(PlayN.assets().getImage("images/" + path + ".png"));
+                    icons.put(path, icon);
+                }
+            }
+            if (screen.sounds() != null) {
+                for (String path : screen.sounds()) {
+                    Sound sound = assets().getSound("sounds/" + path);
+                    asset.add(sound);
+                    sounds.put(path, sound);
+                }
+            }
+        }
+        for (String path : this.helpScreen.helpFiles()) {
+        	String text;
+			try {
+				text = assets().getTextSync(path + ".txt");
+				helptext.put(path, text);
+			} catch (Exception e1) {
+				log().error("Error loading asset: " + e1.getMessage());
+			}
+        }
+        
+        asset.start();
+    }
 
 				stack.replace(mainScreen, ScreenStack.NOOP);
 			}
@@ -311,10 +348,20 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
 		}
 	}
 
-	// TODO make this actually work
-	public int getNumLevels() {
-		return 7;
-	}
+    /**
+     * Retrieves images which should be type of png.
+     **/
+    public Image getImage(String path) {
+        return images.get(path);
+    }
+    
+    public Icon getIcon(String path) {
+    	return icons.get(path);
+    }
+    
+    public String getHelpText(String path) {
+    	return helptext.get(path);
+    }
 
 	/**
 	 * Retrieves images which should be type of png.
