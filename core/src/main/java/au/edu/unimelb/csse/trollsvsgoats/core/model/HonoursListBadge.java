@@ -5,7 +5,7 @@ public class HonoursListBadge extends Badge {
 	@Override
 	public boolean achieved(GameModel game) {
 		if (game.maxCompletedLevel() >= 5) {
-			for (int i = 0; i <= 5; i++)
+			for (int i = 1; i <= 5; i++)
 				if (game.scores().get(i) != 3)
 					return false;
 			
