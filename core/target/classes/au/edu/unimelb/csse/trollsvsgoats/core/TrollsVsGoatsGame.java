@@ -30,6 +30,7 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
     private Map<String, Image> images = new HashMap<String, Image>();
     private Map<String, Sound> sounds = new HashMap<String, Sound>();
     private Map<String, Icon>  icons = new HashMap<String, Icon>();
+    private Map<String, String> helptext = new HashMap<String, String>();
 
     // Views
     private MainScreenEx mainScreen;
@@ -118,6 +119,15 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
                     sounds.put(path, sound);
                 }
             }
+        }
+        for (String path : this.helpScreen.helpFiles()) {
+        	String text;
+			try {
+				text = assets().getTextSync(path + ".txt");
+				helptext.put(path, text);
+			} catch (Exception e1) {
+				log().error("Error loading asset: " + e1.getMessage());
+			}
         }
         
         asset.start();
@@ -315,6 +325,10 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
     
     public Icon getIcon(String path) {
     	return icons.get(path);
+    }
+    
+    public String getHelpText(String path) {
+    	return helptext.get(path);
     }
 
     /**
