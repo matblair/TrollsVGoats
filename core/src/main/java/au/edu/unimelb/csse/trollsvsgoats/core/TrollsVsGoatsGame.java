@@ -71,8 +71,10 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
 
     @Override
     public void init() {
-        userName = "LocalTest";
+        userName = "LocalTest@student.unimelb.edu.au";
         populate();
+        if (handler != null)
+        	handler.setSize(1024, 720);
         stack.push(loadScreen);
         loadResources();
     }
