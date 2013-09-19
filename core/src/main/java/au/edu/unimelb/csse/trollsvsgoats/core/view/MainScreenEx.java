@@ -9,7 +9,6 @@ import playn.core.Mouse.ButtonEvent;
 import playn.core.Mouse.MotionEvent;
 import playn.core.PlayN;
 import au.edu.unimelb.csse.trollsvsgoats.core.TrollsVsGoatsGame;
-import au.edu.unimelb.csse.trollsvsgoats.core.view.MessageBox.SimpleCallBack;
 import react.UnitSlot;
 import tripleplay.ui.Background;
 import tripleplay.ui.Button;
@@ -71,15 +70,17 @@ public class MainScreenEx extends View {
 		top.add(AbsoluteLayout.at (new Label (rRope), title_board_x+256, title_board_y-38, rRope.width(), rRope.height()));
 
 		Styles bigLabel = Styles.make(
-				Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 20)),
+				Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 22)),
 				Style.HALIGN.center,
 				Style.TEXT_EFFECT.vectorOutline,
 				Style.OUTLINE_WIDTH.is(4.0f),
 				Style.HIGHLIGHT.is(0xFF412C2C),
 				Style.COLOR.is(0xFFF7F9FA));
-		final Label labelUser = new Label(game.userName()).addStyles(bigLabel);
-		float labelWidth = 200;
-		top.add(AbsoluteLayout.at(labelUser, title_board_x + (titleBoard.width() - labelWidth)/2, title_board_y + titleBoard.height()/2, labelWidth, 0));
+		String fullName = game.userName();
+		String prefix = fullName.split("@")[0];
+		final Label labelUser = new Label(prefix).addStyles(bigLabel);
+		float labelWidth = 200, labelHeight = 40;
+		top.add(AbsoluteLayout.at(labelUser, title_board_x + (titleBoard.width() - labelWidth)/2, title_board_y + (titleBoard.height())/2, labelWidth, labelHeight));
 		
 		// Start button
 		final Button btnStart = createButton("button_b").setConstraint(Constraints.fixedSize(boardWidth, boardHeight));
@@ -200,20 +201,6 @@ public class MainScreenEx extends View {
 
 		return btn;
 	}
-
-	private void showTempMessageBox() {
-		MessageBox temp = new MessageBox(game, "Under Construction", "OK",
-				new SimpleCallBack() {
-
-			@Override
-			public void onClose() {
-				game.closeMessageBox();
-			}
-		});
-
-		game.showMessageBox(this,temp);
-	}
-
 	@Override
 	public String[] images() {
 		ArrayList<String> names = new ArrayList<String>();

@@ -51,6 +51,7 @@ public class LevelLoadScreen extends View {
 			//Style.BACKGROUND.is(Background.solid(bgColor)),
 			Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.PLAIN, 11)),
 			Style.TEXT_WRAP.on,
+			Style.VALIGN.top,
 			Style.HALIGN.left,
 			Style.TEXT_EFFECT.shadow,
 			Style.SHADOW.is(0xFF412C2C),
