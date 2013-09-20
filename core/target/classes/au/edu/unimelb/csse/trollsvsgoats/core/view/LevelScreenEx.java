@@ -360,8 +360,7 @@ public class LevelScreenEx extends View {
 		iface.add(AbsoluteLayout.at(middlePanel,0,GAMEBOARDY));
 		iface.add(AbsoluteLayout.at(bottomPanel,0,BOTTOMPANELY));
 		iface.add(AbsoluteLayout.at(topMomentPanel,0,TOPBOARDY));
-
-
+		
 		return iface;
 	}
 
