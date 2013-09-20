@@ -30,7 +30,7 @@ import tripleplay.ui.layout.AxisLayout;
 //this is a test class to check controls
 public class LevelLoadScreen extends View {
 	private final int Y_START_POS = 0;
-
+	private final boolean refreshLevel;
 	private Styles titleStyle = Styles.make(
 			Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 25)),
 			Style.HALIGN.center,
@@ -60,9 +60,10 @@ public class LevelLoadScreen extends View {
 	private Label previewImage;
 	private int levelID;
 
-	public LevelLoadScreen(TrollsVsGoatsGame game, int level) {
+	public LevelLoadScreen(TrollsVsGoatsGame game, int level, boolean refreshLevel) {
 		super(game);
 		levelID = level;
+		this.refreshLevel = refreshLevel;
 	}
 
 	@Override
@@ -128,7 +129,7 @@ public class LevelLoadScreen extends View {
 		playButton.clicked().connect(new UnitSlot() {
 			@Override
 			public void onEmit() {
-				game.loadLevel(levelID, true);
+				game.loadLevel(levelID, true, refreshLevel);
 			}
 		});
 
@@ -172,7 +173,7 @@ public class LevelLoadScreen extends View {
 	public String[] images() {
 		ArrayList<String> names = new ArrayList<String>();
 		for (int i=1; i<=game.getNumLevels(); i++) {
-			names.add("cut_screens/level_load/i_" + i);
+			//names.add("cut_screens/level_load/i_" + i);
 		}
 
 		names.add("cut_screens/level_load/back_active");

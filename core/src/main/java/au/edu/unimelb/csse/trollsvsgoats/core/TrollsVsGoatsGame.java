@@ -22,55 +22,57 @@ import au.edu.unimelb.csse.trollsvsgoats.core.view.*;
  */
 public class TrollsVsGoatsGame extends Game.Default implements Game {
 
-    private final View[] screens;
-    private PersistenceClient persistence;
-    private GameModel model;
-    private String userName;
+	private final View[] screens;
+	private PersistenceClient persistence;
+	private GameModel model;
+	private String userName;
 
     private Map<String, Image> images = new HashMap<String, Image>();
     private Map<String, Sound> sounds = new HashMap<String, Sound>();
     private Map<String, Icon>  icons = new HashMap<String, Icon>();
     private Map<String, String> text = new HashMap<String, String>();
 
-    // Views
-    private MainScreenEx mainScreen;
-    private LoadingScreen loadScreen;
-    private ThemeSelScreen themeSelScreen;
-    private LevelSelScreenEx levelSelScreen;
-    private MessageBox messageBox;
-    private BadgesScreenEx badgesScreen;
-    private OptionScreen optionScreen;
-    private HelpScreenEx helpScreen;
-    private LevelWinScreen winScreen;
-    private LevelLoseScreen loseScreen;
-    private LevelLoadScreen levelLoadScreen;
+	// Views
+	private MainScreenEx mainScreen;
+	private LoadingScreen loadScreen;
+	private ThemeSelScreen themeSelScreen;
+	private LevelSelScreenEx levelSelScreen;
+	private MessageBox messageBox;
+	private BadgesScreenEx badgesScreen;
+	private OptionScreen optionScreen;
+	private HelpScreenEx helpScreen;
+	private LevelWinScreen winScreen;
+	private LevelLoseScreen loseScreen;
+	private LevelLoadScreen levelLoadScreen;
 
-    //tripleplay 1.7.2
-    private static final int UPDATE_RATE = 30; // FPS
-    private static final int UPDATE_PERIOD = 1000 / UPDATE_RATE;
-    private final Clock.Source _clock = new Clock.Source(UPDATE_RATE);
-    protected float _lastTime;
-    private IPlatformHandler handler;
-    //
+	private LevelScreenEx previousLevel;
 
-    public TrollsVsGoatsGame(PersistenceClient persistence, IPlatformHandler handler) {
-    	super(UPDATE_PERIOD); // call update every 33ms (30 times per second)
-        this.persistence = persistence;
-        this.handler = handler;
+	//tripleplay 1.7.2
+	private static final int UPDATE_RATE = 30; // FPS
+	private static final int UPDATE_PERIOD = 1000 / UPDATE_RATE;
+	private final Clock.Source _clock = new Clock.Source(UPDATE_RATE);
+	protected float _lastTime;
+	private IPlatformHandler handler;
+	//
+
+	public TrollsVsGoatsGame(PersistenceClient persistence, IPlatformHandler handler) {
+		super(UPDATE_PERIOD); // call update every 33ms (30 times per second)
+		this.persistence = persistence;
+		this.handler = handler;
 		handler.setSize(1024, 720);
 
-        this.model = new GameModel();
-        screens = new View[] { mainScreen = new MainScreenEx(this),
-                loadScreen = new LoadingScreen(this),
-                themeSelScreen = new ThemeSelScreen(this),
-                levelSelScreen = new LevelSelScreenEx(this),
-                new LevelScreenEx(this), badgesScreen = new BadgesScreenEx(this),
-                optionScreen = new OptionScreen(this),
-                helpScreen = new HelpScreenEx(this),
-                winScreen = new LevelWinScreen(null, this, 0),
-                loseScreen = new LevelLoseScreen(this),
-                levelLoadScreen = new LevelLoadScreen(this, 1)};
-    }
+		this.model = new GameModel();
+		screens = new View[] { mainScreen = new MainScreenEx(this),
+				loadScreen = new LoadingScreen(this),
+				themeSelScreen = new ThemeSelScreen(this),
+				levelSelScreen = new LevelSelScreenEx(this),
+				new LevelScreenEx(this), badgesScreen = new BadgesScreenEx(this),
+				optionScreen = new OptionScreen(this),
+				helpScreen = new HelpScreenEx(this),
+				winScreen = new LevelWinScreen(null, this, 0),
+				loseScreen = new LevelLoseScreen(this),
+				levelLoadScreen = new LevelLoadScreen(this, 1, true)};
+	}
 
     @Override
     public void init() {
@@ -80,14 +82,14 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
         loadResources();
     }
 
-    /** Load all the images and sounds. */
-    private void loadResources() {
-        AssetWatcher asset = new AssetWatcher(new AssetWatcher.Listener() {
+	/** Load all the images and sounds. */
+	private void loadResources() {
+		AssetWatcher asset = new AssetWatcher(new AssetWatcher.Listener() {
 
-            @Override
-            public void error(Throwable e) {
-                log().error("Error loading asset: " + e.getMessage());
-            }
+			@Override
+			public void error(Throwable e) {
+				log().error("Error loading asset: " + e.getMessage());
+			}
 
             @Override
             public void done() {
@@ -164,188 +166,218 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
         asset.start();
     }
 
-    public void setScreenSize(int width, int height) {
-    	if(handler != null)
-    	{
-    		handler.setSize(width, height);
-    	}
+				stack.replace(mainScreen, ScreenStack.NOOP);
+			}
+		});
+		for (View screen : screens) {
+			if (screen.images() != null) {
+				for (String path : screen.images()) {
+					System.out.println("images/" + path + ".png");
+					Image image = assets().getImage("images/" + path + ".png");
+					asset.add(image);
+					images.put(path, image);
 
-        persistence.persist(model);
-    }
+					Icon icon = Icons.image(PlayN.assets().getImage("images/" + path + ".png"));
+					icons.put(path, icon);
+				}
+			}
+			if (screen.sounds() != null) {
+				for (String path : screen.sounds()) {
+					Sound sound = assets().getSound("sounds/" + path);
+					asset.add(sound);
+					sounds.put(path, sound);
+				}
+			}
+		}
 
-    /** Grab data from persistence source */
-    public void populate() {
-        persistence.getUserName(new PersistenceClient.Callback<String>() {
+		asset.start();
+	}
 
-            @Override
-            public void onSuccess(String result) {
-                if (result != null)
-                    userName = result;
-            }
+	public void setScreenSize(int width, int height) {
+		if(handler != null)
+		{
+			handler.setSize(width, height);
+		}
 
-            @Override
-            public void onFailure(Throwable caught) {
-                log().error(caught.getMessage());
-            }
-        });
-        persistence.populate(model);
-    }
+		persistence.persist(model);
+	}
 
-    /** Save game data to persistence source */
-    public void persist() {
-        persistence.persist(model);
-    }
+	/** Grab data from persistence source */
+	public void populate() {
+		persistence.getUserName(new PersistenceClient.Callback<String>() {
 
-    public void logTrollsDeployment(List<String> lanes) {
-        persistence.logTrollsDeployment(model.levelIndex(), lanes);
-    }
-
-    public void refreshMainScreen() {
-        mainScreen.wasAdded();
-    }
-
-    public void showThemeSelScreen() {
-        stack.push(themeSelScreen);
-    }
-    
-    public void showWinnerScreen(Json.Object scores, int score) {
-    	LevelWinScreen newScreen = new LevelWinScreen(scores,this, score);
-    	stack.replace(newScreen);
-    }
-    
-    public void showLoserScreen() {
-    	stack.replace(loseScreen);
-    }
-
-    public void showLevelSelScreen(int index) {
-        //model.setThemeIndex(index);
-        stack.push(levelSelScreen);
-    }
-
-    public void showBadgesScreen() {
-        stack.push(badgesScreen);
-    }
-
-    public void showOptionScreen() {
-        stack.push(optionScreen);
-    }
-
-    public void showHelpScreen() {
-        stack.push(helpScreen);
-    }
-
-    public void showMessageBox(View currentScreen, MessageBox messageBox) {
-        closeMessageBox();
-        this.messageBox = messageBox;
-        messageBox.wasAdded();
-        currentScreen.layer.addAt(messageBox.layer(), graphics().width() / 2
-                - messageBox.width() / 2,
-                graphics().height() / 2 - messageBox.height() / 2);
-        messageBox.layer().setDepth(3);
-    }
-
-    public void closeMessageBox() {
-        if (messageBox != null) {
-            messageBox.wasRemoved();
-            messageBox = null;
-        }
-    }
-
-    public String userName() {
-        return this.userName;
-    }
-
-    public GameModel model() {
-        return this.model;
-    }
-    
-    public void loadLevelLoad(int index, boolean replace) {
-    	LevelLoadScreen lls = new LevelLoadScreen(this, index);
-    	if (replace)
-    		stack.replace(lls);
-    	else
-    		stack.push(lls);
-    }
-
-    public void loadLevel(final int index, final boolean replace) {
-        String levelPath = "levels/" + model.currentTheme() + "_level_"
-                + String.valueOf(index) + ".txt";
-        final TrollsVsGoatsGame game = this;
-        assets().getText(levelPath, new Callback<String>() {
 			@Override
 			public void onSuccess(String result) {
-				game.model().levelStart(index);
-                //-> LevelScreen level = new LevelScreen(game, result);
-				LevelScreenEx level = new LevelScreenEx(game, result);
-                if (replace)
-                    stack.replace(level);
-                else
-                    stack.push(level);
+				if (result != null)
+					userName = result;
 			}
 
 			@Override
-			public void onFailure(Throwable cause) {
-				log().error(cause.getMessage());
-				
+			public void onFailure(Throwable caught) {
+				log().error(caught.getMessage());
 			}
-        });
-    }
-    
-    public void loadLeaderboard(final int index, final boolean replace) {
+		});
+		persistence.populate(model);
+	}
+
+	/** Save game data to persistence source */
+	public void persist() {
+		persistence.persist(model);
+	}
+
+	public void logTrollsDeployment(List<String> lanes) {
+		persistence.logTrollsDeployment(model.levelIndex(), lanes);
+	}
+
+	public void refreshMainScreen() {
+		mainScreen.wasAdded();
+	}
+
+	public void showThemeSelScreen() {
+		stack.push(themeSelScreen);
+	}
+
+	public void showWinnerScreen(Json.Object scores, int score) {
+		LevelWinScreen newScreen = new LevelWinScreen(scores,this, score);
+		stack.replace(newScreen);
+	}
+
+	public void showLoserScreen() {
+		stack.replace(loseScreen);
+	}
+
+	public void showLevelSelScreen(int index) {
+		//model.setThemeIndex(index);
+		stack.push(levelSelScreen);
+	}
+
+	public void showBadgesScreen() {
+		stack.push(badgesScreen);
+	}
+
+	public void showOptionScreen() {
+		stack.push(optionScreen);
+	}
+
+	public void showHelpScreen() {
+		stack.push(helpScreen);
+	}
+
+	public void showMessageBox(View currentScreen, MessageBox messageBox) {
+		closeMessageBox();
+		this.messageBox = messageBox;
+		messageBox.wasAdded();
+		currentScreen.layer.addAt(messageBox.layer(), graphics().width() / 2
+				- messageBox.width() / 2,
+				graphics().height() / 2 - messageBox.height() / 2);
+		messageBox.layer().setDepth(3);
+	}
+
+	public void closeMessageBox() {
+		if (messageBox != null) {
+			messageBox.wasRemoved();
+			messageBox = null;
+		}
+	}
+
+	public String userName() {
+		return this.userName;
+	}
+
+	public GameModel model() {
+		return this.model;
+	}
+
+	public void loadLevelLoad(int index, boolean replace, final boolean refreshLevel) {
+		LevelLoadScreen lls = new LevelLoadScreen(this, index, refreshLevel);
+		if (replace)
+			stack.replace(lls);
+		else
+			stack.push(lls);
+	}
+
+	public void loadLevel(final int index, final boolean replace, final boolean refreshLevel) {
+		String levelPath = "levels/" + model.currentTheme() + "_level_"
+				+ String.valueOf(index) + ".txt";
+		if(!refreshLevel){
+			if (replace)
+				stack.replace(this.previousLevel);
+			else
+				stack.push(this.previousLevel);
+		} else {
+			final TrollsVsGoatsGame game = this;
+			assets().getText(levelPath, new Callback<String>() {
+				@Override
+				public void onSuccess(String result) {
+					game.model().levelStart(index);
+					//-> LevelScreen level = new LevelScreen(game, result);
+					LevelScreenEx level = new LevelScreenEx(game, result, refreshLevel);
+					previousLevel = level;
+					if (replace)
+						stack.replace(level);
+					else
+						stack.push(level);
+				}
+
+				@Override
+				public void onFailure(Throwable cause) {
+					log().error(cause.getMessage());
+
+				}
+			});
+		}
+	}
+
+	public void loadLeaderboard(final int index, final boolean replace) {
 		LeaderBoard lb = new LeaderBoard(this, index);
-        if (replace)
-            stack.replace(lb, ScreenStack.NOOP);
-        else
-            stack.push(lb);
-    }
+		if (replace)
+			stack.replace(lb, ScreenStack.NOOP);
+		else
+			stack.push(lb);
+	}
 
-    public void loadNextLevel() {
-    	loadLevelLoad(model.nextLevelIndex(), true);
-    }
+	public void loadNextLevel(final boolean refreshLevel) {
+		loadLevelLoad(model.nextLevelIndex(), true, refreshLevel);
+	}
 
-    /** Called when completed the current level, persists the level index. */
-    public void levelCompleted(int score) {
-        model.levelCompleted(score);
-        persistence.persist(model);
-    }
+	/** Called when completed the current level, persists the level index. */
+	public void levelCompleted(int score) {
+		model.levelCompleted(score);
+		persistence.persist(model);
+	}
 
-    public void setBadgeAchieve(Badge badge) {
-        persistence.achieveBadge(badge);
-    }
+	public void setBadgeAchieve(Badge badge) {
+		persistence.achieveBadge(badge);
+	}
 
-    /** How long for a unit to cover a segment. */
-    public void setMovementTime(float seconds) {
-        model.setMovementTime(seconds);
-        persistence.persist(model);
-    }
+	/** How long for a unit to cover a segment. */
+	public void setMovementTime(float seconds) {
+		model.setMovementTime(seconds);
+		persistence.persist(model);
+	}
 
-    // TODO Just for cheating
-    public void setLevelScore(int score) {
-        model.setLevelScore(score);
-        persistence.persist(model);
-    }
+	// TODO Just for cheating
+	public void setLevelScore(int score) {
+		model.setLevelScore(score);
+		persistence.persist(model);
+	}
 
-    // TODO Just for cheating
-    public void increaseMaxLevel() {
-        if (model.maxCompletedLevel() < 6) {
-            model.setMaxCompletedLevel(model.maxCompletedLevel() + 1);
-            model.setLevelDataDirty();
-            persistence.persist(model);
-        }
-    }
+	// TODO Just for cheating
+	public void increaseMaxLevel() {
+		if (model.maxCompletedLevel() < 6) {
+			model.setMaxCompletedLevel(model.maxCompletedLevel() + 1);
+			model.setLevelDataDirty();
+			persistence.persist(model);
+		}
+	}
 
-    public void decreaseMaxLevel() {
-        if (model.maxCompletedLevel() > 0) {
-            model.setMaxCompletedLevel(model.maxCompletedLevel() - 1);
-            model.setLevelDataDirty();
-            persistence.persist(model);
-        }
-    }
-    
-    // TODO make this actually work
-    public int getNumLevels() {
-    	return 7;
-    }
+	public void decreaseMaxLevel() {
+		if (model.maxCompletedLevel() > 0) {
+			model.setMaxCompletedLevel(model.maxCompletedLevel() - 1);
+			model.setLevelDataDirty();
+			persistence.persist(model);
+		}
+	}
 
     /**
      * Retrieves images which should be type of png.
@@ -362,45 +394,56 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
     	return text.get(path);
     }
 
-    /**
-     * Retrieves and caches sounds.
-     **/
-    public Sound getSound(String path) {
-        return sounds.get(path);
-    }
+	/**
+	 * Retrieves images which should be type of png.
+	 **/
+	public Image getImage(String path) {
+		return images.get(path);
+	}
 
-    @Override
-    public void paint(float alpha) {
-    	_clock.paint(alpha);
-        stack.paint(_clock);
-        if (messageBox != null)
-            messageBox.paint(_clock);
-    }
+	public Icon getIcon(String path) {
+		return icons.get(path);
+	}
 
-    @Override
-    public void update(int delta) {
-    	_clock.update(delta);
-        stack.update(delta);
-    }
+	/**
+	 * Retrieves and caches sounds.
+	 **/
+	public Sound getSound(String path) {
+		return sounds.get(path);
+	}
 
-    public ScreenStack stack() {
-        return this.stack;
-    }
+	@Override
+	public void paint(float alpha) {
+		_clock.paint(alpha);
+		stack.paint(_clock);
+		if (messageBox != null)
+			messageBox.paint(_clock);
+	}
 
-    private final ScreenStack stack = new ScreenStack() {
-        @Override
-        protected void handleError(RuntimeException error) {
-            PlayN.log().warn("Screen failure", error);
-        }
+	@Override
+	public void update(int delta) {
+		_clock.update(delta);
+		stack.update(delta);
+	}
 
-        @Override
-        protected Transition defaultPushTransition() {
-            return slide();
-        }
+	public ScreenStack stack() {
+		return this.stack;
+	}
 
-        @Override
-        protected Transition defaultPopTransition() {
-            return slide().right();
-        }
-    };
+	private final ScreenStack stack = new ScreenStack() {
+		@Override
+		protected void handleError(RuntimeException error) {
+			PlayN.log().warn("Screen failure", error);
+		}
+
+		@Override
+		protected Transition defaultPushTransition() {
+			return slide();
+		}
+
+		@Override
+		protected Transition defaultPopTransition() {
+			return slide().right();
+		}
+	};
 }

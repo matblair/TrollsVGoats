@@ -53,6 +53,8 @@ public abstract class View extends UIAnimScreen {
     protected final View _this = this;
 	protected Group horizTitle;
 
+	protected boolean isLevel;
+	
     public View(TrollsVsGoatsGame game) {
         this.game = game;
         this.model = game.model();
@@ -99,7 +101,7 @@ public abstract class View extends UIAnimScreen {
             @Override
             public void onEmit() {
                 if (noTransition())
-                    game.stack().remove(_this, ScreenStack.NOOP);
+                	game.stack().remove(_this, ScreenStack.NOOP);
                 else
                     game.stack().remove(_this);
             }

@@ -123,7 +123,7 @@ public class LevelLoseScreen extends View {
 			@Override
 			public void onEmit() {
 				//Swap back to the game view and update
-				game.loadLevel(model.levelIndex(), true);
+				game.loadLevel(model.levelIndex(), true, false);
 			}
 
 		});

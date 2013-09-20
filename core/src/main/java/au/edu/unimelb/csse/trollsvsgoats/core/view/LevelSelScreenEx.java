@@ -145,7 +145,7 @@ public class LevelSelScreenEx extends View {
 
 					@Override
 					public void onEmit() {
-						game.loadLevelLoad(_i, false);
+						game.loadLevelLoad(_i, false, true);
 					}
 				});
 
