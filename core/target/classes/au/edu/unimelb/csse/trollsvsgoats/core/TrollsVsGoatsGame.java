@@ -164,33 +164,6 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
         }
         
         asset.start();
-    }
-
-				stack.replace(mainScreen, ScreenStack.NOOP);
-			}
-		});
-		for (View screen : screens) {
-			if (screen.images() != null) {
-				for (String path : screen.images()) {
-					System.out.println("images/" + path + ".png");
-					Image image = assets().getImage("images/" + path + ".png");
-					asset.add(image);
-					images.put(path, image);
-
-					Icon icon = Icons.image(PlayN.assets().getImage("images/" + path + ".png"));
-					icons.put(path, icon);
-				}
-			}
-			if (screen.sounds() != null) {
-				for (String path : screen.sounds()) {
-					Sound sound = assets().getSound("sounds/" + path);
-					asset.add(sound);
-					sounds.put(path, sound);
-				}
-			}
-		}
-
-		asset.start();
 	}
 
 	public void setScreenSize(int width, int height) {
@@ -339,6 +312,10 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
 	public void loadNextLevel(final boolean refreshLevel) {
 		loadLevelLoad(model.nextLevelIndex(), true, refreshLevel);
 	}
+	
+	public int getNumLevels() {
+		return 7;
+	}
 
 	/** Called when completed the current level, persists the level index. */
 	public void levelCompleted(int score) {
@@ -393,18 +370,7 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
     public String getText(String path) {
     	return text.get(path);
     }
-
-	/**
-	 * Retrieves images which should be type of png.
-	 **/
-	public Image getImage(String path) {
-		return images.get(path);
-	}
-
-	public Icon getIcon(String path) {
-		return icons.get(path);
-	}
-
+    
 	/**
 	 * Retrieves and caches sounds.
 	 **/
