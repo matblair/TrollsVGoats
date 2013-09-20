@@ -94,8 +94,8 @@ public class LevelLoadScreen extends View {
 		Icon titleBoard = getIcon ("cut_screens/level_load/title_board");
 		top.add (AbsoluteLayout.at (new Label (titleBoard), title_board_x, title_board_y, titleBoard.width(), titleBoard.height()));
 		float title_x = title_board_x + titleBoard.width()/2 - 100;
-		float title_y = title_board_y + titleBoard.height()/2 - 20;
-		top.add (AbsoluteLayout.at (new Label ("Level " + levelID).setStyles(titleStyle), title_x, title_y, 200, 40));
+		float title_y = title_board_y + titleBoard.height()/2 - 25;
+		top.add (AbsoluteLayout.at (new Label ("Level " + levelID).setStyles(titleStyle), title_x, title_y, 200, 50));
 		//Top ropes
 		Icon lRope = getIcon ("cut_screens/level_load/rope_title_l");
 		Icon rRope = getIcon ("cut_screens/level_load/rope_title_r");
@@ -111,18 +111,8 @@ public class LevelLoadScreen extends View {
 		tiles.add(AbsoluteLayout.at(previewText, 20, 30, 300, 150));
 
 		// Load content for the main board
-		String path = "levelinfo/" + levelID + ".txt";
-		assets().getText(path, new Callback<String>() {
-			@Override
-			public void onSuccess(String result) {
-				previewText.text.update(result);
-			}
-
-			@Override
-			public void onFailure(Throwable cause) {
-				log().error(cause.toString());
-			}
-		});
+		String path = "levelinfo/" + levelID;
+		previewText.text.update(game.getText(path));
 
 		previewImage = new Label("");
 		setPreviewImage(levelID);
@@ -131,7 +121,7 @@ public class LevelLoadScreen extends View {
 		// Left boards
 		int leftXPos = (int) (title_board_x - getIcon("cut_screens/level_load/tab_button_u_active").width() - 60);
 		int leftYPos = 45;
-		float labelWidth = 150;
+		float labelWidth = 150, labelHeight = getIcon("cut_screens/help/tab_button_active").height();
 		float labelXPos = leftXPos + getIcon("cut_screens/level_load/tab_button_u_active").width()/2 - labelWidth/2;
 
 		// play
@@ -145,7 +135,7 @@ public class LevelLoadScreen extends View {
 
 		left.add(AbsoluteLayout.at(playButton, leftXPos, leftYPos));
 		final Label labelPrinciples = new Label("Play").setStyles(bigLabel);
-		left.add(AbsoluteLayout.at (labelPrinciples, labelXPos, leftYPos+20, labelWidth, 20));
+		left.add(AbsoluteLayout.at (labelPrinciples, labelXPos, leftYPos, labelWidth, labelHeight));
 
 		Icon longRope = getIcon("cut_screens/level_load/rope_title_long");
 		left.add(AbsoluteLayout.at(new Label(longRope), leftXPos+12, title_board_y-37));

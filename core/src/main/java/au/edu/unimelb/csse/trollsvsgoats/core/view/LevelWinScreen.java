@@ -143,7 +143,7 @@ public class LevelWinScreen extends View {
 		//		//Now check if we have to add text
 		if(score==3){
 			//Then we will present a congrats string.
-			Label strLabel = new Label("Congratulations! Perfect Balance!").setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 14)),
+			Label strLabel = new Label("Congratulations! Minimal cost!").setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 14)),
 					Style.TEXT_EFFECT.shadow,
 					Style.SHADOW.is(0xFF412C2C),
 					Style.HALIGN.center, 
@@ -159,8 +159,7 @@ public class LevelWinScreen extends View {
 				}
 			}
 
-
-			Label strLabel = new Label("Reduce score to " + nextLevel + " for the next star!").setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 14)),
+			Label strLabel = new Label("Reduce cost to $" + nextLevel + " for the next star!").setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 14)),
 					Style.TEXT_EFFECT.shadow,
 					Style.SHADOW.is(0xFF412C2C),
 					Style.HALIGN.center, 
@@ -180,7 +179,8 @@ public class LevelWinScreen extends View {
 
 		//Now get the first item and then use it to display
 		if(!model.momentOverZero()){
-			starBoard.add(AbsoluteLayout.at(new Label(getIcon("badges/a_level")),getIcon(IMAGEPATH+"star_board").width()/2-getIcon("badges/atlas_reborn").width()/2,149));
+			Label rs = new Label("").setStyles(Style.BACKGROUND.is(Background.image(getImage("badges/a_level"))));
+			starBoard.add(AbsoluteLayout.at(rs, getIcon(IMAGEPATH+"star_board").width()/2-29,150,58,58));
 		}
 
 		//Add the starboard

@@ -11,11 +11,7 @@
   
   "trolls":
   {
-    "normal":6,
-    "mega":2,
-    "digging":2,
-    "hungry":2,
-    "spitting":2
+    "normal":6
    },
   
   "scores":

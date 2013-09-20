@@ -328,7 +328,7 @@ public class LevelSelScreenEx extends View {
 		names.add("cut_screens/select_levels/title_board");
 		names.add("cut_screens/select_levels/title_sl");
 
-		return names.toArray(new String[names.size()]);
+		return names.toArray(new String[0]);
 	}
 
 	@Override
