@@ -49,12 +49,14 @@ public class HelpScreenEx extends View {
 			//Style.BACKGROUND.is(Background.solid(bgColor)),
 			Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.PLAIN, 10)),
 			Style.TEXT_WRAP.on,
+			Style.VALIGN.top,
 			Style.HALIGN.left,
 			Style.TEXT_EFFECT.shadow,
 			Style.TEXT_EFFECT.SHADOW.is(0xFF412C2C),
 			Style.COLOR.is(0xFFFFFFFF));
 	private Label helpText;
 	private Label helpImage;
+	private Button contentBoard;
 	
 	public HelpScreenEx(TrollsVsGoatsGame game) {
 		super(game);
@@ -98,16 +100,18 @@ public class HelpScreenEx extends View {
 		top.add(AbsoluteLayout.at (new Label (rRope), title_board_x+256, title_board_y-38, rRope.width(), rRope.height()));
 
 		// Add the main board and ropes
-		Icon board = getIcon("cut_screens/help/content_board");
-		tiles.add(AbsoluteLayout.at (new Label(board), 0, 0));
+		contentBoard = new Button(getIcon("cut_screens/help/content_board"));
+		contentBoard.setStyles(Style.BACKGROUND.is(Background.blank()));
+		contentBoard.layer.setInteractive(false);
+		tiles.add(AbsoluteLayout.at (contentBoard, 0, 0));
 		tiles.add(AbsoluteLayout.at(new Label(rope_l), 12, -34, rope_l.width(), rope_l.height()));
 		tiles.add(AbsoluteLayout.at(new Label(rope_l), (boardWidth-46), -34, rope_l.width(), rope_l.height()));
 		helpText = new Label().setStyles(helpStyle);
-		tiles.add(AbsoluteLayout.at(helpText, 20, 30, 300, 150));
+		tiles.add(AbsoluteLayout.at(helpText, 20, 30, 300, 390));
 		
 		// Load content for the main board
-		loadText("introduction");
 		helpImage = new Label("");
+		loadText("introduction");
 		setHelpImage("introduction");
 		tiles.add(AbsoluteLayout.at(helpImage, 23, 188, 304, 228));
 		
@@ -172,14 +176,12 @@ public class HelpScreenEx extends View {
 	private Button createButton(final String btnName, final String helpPage) {
 		Icon icon = getIcon("cut_screens/help/" + btnName + "_inactive");
 		final Button btn = new Button(icon).setStyles(Style.VALIGN.center, Style.HALIGN.center, Style.BACKGROUND.is(Background.blank()));
-		final HelpScreenEx hs = this;
 		
 		btn.layer.addListener(new Mouse.LayerAdapter() {
 			@Override
 			public void onMouseDown(ButtonEvent event) {
 				Icon selectIcon = getIcon("cut_screens/help/" + btnName + "_select");
-				hs.loadText(helpPage);
-				hs.setHelpImage(helpPage);
+				loadText(helpPage);
 				btn.icon.update(selectIcon);
 				super.onMouseUp(event);
 			}
@@ -215,6 +217,7 @@ public class HelpScreenEx extends View {
 		names.add("cut_screens/help/back_select");
 		
 		names.add("cut_screens/help/content_board");
+		names.add("cut_screens/help/content_board_noimage");
 		names.add("cut_screens/help/help_title");
 		names.add("cut_screens/help/title_board");
 
@@ -252,11 +255,22 @@ public class HelpScreenEx extends View {
 	}
 	
 	private void loadText(String helpPage) {
-		helpText.text.update(game.getHelpText("helpinfo/" + helpPage));
+		String text = game.getText("helpinfo/" + helpPage);
+		helpText.text.update(text);
+		if (text.length() > 350) {
+			contentBoard.icon.update(getIcon("cut_screens/help/content_board_noimage"));
+			setHelpImage(null);
+		} else {
+			contentBoard.icon.update(getIcon("cut_screens/help/content_board"));
+			setHelpImage(helpPage);
+		}
 	}
 	
 	private void setHelpImage(String toLoad) {
-		helpImage.setStyles(Style.BACKGROUND.is(Background.image(getImage("cut_screens/help/i_" + toLoad))));
+		if (toLoad == null)
+			helpImage.setStyles(Style.BACKGROUND.is(Background.blank()));
+		else
+			helpImage.setStyles(Style.BACKGROUND.is(Background.image(getImage("cut_screens/help/i_" + toLoad))));
 	}
 	
 	protected Group sliderAndLabel (Slider slider, String minText) {

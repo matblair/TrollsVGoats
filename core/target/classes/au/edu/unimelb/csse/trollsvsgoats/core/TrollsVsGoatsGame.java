@@ -30,7 +30,7 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
     private Map<String, Image> images = new HashMap<String, Image>();
     private Map<String, Sound> sounds = new HashMap<String, Sound>();
     private Map<String, Icon>  icons = new HashMap<String, Icon>();
-    private Map<String, String> helptext = new HashMap<String, String>();
+    private Map<String, String> text = new HashMap<String, String>();
 
     // Views
     private MainScreenEx mainScreen;
@@ -120,11 +120,42 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
                 }
             }
         }
-        for (String path : this.helpScreen.helpFiles()) {
-        	String text;
+        
+        // Load help text
+        for (final String path : this.helpScreen.helpFiles()) {
 			try {
-				text = assets().getTextSync(path + ".txt");
-				helptext.put(path, text);
+				assets().getText(path + ".txt", new Callback<String>() {
+					@Override
+					public void onSuccess(String result) {
+						text.put(path, result);
+					}
+
+					@Override
+					public void onFailure(Throwable cause) {
+						log().error(cause.getMessage());
+						
+					}
+				});
+			} catch (Exception e1) {
+				log().error("Error loading asset: " + e1.getMessage());
+			}
+        }
+        // Load level text
+        for (int i=1; i<=this.getNumLevels(); i++) {
+        	try {
+        		final String path = "levelinfo/" + i;
+				assets().getText(path + ".txt", new Callback<String>() {
+					@Override
+					public void onSuccess(String result) {
+						text.put(path, result);
+					}
+
+					@Override
+					public void onFailure(Throwable cause) {
+						log().error(cause.getMessage());
+						
+					}
+				});
 			} catch (Exception e1) {
 				log().error("Error loading asset: " + e1.getMessage());
 			}
@@ -327,8 +358,8 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
     	return icons.get(path);
     }
     
-    public String getHelpText(String path) {
-    	return helptext.get(path);
+    public String getText(String path) {
+    	return text.get(path);
     }
 
     /**

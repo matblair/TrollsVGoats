@@ -363,31 +363,32 @@ public class LevelScreenEx extends View {
 	 * 	the moment board
 	 */
 	private void createTopPanel(){
-
+		float labelW=200, labelH=50;
+		
 		topMomentPanel = new Group(new AbsoluteLayout());
 		Icon momentBoard = getIcon(MOMENTBOARD);
 		topMomentPanel.add(AbsoluteLayout.at(new Label(momentBoard),model.screenWidth()/2-momentBoard.width()/2,0));
 
 		Label levelLabel = new Label("LEVEL " + this.model.levelIndex());
 		levelLabel.setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 26)),
-				Style.HALIGN.left, 
+				Style.HALIGN.center, 
 				Style.COLOR.is(0xFFCCFF00),
-				Style.TEXT_EFFECT.shadow,
-				Style.SHADOW.is(0xFF412C2C));
-
-		topMomentPanel.add(AbsoluteLayout.at(levelLabel,this.width()/2 - 48,-45));
+				Style.TEXT_EFFECT.vectorOutline,
+				Style.OUTLINE_WIDTH.is(4.0f),
+				Style.HIGHLIGHT.is(0xFF412C2C));
+		topMomentPanel.add(AbsoluteLayout.at(levelLabel,(this.width() - labelW) / 2, -45, labelW, labelH));
 
 		momentLabel = new Label();
 		momentLabel.setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 20)),
-				Style.TEXT_EFFECT.shadow,
-				Style.SHADOW.is(0xFF412C2C),
+				Style.TEXT_EFFECT.vectorOutline,
+				Style.OUTLINE_WIDTH.is(3.5f),
+				Style.HIGHLIGHT.is(0xFF412C2C),
 				Style.HALIGN.center, 
 				Style.COLOR.is(0xFFFFFFFF));
-		momentLabel.setConstraint(Constraints.fixedWidth(momentBoard.width()));
 		momentLabel.text.update(String.valueOf("0 Nm"));
 		horizTitle.add(new Shim(760,0));
 		//horizTitle.add(momentLabel);
-		topMomentPanel.add(AbsoluteLayout.at(momentLabel, this.width()/2-36, 15));
+		topMomentPanel.add(AbsoluteLayout.at(momentLabel, (this.width() - labelW) / 2, 5, labelW, labelH));
 
 	}
 
@@ -427,7 +428,7 @@ public class LevelScreenEx extends View {
 		isTrollSide = true;
 		hasPivot = false;
 
-		//Go through each line of the lvel and add the appropriate tiles
+		//Go through each line of the level and add the appropriate tiles
 		for (int lane = laneCount; lane > 0; lane--) {
 			isTrollSide = true;
 			createLane(width,lane, tiles);
@@ -440,7 +441,7 @@ public class LevelScreenEx extends View {
 		char tileSymbol;
 		Image image;
 		int distance;
-		//Loop through each segment and determin what needs to be done.
+		//Loop through each segment and determine what needs to be done.
 		for (int segment = 0; segment < width; segment++) {
 
 			//Work out the image required
@@ -800,10 +801,11 @@ public class LevelScreenEx extends View {
 		costBoard.add(AbsoluteLayout.at(new Label(costBoardIcon),LEFTMARGIN+4,-10));
 		costLabel = new Label();
 		costLabel.setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 12)),
-				Style.HALIGN.left, 
+				Style.VALIGN.center,
+				Style.HALIGN.center,
 				Style.COLOR.is(0xFFFFFFFF));
 		costLabel.text.update("$0");
-		costBoard.add(AbsoluteLayout.at(costLabel,LEFTMARGIN+65,-3));
+		costBoard.add(AbsoluteLayout.at(costLabel,LEFTMARGIN+60,-2,30,20));
 		return costBoard;
 	}
 
@@ -1272,21 +1274,12 @@ public class LevelScreenEx extends View {
 	private void updateMomentLabel(int moment)
 	{
 		if(moment!=0){
-			momentLabel.setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 20)),
-					Style.TEXT_EFFECT.shadow,
-					Style.SHADOW.is(0xFF412C2C),
-					Style.HALIGN.center, 
-					Style.FONT.COLOR.is(0xFFCC0000));
-			momentLabel.text.update(String.valueOf(moment)+" Nm");
+			momentLabel.addStyles(Style.COLOR.is(0xFFCC0000));
 		} else {
-			momentLabel.setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 20)),
-					Style.TEXT_EFFECT.shadow,
-					Style.SHADOW.is(0xFF412C2C),
-					Style.HALIGN.center, 
-					Style.FONT.COLOR.is(0xFFFFFFFF));
-			momentLabel.text.update(String.valueOf(moment)+" Nm");
-
+			momentLabel.addStyles(Style.COLOR.is(0xFFFFFFFF));
 		}
+		
+		momentLabel.text.update(String.valueOf(moment)+" Nm");
 	}
 
 	/**

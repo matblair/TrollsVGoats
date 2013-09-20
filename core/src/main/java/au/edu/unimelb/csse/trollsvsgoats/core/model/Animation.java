@@ -9,7 +9,7 @@ public class Animation {
     // A parent image with subimages.
     private Image parentImage;
     private Image[] images;
-    private float frameWidth;
+    private float frameWidth, frameHeight;
     private int frameCount;
     private float frameTime;
     private int frameIndex;
@@ -24,6 +24,15 @@ public class Animation {
         this.parentImage = parentImage;
         this.frameCount = frameCount;
         this.frameWidth = parentImage.width() / frameCount;
+        this.frameHeight = parentImage.height();
+        this.frameTime = frameTime;
+    }
+    
+    public Animation(Image parentImage, int frameCount, int frameWidth, int frameHeight, float frameTime) {
+        this.parentImage = parentImage;
+        this.frameCount = frameCount;
+        this.frameWidth = frameWidth;
+        this.frameHeight = frameHeight;
         this.frameTime = frameTime;
     }
 
@@ -49,8 +58,7 @@ public class Animation {
         if (images != null)
             return images[index];
         else
-            return parentImage.subImage(index * frameWidth, 0, frameWidth,
-                    parentImage.height());
+            return parentImage.subImage(index * frameWidth, 0, frameWidth, frameHeight);
     }
 
     public Image nextFrame(float delta) {
