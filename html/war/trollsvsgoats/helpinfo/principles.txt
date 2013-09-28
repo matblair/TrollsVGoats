@@ -1,6 +1,7 @@
-Hey there,
+Principle of Transmissibility: When dealing with rigid bodies (like the gate), it's the line of action that's important, not the point of action. So when trolls pile up in a pushing line, it's still only the row they're in that matters, not the diagonal distance to the pivot.
 
-These are some instructions about the principles of game.
+Concurrent Forces: When multiple forces are applied to a rigid body, the net effect is the same as if you had added them up. So 2 trolls pushing in the same row have the same effect as a single troll pushing in that row who was twice as strong.
 
-GLHF.
+Moments: A force can both move and rotate an object. The tendency for a force to rotate an object (such as the gate) about a specified axis (such as the pivot) is called the moment (sometimes called torque). The magnitude of the moment is: M = F x d, where F is the magnitude of the force (the troll) and d is the length of the line drawn perpendicular to the line of action that meets with the axis, ie the gate. Moment is also a vector so it has both a magnitude and direction.
 
+Varignon's Theorem: The overall magnitude of a moment on an object is equal to the sum of the moments about the same point. So, when you have multiple trolls pushing at different locations, just add them up.

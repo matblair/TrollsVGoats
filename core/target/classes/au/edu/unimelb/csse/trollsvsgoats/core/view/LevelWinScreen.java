@@ -125,6 +125,7 @@ public class LevelWinScreen extends View {
 		//Add starts
 		for(int i=0; i<3; i++){
 			Label star = null;
+			System.out.println(i + " last score is " + lastScore);
 			if(i<lastScore || i==0){
 				star = new Label(getIcon(IMAGEPATH+"star"));
 			}
@@ -141,7 +142,7 @@ public class LevelWinScreen extends View {
 		}
 
 		//		//Now check if we have to add text
-		if(score==3){
+		if(lastScore==3){
 			//Then we will present a congrats string.
 			Label strLabel = new Label("Congratulations! Minimal cost!").setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.BOLD, 14)),
 					Style.TEXT_EFFECT.shadow,
@@ -154,7 +155,7 @@ public class LevelWinScreen extends View {
 			String nextLevel = null;
 
 			for (String cost : scores.keys()) {
-				if (score == (scores.getInt(cost)-1)) {
+				if (lastScore == (scores.getInt(cost)-1)) {
 					nextLevel = cost;
 				}
 			}

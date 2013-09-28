@@ -13,6 +13,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import com.google.gwt.user.client.Timer;
+
 import playn.core.Font;
 import playn.core.GroupLayer;
 import playn.core.Image;
@@ -114,7 +117,7 @@ public class LevelScreenEx extends View {
 	private static final float SMALLTOPBOARDY = -70;
 	private static final float SMALLGAMEBOARDY = 120;
 	private static final float SMALLBOTTOMPANELY = 440;
-	private static final float SMALLGATEINSIDE = 488;
+	private static final float SMALLGATEINSIDE = 482;
 	private static final float TOPLATCH = 460;
 
 	private static final float LRBIGTOPBOARDY = -70;
@@ -127,7 +130,8 @@ public class LevelScreenEx extends View {
 	private static final float LRSMALLGATEINSIDE = 488;
 	private static final float LRTOPLATCH = 360;
 
-
+	//Our gate to update left and right
+	private Label gateLabel;
 
 
 	//User Interface Elements that are static
@@ -169,6 +173,8 @@ public class LevelScreenEx extends View {
 
 	//Walk animations
 	private static Map<String, Integer> walkAnims = new HashMap<String, Integer>();
+	private static Map<String, Integer> goatWalkAnims = new HashMap<String, Integer>();
+
 	private static Map<String, Integer> pushAnims = new HashMap<String, Integer>();
 
 	//Our count labels to update
@@ -307,7 +313,7 @@ public class LevelScreenEx extends View {
 
 			}
 		}
-		
+
 		//Check if we should be showing moments
 		if (model.levelIndex() <= 1){
 			showUnitMoment = true;
@@ -349,7 +355,7 @@ public class LevelScreenEx extends View {
 		iface.add(AbsoluteLayout.at(middlePanel,0,GAMEBOARDY));
 		iface.add(AbsoluteLayout.at(bottomPanel,0,BOTTOMPANELY));
 		iface.add(AbsoluteLayout.at(topMomentPanel,0,TOPBOARDY));
-		
+
 		return iface;
 	}
 
@@ -362,7 +368,7 @@ public class LevelScreenEx extends View {
 	 */
 	private void createTopPanel(){
 		float labelW=200, labelH=50;
-		
+
 		topMomentPanel = new Group(new AbsoluteLayout());
 		Icon momentBoard = getIcon(MOMENTBOARD);
 		topMomentPanel.add(AbsoluteLayout.at(new Label(momentBoard),model.screenWidth()/2-momentBoard.width()/2,0));
@@ -414,7 +420,8 @@ public class LevelScreenEx extends View {
 
 		//Add the latch and gate
 		middleDrawingPanel.add(AbsoluteLayout.at(new Label(getIcon(LATCH)),LATCHLOC,0));
-		middleDrawingPanel.add(AbsoluteLayout.at(new Label(getIcon(GATE)),GATELOC,GATESHIM));
+		this.gateLabel = new Label(getIcon(GATE));
+		middleDrawingPanel.add(AbsoluteLayout.at(gateLabel,GATELOC,GATESHIM));
 		if(laneCount>6){
 			//Draw bottom latch
 			middleDrawingPanel.add(AbsoluteLayout.at(new Label(getIcon(BOTTOMLATCH)),LATCHLOC,(getImage(BRIDGE).height()-getImage(BOTTOMLATCH).height()/2)));
@@ -548,10 +555,10 @@ public class LevelScreenEx extends View {
 				squareLayer.setDepth(2);
 				break;
 			case 'x':
-				final float x = midPanelX+36;
+				final float x = midPanelX - 14;
 				final float y = midPanelY + SQUARE_HEIGHT;
 				Square square = new Square(lane, segment);
-				createObstacle(square, distance, segment, lane, isTrollSide, x, y);
+				createObstacle(square, distance, segment-1, lane, isTrollSide, x, y);
 				break;
 				//Goat tiles
 			case 'g':// Little goat.
@@ -716,7 +723,7 @@ public class LevelScreenEx extends View {
 		square.setY(midPanelY);
 		goat.setSquare(square);
 		Animation moveAnimation = new Animation(getTileImages(
-				tileSymbol).get(1), 16, goat.frameTime());
+				tileSymbol).get(1),this.goatWalkAnims.get(goat.type()), goat.frameTime());
 		goat.setMoveAnimation(moveAnimation);
 
 		Animation pushAnimation = new Animation(getImage("animations/goats_animations/push/" +goat.type() + "_goat_push"), 23, goat.frameTime());
@@ -767,6 +774,7 @@ public class LevelScreenEx extends View {
 		//add elements to first table column - trolls side
 		trollGroup = new Group(AxisLayout.vertical());
 		bottomTrollPanel = new Group(AxisLayout.horizontal());
+		bottomTrollPanel.addStyles(Style.HALIGN.left);
 		createTrollsInfoPanel();
 		bottomTrollPanel.add(new Shim(40,0));
 		trollGroup.add(bottomTrollPanel).addStyles(Style.HALIGN.left);
@@ -782,6 +790,7 @@ public class LevelScreenEx extends View {
 		//add elements to third table column - goats side
 		goatGroup = new Group(AxisLayout.vertical());
 		bottomGoatPanel = new Group(AxisLayout.horizontal());
+		bottomGoatPanel.addStyles(Style.HALIGN.left);
 		createGoatsInfoPanel(goatTypes);
 		goatGroup.add(bottomGoatPanel);
 		goatGroup.add(new Shim(0,50));
@@ -822,7 +831,7 @@ public class LevelScreenEx extends View {
 		}
 
 		Group scrollGroup = new Group(new AxisLayout.Horizontal());
-
+		scrollGroup.addStyles(Style.HALIGN.left);
 		if(this.trollHeads.size()>4){
 			//Add the first thing
 			Button backButton = this.createButton(BACKUNIT);
@@ -845,6 +854,8 @@ public class LevelScreenEx extends View {
 		//Add the mid board
 		this.trollScroll = new Group(new AxisLayout.Horizontal());
 		this.trollScroll.setConstraint(Constraints.fixedWidth(410));
+		this.trollScroll.addStyles(Style.HALIGN.left);
+
 		scrollGroup.add(this.trollScroll);
 		updateTrollScroll();
 
@@ -923,7 +934,7 @@ public class LevelScreenEx extends View {
 				Style.COLOR.is(0xFFFFFFFF),
 				Style.TEXT_EFFECT.shadow,
 				Style.SHADOW.is(0xFF412C2C));
-		Label strength = new Label(Integer.toString((int)troll.speed())).setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.PLAIN, 10)),
+		Label strength = new Label(Integer.toString((int)troll.force())).setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.PLAIN, 10)),
 				Style.HALIGN.left, 
 				Style.COLOR.is(0xFFFFFFFF),
 				Style.TEXT_EFFECT.shadow,
@@ -1050,6 +1061,8 @@ public class LevelScreenEx extends View {
 		//Add the mid board
 		this.goatScroll = new Group(new AxisLayout.Horizontal());
 		this.goatScroll.setConstraint(Constraints.fixedWidth(410));
+		this.goatScroll.addStyles(Style.HALIGN.left);
+
 		scrollGroup.add(this.goatScroll);
 
 		updateGoatScroll();
@@ -1057,6 +1070,16 @@ public class LevelScreenEx extends View {
 		//Add the next button
 		if(this.goatHeads.size()>4){
 			Button next = createButton(NEXTUNIT);
+			next.clicked().connect(new UnitSlot(){
+				@Override
+				public void onEmit() {
+					goatIndex = (goatIndex+1);
+					if(goatIndex>=goatHeads.size()){
+						goatIndex = 0;
+					}
+					updateGoatScroll();
+				}
+			});
 			scrollGroup.add(next);
 		} else {
 			scrollGroup.add(new Label(getIcon(NEXTUNIT+UNITSLOCKED)));
@@ -1109,13 +1132,13 @@ public class LevelScreenEx extends View {
 				Style.COLOR.is(0xFFFFFFFF),
 				Style.TEXT_EFFECT.shadow,
 				Style.SHADOW.is(0xFF412C2C));
-		Label strength = new Label(String.valueOf((int)goat.speed())).setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.PLAIN, 10)),
+		Label strength = new Label(String.valueOf((int)goat.force())).setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.PLAIN, 10)),
 				Style.HALIGN.left, 
 				Style.COLOR.is(0xFFFFFFFF),
 				Style.TEXT_EFFECT.shadow,
 				Style.SHADOW.is(0xFF412C2C));
 		Label name = new Label(goat.type().toUpperCase() + " GOAT").setStyles(Style.FONT.is(PlayN.graphics().createFont("komika_title", Font.Style.PLAIN, 12)),
-				Style.HALIGN.left, 
+				Style.HALIGN.center, 
 				Style.COLOR.is(0xFFFFFFFF),
 				Style.TEXT_EFFECT.shadow,
 				Style.SHADOW.is(0xFF412C2C));
@@ -1273,10 +1296,16 @@ public class LevelScreenEx extends View {
 	{
 		if(moment!=0){
 			momentLabel.addStyles(Style.COLOR.is(0xFFCC0000));
+			if(moment>0){
+				gateLabel.icon.update(getIcon("gameplay/1024_720/gameplay_gate_pos"));
+			} else {
+				gateLabel.icon.update(getIcon("gameplay/1024_720/gameplay_gate_neg"));
+			}
 		} else {
 			momentLabel.addStyles(Style.COLOR.is(0xFFFFFFFF));
+			gateLabel.icon.update(getIcon(GATE));
 		}
-		
+
 		momentLabel.text.update(String.valueOf(moment)+" Nm");
 	}
 
@@ -1553,6 +1582,10 @@ public class LevelScreenEx extends View {
 		if(type!=null && type.equals("digging")){
 			compensation=13;
 		} 
+		
+		if(segment>12){
+			compensation+=19;
+		}
 
 		float tiledist = SQUARE_WIDTH * segment;
 		float tilespacing = INITIALEDGE + segment*TILEGAP;
@@ -1761,6 +1794,8 @@ public class LevelScreenEx extends View {
 
 		//The gates
 		names.add(SMALLGATE);
+		names.add("gameplay/1024_720/gameplay_gate_neg");
+		names.add("gameplay/1024_720/gameplay_gate_pos");
 		names.add(BIGGATE);
 		names.add(LATCH);
 		names.add(BOTTOMLATCH);
@@ -1804,6 +1839,11 @@ public class LevelScreenEx extends View {
 		walkAnims.put("mega", 16);
 		walkAnims.put("spitting", 1);
 		walkAnims.put("digging", 1);
+		goatWalkAnims.put("little", 16);
+		goatWalkAnims.put("normal", 16);
+		goatWalkAnims.put("big", 16);
+		goatWalkAnims.put("fast", 9);
+		goatWalkAnims.put("butting", 16);
 
 		//Initialise the hashmap
 		pushAnims.put("normal", 22);
@@ -1836,7 +1876,7 @@ public class LevelScreenEx extends View {
 	////////////////////////////////////////////////////////////////////
 
 	private void showLevelComplete(){
-		Json.Object scores = json.getObject("scores");
+		final Json.Object scores = json.getObject("scores");
 		for (String cost : scores.keys()) {
 			if (this.cost <= Integer.valueOf(cost)) {
 				if (score < scores.getInt(cost))
@@ -1844,13 +1884,22 @@ public class LevelScreenEx extends View {
 			}
 		}
 		game.levelCompleted(score);
+		final int completedScore = score;
 		// Log trolls deployment when complete the level.
 		game.logTrollsDeployment(trollsDeployment());
-		
+
 		//Reset the level
 		this.restart();
-		
-		game.showWinnerScreen(scores,score);
+		Timer timer = new Timer()
+        {
+            @Override
+            public void run()
+            {
+        		game.showWinnerScreen(scores,completedScore);
+            }
+        };
+
+        timer.schedule(3000);
 	}
 
 	private void showLevelFailed(){

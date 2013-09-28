@@ -272,12 +272,12 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
 	public void loadLevel(final int index, final boolean replace, final boolean refreshLevel) {
 		String levelPath = "levels/" + model.currentTheme() + "_level_"
 				+ String.valueOf(index) + ".txt";
-		if(!refreshLevel){
-			if (replace)
-				stack.replace(this.previousLevel);
-			else
-				stack.push(this.previousLevel);
-		} else {
+//		if(!refreshLevel){
+//			if (replace)
+//				stack.replace(this.previousLevel);
+//			else
+//				stack.push(this.previousLevel);
+//		} else {
 			final TrollsVsGoatsGame game = this;
 			assets().getText(levelPath, new Callback<String>() {
 				@Override
@@ -298,7 +298,7 @@ public class TrollsVsGoatsGame extends Game.Default implements Game {
 
 				}
 			});
-		}
+//		}
 	}
 
 	public void loadLeaderboard(final int index, final boolean replace) {
