@@ -1,5 +1,6 @@
-trollsvsgoats
+Trolls Vs. Goats
 -----------------
+An Educational Game built on the MUGLE framework using App Engine and PlayN APIs.
 
 Commit History
 ==============
